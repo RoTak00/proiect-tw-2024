@@ -1,0 +1,11 @@
+/* T2.1 */
+
+body {
+  --color-main: #db962b;
+  --color-secondary: #2cc7db;
+  --color-border: #866d48;
+  --color-highlight: #2c59db;
+  --color-text: #33302c;
+  --color-accent-1: #485886;
+  --color-accent-2: #487f86;
+}

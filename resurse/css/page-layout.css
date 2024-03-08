@@ -1,0 +1,41 @@
+main {
+  display: grid;
+  grid-template-areas:
+    "banner banner banner banner"
+    "table calendar calendar calendar"
+    "table announcements announcements announcements announcements"
+    "users stats stats server"
+    "content content content content";
+}
+
+main > section#section-1 {
+  grid-area: "banner";
+}
+
+main > section#section-table {
+  grid-area: "table";
+}
+
+main > section#section-calendar {
+  grid-area: "calendar";
+}
+
+main > section#section-announcements {
+  grid-area: "announcements";
+}
+
+main > section#section-users {
+  grid-area: "users";
+}
+
+main > section#section-stats {
+  grid-area: "stats";
+}
+
+main > section#section-server {
+  grid-area: "server";
+}
+
+main > section#section-2 {
+  grid-area: "content";
+}
