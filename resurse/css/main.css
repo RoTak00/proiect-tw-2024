@@ -8,4 +8,14 @@ body {
   --color-text: #33302c;
   --color-accent-1: #485886;
   --color-accent-2: #487f86;
+
+  --color-text-hover-1: #171614;
+
+  --color-background: #f2f2f2;
+
+  --color-text-fade: #6d6d6d;
+}
+
+header {
+  background-color: var(--color-main);
 }

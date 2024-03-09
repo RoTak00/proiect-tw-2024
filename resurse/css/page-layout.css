@@ -1,41 +1,288 @@
+body {
+  --main-width: 1100px;
+}
+
+@media screen and (max-width: 1200px) {
+  body {
+    --main-width: 750px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    --main-width: 100%;
+  }
+}
+
+div.main-wrapper {
+  background-color: var(--color-background);
+  width: var(--main-width);
+  margin: 0 auto;
+}
+
 main {
   display: grid;
   grid-template-areas:
     "banner banner banner banner"
     "table calendar calendar calendar"
-    "table announcements announcements announcements announcements"
+    "table announcements announcements announcements"
     "users stats stats server"
     "content content content content";
+
+  grid-gap: 1rem;
+  padding: 1rem;
 }
 
 main > section#section-1 {
-  grid-area: "banner";
+  grid-area: banner;
 }
 
 main > section#section-table {
-  grid-area: "table";
+  grid-area: table;
 }
 
 main > section#section-calendar {
-  grid-area: "calendar";
+  grid-area: calendar;
 }
 
 main > section#section-announcements {
-  grid-area: "announcements";
+  grid-area: announcements;
 }
 
 main > section#section-users {
-  grid-area: "users";
+  grid-area: users;
 }
 
 main > section#section-stats {
-  grid-area: "stats";
+  grid-area: stats;
 }
 
 main > section#section-server {
-  grid-area: "server";
+  grid-area: server;
 }
 
-main > section#section-2 {
-  grid-area: "content";
+main > div#section-content {
+  grid-area: content;
+}
+
+@media screen and (max-width: 1200px) {
+  main {
+    grid-template-areas:
+      "banner banner"
+      "table calendar"
+      "table announcements"
+      "users stats"
+      "server stats"
+      "content content";
+  }
+}
+
+@media screen and (max-width: 768px) {
+  main {
+    display: block;
+    grid-template-areas: unset;
+  }
+}
+
+/* responsive iframes */
+
+main .iframe-container {
+  position: relative;
+  overflow: hidden;
+  width: 75%;
+  margin: 0 auto;
+  max-width: 800px;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+}
+
+main .iframe-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (max-width: 1200px) {
+  main .iframe-container {
+    width: 100%;
+  }
+}
+
+/* HEADER --------------------------------- */
+
+header {
+  display: flex;
+  align-items: center;
+
+  padding: 1.5rem 1.5rem;
+}
+
+header > h1 {
+  flex: 2;
+}
+
+header > nav {
+  flex: 5;
+}
+
+nav ul {
+  list-style: none;
+}
+
+nav > ul {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0;
+  padding: 0;
+}
+
+nav > ul > li {
+  font-size: 1.5rem;
+  position: relative;
+}
+
+nav li,
+nav li:after {
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+nav li:hover,
+nav li:hover:after {
+  color: var(--color-text-hover-1);
+  border-color: var(--color-text-hover-1);
+}
+
+nav > ul ul {
+  font-size: 1.2rem;
+
+  position: absolute;
+
+  top: 100%;
+  left: 0;
+
+  text-wrap: none;
+  white-space: nowrap;
+
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+
+  background-color: var(--color-main);
+
+  transition: max-height 0.3s ease;
+}
+
+nav > ul ul > li {
+  padding-top: 1rem;
+  position: relative;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  text-align: center;
+}
+
+nav > ul ul > li:first-child {
+  padding-top: 1.5rem;
+}
+
+nav > ul ul > li:last-child {
+  padding-bottom: 1.5rem;
+}
+
+nav > ul ul > li:after {
+  content: "";
+  position: absolute;
+  top: calc(100% + 0.1rem);
+  width: 50%;
+  left: 25%;
+  border-bottom: 1px solid var(--color-border);
+}
+
+nav > ul ul > li:last-child:after {
+  top: calc(100% - 1.4rem);
+}
+
+nav > ul > li:hover > ul {
+  max-height: 1000px;
+}
+
+@media screen and (max-width: 1200px) {
+  header {
+    padding: 1.25rem 1rem;
+  }
+
+  header > h1 {
+    flex: 2;
+    font-size: 1.8rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  header > nav {
+    width: 100%;
+  }
+
+  nav > ul > li {
+    font-size: 1.3rem;
+    position: relative;
+    flex: 1;
+    text-align: center;
+  }
+
+  nav > ul > li:not(:last-child):after {
+    content: "";
+    position: absolute;
+    top: -25%;
+    bottom: -25%;
+    right: 0;
+    border-right: 1px solid var(--color-border);
+  }
+}
+
+/* MAIN ----------------------------------- */
+
+/* FOOTER --------------------------------- */
+
+footer {
+  background-color: black;
+
+  padding: 1rem 0.5rem;
+  color: var(--color-text-fade);
+
+  text-align: center;
+}
+
+footer h3 {
+  color: var(--color);
+}
+
+footer > * {
+  display: flex;
+}
+
+footer > * > * {
+  flex: 1;
+}
+
+footer li {
+  margin-bottom: 0.5rem;
+}
+
+footer address > * {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  footer > * {
+    flex-direction: column;
+  }
 }
