@@ -53,6 +53,7 @@
       content="./resurse/ico/browserconfig.xml"
     />
     <meta name="theme-color" content="#ffffff" />
+    <!-- end generat de realfavicongenerator.net -->
 
     <!--<link rel="stylesheet" href="./resurse/css/reset.css" />-->
 
@@ -60,7 +61,17 @@
     <link rel="stylesheet" href="./resurse/css/page-layout.css" />
     <link rel="stylesheet" href="./resurse/css/main.css" />
 
-    <!-- end generat de realfavicongenerator.net -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script
+      src="https://kit.fontawesome.com/412d9e08bb.js"
+      crossorigin="anonymous"
+    ></script>
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script
@@ -71,11 +82,12 @@
   <body>
     <!-- T1.4 && T1.6 -->
     <header>
-      <h1>Școala ÎnvățWeb</h1>
+      <h1 class="kode-mono-700">Școala ÎnvățWeb</h1>
       <nav>
         <ul>
           <li>
-            Acasă
+            <i class="fa-solid fa-house"></i>
+            <span class="hide-500">Acasă</span>
             <ul>
               <li><a href="#section-1">Bine ați venit</a></li>
               <li><a href="#section-2">Cursuri IT</a></li>
@@ -86,9 +98,24 @@
               <li><a href="#section-7">Resurse utile</a></li>
             </ul>
           </li>
-          <li><a href="#">Despre cursuri</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">Devino profesor</a></li>
+          <li>
+            <a href="#">
+              <i class="fa-solid fa-book"></i>
+              <span class="hide-500">Despre cursuri</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa-solid fa-phone"></i>
+              <span class="hide-500">Contact</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa-solid fa-code"></i>
+              <span class="hide-500">Devino profesor</span>
+            </a>
+          </li>
         </ul>
       </nav>
     </header>
@@ -467,7 +494,6 @@
           <h3>Link-uri utile</h3>
           <ul>
             <!-- T1.11.b -->
-            <li><a href="#section-1">Mergi sus</a></li>
             <li><a href="#">Termeni și Condiții</a></li>
             <li><a href="#">Politica de confidențialitate</a></li>
             <li><a href="#">Politica cookies</a></li>
@@ -502,6 +528,13 @@
           </time>
         </small>
       </p>
+
+      <div id="mergi-sus" title="Mergeți înapoi sus">
+        <a href="#section-1" id="triunghi-outer">
+          <i class="fa-solid fa-play"></i>
+          <div id="triunghi-inner"><i class="fa-solid fa-play"></i></div>
+        </a>
+      </div>
     </footer>
   </body>
 </html>

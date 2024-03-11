@@ -19,3 +19,17 @@ body {
 header {
   background-color: var(--color-main);
 }
+
+.kode-mono-400 {
+  font-family: "Kode Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.kode-mono-700 {
+  font-family: "Kode Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
