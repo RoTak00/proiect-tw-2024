@@ -34,6 +34,11 @@ main {
   padding: var(--main-padding);
 }
 
+main > section {
+  padding-bottom: 1em;
+  border-bottom: 2px solid var(--color-main);
+}
+
 main > section#section-1 {
   grid-area: banner;
 }
@@ -332,7 +337,7 @@ footer {
 }
 
 footer h3 {
-  color: var(--color);
+  color: var(--color-accent-1);
 }
 
 footer > * {
@@ -444,7 +449,7 @@ body {
 #section-table table > *:not(tbody, caption) {
   background-color: black;
 
-  color: white;
+  color: var(--color-main);
 }
 
 #section-table table tbody tr:has(td):nth-child(even) {
@@ -476,4 +481,41 @@ body {
     overflow-x: auto;
     overflow-y: hidden;
   }
+}
+
+/* -------------------------------- */
+
+#section-2 #section-2-wrapper {
+  display: flex;
+  gap: 0.5em;
+}
+
+#section-2 #section-2-wrapper > * {
+  flex: 1;
+  text-align: justify;
+  line-height: 1.2;
+  padding: 0.5em;
+}
+
+@media screen and (max-width: 1200px) {
+  #section-2 #section-2-wrapper {
+    flex-direction: column;
+  }
+}
+
+h3 {
+  width: 100%;
+  border-top: 2px solid var(--color-main);
+  padding-top: 0.5em;
+  margin-top: 0.5em;
+}
+
+#ul-resources {
+  list-style-type: disc;
+  list-style-position: inside;
+  padding-left: 0;
+}
+
+#ul-resources > li {
+  margin-bottom: 0.5em;
 }
