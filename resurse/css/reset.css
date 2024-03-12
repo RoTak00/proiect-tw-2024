@@ -158,7 +158,6 @@ section {
 
 p,
 q,
-ul,
 ol {
   margin-bottom: 0.5rem;
 }
@@ -240,4 +239,26 @@ img {
   html {
     font-size: 12px;
   }
+}
+
+table {
+  width: 100%;
+}
+
+table,
+tr,
+th,
+td {
+  border: 1px solid black;
+}
+
+th,
+td {
+  padding: 5px;
+  vertical-align: middle;
+}
+
+th {
+  font-weight: bold;
+  text-align: center;
 }

@@ -25,8 +25,8 @@ main {
   display: grid;
   grid-template-areas:
     "banner banner banner banner"
-    "table calendar calendar calendar"
-    "table announcements announcements announcements"
+    "table table table calendar"
+    "table table table announcements"
     "users stats stats server"
     "content content content content";
 
@@ -70,8 +70,8 @@ main > div#section-content {
   main {
     grid-template-areas:
       "banner banner"
-      "table calendar"
-      "table announcements"
+      "table table"
+      "calendar announcements"
       "users stats"
       "server stats"
       "content content";
@@ -428,4 +428,52 @@ body {
     (var(--mergi-sus-dimension)) - var(--mergi-sus-inner-difference)
   );
   aspect-ratio: 1/1;
+}
+
+/* tabel ============================================ */
+
+#section-table table caption {
+  caption-side: bottom;
+}
+
+#section-table table {
+  border-spacing: 0.25em;
+  border-collapse: separate;
+}
+
+#section-table table > *:not(tbody, caption) {
+  background-color: black;
+
+  color: white;
+}
+
+#section-table table tbody tr:has(td):nth-child(even) {
+  background-color: var(--color-background);
+}
+#section-table table tbody tr:has(td):nth-child(odd) {
+  background-color: var(--color-background-2);
+}
+
+#section-table caption {
+  margin-top: 5px;
+}
+
+#section-table table tbody tr {
+  transition: background-color 0.7s ease;
+}
+#section-table table tbody tr:hover {
+  background-color: var(--color-highlight) !important;
+}
+
+@media screen and (max-width: 768px) {
+  #section-table table {
+    border-spacing: none;
+    border-collapse: collapse;
+    width: max-content;
+  }
+
+  #section-table {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
 }
