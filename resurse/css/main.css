@@ -1,31 +1,29 @@
 /* T2.1 */
-body {
-  --color-main: #db962b;
-  --color-secondary: #2cc7db;
-  --color-border: #866d48;
-  --color-highlight: #2c59db;
-  --color-text: #33302c;
-  --color-accent-1: #485886;
-  --color-accent-2: #487f86;
-  --color-text-hover-1: #171614;
-  --color-background: #f2f2f2;
-  --color-background-2: rgb(224, 218, 210);
-  --color-text-fade: #6d6d6d;
-  --color-main-highlight: #f8ac39; }
-
 header {
-  background-color: var(--color-main); }
+  background-color: #db962b;
+}
 
 .kode-mono-400 {
   font-family: "Kode Mono", monospace;
   font-optical-sizing: auto;
   font-weight: 400;
-  font-style: normal; }
+  font-style: normal;
+}
 
 .kode-mono-700 {
   font-family: "Kode Mono", monospace;
   font-optical-sizing: auto;
   font-weight: 700;
-  font-style: normal; }
+  font-style: normal;
+}
+
+#banner {
+  font-size: 7px;
+  color: #6d6d6d;
+}
+
+#watermark {
+  display: none;
+}
 
 /*# sourceMappingURL=main.css.map */

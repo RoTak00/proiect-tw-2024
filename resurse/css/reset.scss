@@ -1,3 +1,5 @@
+@import "colors.scss";
+
 html,
 body,
 div,
@@ -126,7 +128,7 @@ html {
   font-size: 16px;
   width: 100%;
 
-  color: var(--color-text);
+  color: $--color-text;
   transition: font-size 0.2s ease;
 }
 
@@ -225,7 +227,7 @@ img {
 }
 
 @media screen and (max-width: 768px) {
-  *,
+  /**,
   *:before,
   *:after {
     -webkit-animation: none !important;
@@ -233,7 +235,7 @@ img {
     -o-animation: none !important;
     -ms-animation: none !important;
     animation: none !important;
-  }
+  }*/
 
   body,
   html {
