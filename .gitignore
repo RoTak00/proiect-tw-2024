@@ -3,3 +3,7 @@ resurse/altele
 *.7z
 *.rar
 node_modules
+package-lock.json
+package.json
+*.css.map
+*.css
