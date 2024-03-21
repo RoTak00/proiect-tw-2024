@@ -1,0 +1,38 @@
+{
+  "cale_baza": "/resurse/imagini/erori/",
+  "eroare_default": {
+    "titlu": "Eroare Server",
+    "text": "A apărut o eroare internă. Vă rugăm să încercați din nou mai târziu.",
+    "imagine": "default.png"
+  },
+  "info_erori": [
+    {
+      "identificator": 404,
+      "status": true,
+      "titlu": "Pagină Negăsită",
+      "text": "Pagina pe care ați solicitat-o nu a fost găsită.",
+      "imagine": "404.png"
+    },
+    {
+      "identificator": 500,
+      "status": true,
+      "titlu": "Eroare Internă de Server",
+      "text": "A apărut o eroare internă de server. Vă rugăm să încercați din nou.",
+      "imagine": "500.png"
+    },
+    {
+      "identificator": 403,
+      "status": true,
+      "titlu": "Nu aveti permisiune",
+      "text": "Nu aveti permisiune sa accesati aceste fisiere.",
+      "imagine": "403.png"
+    },
+    {
+      "identificator": 400,
+      "status": true,
+      "titlu": "Prost request...",
+      "text": "Nu aveti permisiune sa accesati aceste fisiere.",
+      "imagine": "400.png"
+    }
+  ]
+}
