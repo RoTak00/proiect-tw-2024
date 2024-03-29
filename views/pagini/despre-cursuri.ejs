@@ -15,8 +15,36 @@
 
     <div class="main-wrapper">
       <main>
-        <h2>Ce sa va povestim noi..</h2>
-        <p>Cursurile noastre sunt forta tare!</p>
+        <h2>Despre cursurile noastre</h2>
+        <p>
+          Vizionati un videoclip care va prezinta totul despre cursurile
+          noastre!
+        </p>
+        <div class="video-wrapper">
+          <video
+            width="100%"
+            controls
+            poster="/imagini/video/about-courses-banner.webp"
+            preload="metadata"
+          >
+            <source src="video/about-cursuri.mp4" type="video/mp4" />
+            <track
+              src="video/vtt/about-cursuri-ro.vtt"
+              kind="subtitles"
+              srclang="ro"
+              label="Română"
+              default
+            />
+            <track
+              src="video/vtt/about-cursuri-en.vtt"
+              kind="subtitles"
+              srclang="en"
+              label="Engleză"
+            />
+
+            Browser-ul tău nu suportă elementul video.
+          </video>
+        </div>
       </main>
     </div>
 

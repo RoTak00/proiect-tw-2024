@@ -19,52 +19,52 @@ div.main-wrapper {
   margin: 0 auto;
 }
 
-main {
+main.index-page {
   display: grid;
   grid-template-areas: "banner banner banner banner" "table table table calendar" "table table table announcements" "users stats stats server" "content content content content";
   grid-gap: 1rem;
   padding: var(--main-padding);
   /* responsive iframes */
 }
-main > section {
+main.index-page > section {
   padding-bottom: 1em;
   border-bottom: 2px solid #db962b;
 }
-main > section#section-1 {
+main.index-page > section#section-1 {
   grid-area: banner;
 }
-main > section#section-table {
+main.index-page > section#section-table {
   grid-area: table;
 }
-main > section#section-calendar {
+main.index-page > section#section-calendar {
   grid-area: calendar;
 }
-main > section#section-announcements {
+main.index-page > section#section-announcements {
   grid-area: announcements;
 }
-main > section#section-users {
+main.index-page > section#section-users {
   grid-area: users;
 }
-main > section#section-stats {
+main.index-page > section#section-stats {
   grid-area: stats;
 }
-main > section#section-server {
+main.index-page > section#section-server {
   grid-area: server;
 }
-main > section#section-content {
+main.index-page > section#section-content {
   grid-area: content;
 }
 @media screen and (max-width: 1200px) {
-  main {
+  main.index-page {
     grid-template-areas: "banner banner" "table table" "calendar announcements" "users stats" "server stats" "content content";
   }
 }
 @media screen and (max-width: 768px) {
-  main {
+  main.index-page {
     grid-template-areas: "banner" "table" "calendar" "announcements" "users" "stats" "server" "content";
   }
 }
-main .iframe-container {
+main.index-page .iframe-container {
   position: relative;
   overflow: hidden;
   width: 75%;
@@ -76,11 +76,11 @@ main .iframe-container {
   transition: border-color 0.2s ease;
 }
 @media screen and (max-width: 1200px) {
-  main .iframe-container {
+  main.index-page .iframe-container {
     width: 100%;
   }
 }
-main .iframe-container iframe {
+main.index-page .iframe-container iframe {
   position: absolute;
   top: 0;
   left: 0;
@@ -89,10 +89,10 @@ main .iframe-container iframe {
   width: 100%;
   height: 100%;
 }
-main .iframe-container:has(+ .iframe-tabs a:hover) {
+main.index-page .iframe-container:has(+ .iframe-tabs a:hover) {
   border-color: #485886;
 }
-main .iframe-tabs {
+main.index-page .iframe-tabs {
   width: 75%;
   max-width: 800px;
   margin: 0 auto;
@@ -101,11 +101,11 @@ main .iframe-tabs {
   margin-bottom: 1rem;
 }
 @media screen and (max-width: 1200px) {
-  main .iframe-tabs {
+  main.index-page .iframe-tabs {
     width: 100%;
   }
 }
-main .iframe-tabs a {
+main.index-page .iframe-tabs a {
   position: relative;
   background-image: radial-gradient(#db962b, #866d48);
   background-color: #db962b;
@@ -123,15 +123,15 @@ main .iframe-tabs a {
   text-shadow: 0 0 10px #fff;
 }
 @media screen and (max-width: 768px) {
-  main .iframe-tabs a {
+  main.index-page .iframe-tabs a {
     min-width: 100px;
   }
 }
-main .iframe-tabs a:hover {
+main.index-page .iframe-tabs a:hover {
   color: #2c59db;
   border-color: #485886;
 }
-main .iframe-tabs .inner {
+main.index-page .iframe-tabs .inner {
   width: 100%;
   height: 100%;
   padding: 0.5em;

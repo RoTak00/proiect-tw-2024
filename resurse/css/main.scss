@@ -27,3 +27,72 @@ header {
 #watermark {
   display: none;
 }
+
+.video-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & video {
+    max-width: 100%; /* Asigură că videoclipul nu depășește lățimea containerului său */
+    min-width: 300px; /* Lățimea minimă pentru a asigura lizibilitatea pe ecrane mici */
+    max-width: 800px; /* Lățimea maximă pentru a preveni ca videoclipul să devină prea mare pe ecrane mari */
+    height: auto; /* Asigură un aspect proporțional al videoclipului */
+  }
+}
+
+::cue {
+  color: $--color-text;
+  background-color: $--color-accent-2;
+}
+
+main a:not(.iframe-tabs *) {
+  color: $--color-secondary;
+
+  background-image: radial-gradient(
+    circle,
+    $--color-highlight 0%,
+    $--color-highlight 40%,
+    transparent 80%,
+    transparent 100%
+  );
+  background-position: center;
+  background-size: 0% 0%;
+  background-repeat: no-repeat;
+  /* Tranziția pentru animație */
+  transition: background-size 0.5s ease;
+  /* Asigură că textul linkului este vizibil și peste gradient */
+  display: inline-block; /* Permite aplicarea padding și a dimensiunii de background */
+
+  &:hover {
+    color: darken($--color-secondary, 10%);
+    background-size: 100% 100%;
+  }
+
+  &:focus {
+    background-size: 100% 100%;
+  }
+
+  &:active {
+    color: lighten($--color-secondary, 10%);
+    border: 1px solid black;
+  }
+
+  &:visited {
+    color: $--color-accent-1;
+  }
+
+  &[href^="http"]:not(.iframe-tabs *)::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 400;
+    content: "\2BB3";
+    font-size: 150%; /* Face simbolul cu 50% mai mare decât textul linkului */
+    vertical-align: middle; /* Ajustează alinierea verticală a simbolului */
+    margin-right: 0.1em; /* Adaugă un spațiu între simbol și textul linkului */
+  }
+
+  &[href^="http"]:not(.iframe-tabs *):hover::before {
+    color: darken($--color-secondary, 10%);
+  }
+}

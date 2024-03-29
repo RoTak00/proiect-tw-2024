@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* T2.1 */
 header {
   background-color: #db962b;
@@ -24,6 +25,61 @@ header {
 
 #watermark {
   display: none;
+}
+
+.video-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.video-wrapper video {
+  max-width: 100%; /* Asigură că videoclipul nu depășește lățimea containerului său */
+  min-width: 300px; /* Lățimea minimă pentru a asigura lizibilitatea pe ecrane mici */
+  max-width: 800px; /* Lățimea maximă pentru a preveni ca videoclipul să devină prea mare pe ecrane mari */
+  height: auto; /* Asigură un aspect proporțional al videoclipului */
+}
+
+::cue {
+  color: #33302c;
+  background-color: #487f86;
+}
+
+main a:not(.iframe-tabs *) {
+  color: #2cc7db;
+  background-image: radial-gradient(circle, #2c59db 0%, #2c59db 40%, transparent 80%, transparent 100%);
+  background-position: center;
+  background-size: 0% 0%;
+  background-repeat: no-repeat;
+  /* Tranziția pentru animație */
+  transition: background-size 0.5s ease;
+  /* Asigură că textul linkului este vizibil și peste gradient */
+  display: inline-block; /* Permite aplicarea padding și a dimensiunii de background */
+}
+main a:not(.iframe-tabs *):hover {
+  color: #1fa4b5;
+  background-size: 100% 100%;
+}
+main a:not(.iframe-tabs *):focus {
+  background-size: 100% 100%;
+}
+main a:not(.iframe-tabs *):active {
+  color: #58d3e2;
+  border: 1px solid black;
+}
+main a:not(.iframe-tabs *):visited {
+  color: #485886;
+}
+main a:not(.iframe-tabs *)[href^=http]:not(.iframe-tabs *)::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 400;
+  content: "⮳";
+  font-size: 150%; /* Face simbolul cu 50% mai mare decât textul linkului */
+  vertical-align: middle; /* Ajustează alinierea verticală a simbolului */
+  margin-right: 0.1em; /* Adaugă un spațiu între simbol și textul linkului */
+}
+main a:not(.iframe-tabs *)[href^=http]:not(.iframe-tabs *):hover::before {
+  color: #1fa4b5;
 }
 
 /*# sourceMappingURL=main.css.map */
