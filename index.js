@@ -1,18 +1,31 @@
 const express = require("express");
 const fs = require("fs");
+const sass = require("sass");
 const path = require("path");
 const app = express();
 const port = process.env.PORT || 8080;
 
 const errorInfoPath = path.join(__dirname, "erori.json");
-var obGlobal = { obErori: null };
+var obGlobal = {
+  obErori: null,
+  folderScss: path.join(__dirname, "resurse/scss/"),
+  folderCss: path.join(__dirname, "resurse/css/"),
+  folderBackup: path.join(__dirname, "resurse/css/backup/"),
+};
 
 if (!initErori()) {
   console.error("Nu se pot initializa erorile.");
   process.exit(1);
 }
 
-const folders_to_create = ["temp", "temp1"];
+compilareScss();
+fs.watch(obGlobal.folderScss, (eventType, filename) => {
+  if (eventType === "rename" || eventType === "change") {
+    compilareScss(filename);
+  }
+});
+
+const folders_to_create = ["temp", "backup"];
 
 folders_to_create.forEach((folder) => {
   const folder_path = path.join(__dirname, folder);
@@ -123,7 +136,6 @@ app.listen(port, () => {
 });
 
 function afisareEroare(res, identifier, title, text, image) {
-  console.log(obGlobal.obErori);
   let errorInfo = obGlobal.obErori.eroare_default;
   let status = 200; // Default HTTP status code
 
@@ -175,4 +187,56 @@ function initErori() {
     );
     return false;
   }
+}
+
+function compilareScss(specific_name = null) {
+  // daca nu exista folderul css, il cream
+  if (!fs.existsSync(obGlobal.folderCss)) {
+    fs.mkdirSync(obGlobal.folderCss, { recursive: true });
+  }
+
+  // citim fisierele din scss
+  fs.readdirSync(obGlobal.folderScss)
+    .filter(
+      (file) =>
+        path.extname(file) === ".scss" &&
+        (specific_name ? file === specific_name : true)
+    )
+    // pentru fiecare fisier scss
+    .forEach((scssFile) => {
+      // calculam rezultatul css
+      const filePath = path.join(obGlobal.folderScss, scssFile);
+      const result = sass.compile(filePath, { style: "expanded" });
+
+      // daca nu exista folderul backup, il cream
+      if (!fs.existsSync(obGlobal.folderBackup)) {
+        fs.mkdirSync(obGlobal.folderBackup);
+      }
+
+      // daca deja exista fisierul css pe care il vom crea
+      if (
+        fs.existsSync(
+          obGlobal.folderCss + path.basename(scssFile, ".scss") + ".css"
+        )
+      ) {
+        // il copiem in folderul backup
+        fs.copyFileSync(
+          obGlobal.folderCss + path.basename(scssFile, ".scss") + ".css",
+          obGlobal.folderBackup +
+            Date.now() +
+            "-" +
+            path.basename(scssFile, ".scss") +
+            ".css"
+        );
+      }
+
+      // scriem noul fisier css
+      fs.writeFileSync(
+        path.join(
+          obGlobal.folderCss,
+          path.basename(scssFile, ".scss") + ".css"
+        ),
+        result.css
+      );
+    });
 }

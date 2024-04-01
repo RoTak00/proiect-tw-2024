@@ -81,5 +81,3 @@ main a:not(.iframe-tabs *)[href^=http]:not(.iframe-tabs *)::before {
 main a:not(.iframe-tabs *)[href^=http]:not(.iframe-tabs *):hover::before {
   color: #1fa4b5;
 }
-
-/*# sourceMappingURL=main.css.map */
