@@ -14,6 +14,7 @@ body {
   }
 }
 div.main-wrapper {
+  min-height: 85vh;
   background-color: #f2f2f2;
   width: var(--main-width);
   margin: 0 auto;
@@ -565,6 +566,21 @@ h3 {
 
 #ul-resources > li {
   margin-bottom: 0.5em;
+}
+
+.main-wrapper.not-index h2,
+.main-wrapper.not-index p {
+  padding: 1em 0.5em;
+}
+
+.main-wrapper.error-wrapper > div {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.main-wrapper.error-wrapper > div > img {
+  max-width: 100%;
+  max-width: 800px;
 }
 
 /*# sourceMappingURL=page-layout.css.map */

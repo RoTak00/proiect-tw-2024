@@ -1,13 +1,28 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Eroare: <%= titlu %></title>
+    <title>ÎnvățWeb - Eroare: <%= titlu %></title>
+    <meta
+      name="description"
+      content="ÎnvățWeb. Cursuri Programare Web.
+      Școală de programare pentru copilul tău.
+      Profesori de programare dedicați. Cursuri la cel mai mic preț."
+    />
+    <%-include('../fragmente/head.ejs')-%>
   </head>
   <body>
-    <h1><%= titlu %></h1>
-    <p><%= text %></p>
-    <% if (imagine) { %>
-    <img src="<%= imagine %>" alt="Eroare" />
-    <% } %>
+    <%-include('../fragmente/header.ejs')-%>
+
+    <div class="main-wrapper error-wrapper not-index">
+      <h2><%= titlu %></h2>
+      <p><%= text %></p>
+      <% if (imagine) { %>
+      <div>
+        <img src="<%= imagine %>" alt="Eroare" />
+      </div>
+      <% } %>
+    </div>
+
+    <%-include('../fragmente/footer.ejs')-%>
   </body>
 </html>
