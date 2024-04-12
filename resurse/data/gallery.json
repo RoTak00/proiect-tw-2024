@@ -1,0 +1,373 @@
+{
+  "cale_galerie": "galerie/",
+  "imagini": [
+    {
+      "cale_imagine": "coding-workshop.webp",
+      "titlu": "Coding Workshop",
+      "descriere": "Children engaging in a fun coding workshop",
+      "sfert_ora": "1"
+    },
+    {
+      "cale_imagine": "html-css-playground.webp",
+      "titlu": "HTML & CSS Playground",
+      "descriere": "Kids exploring HTML and CSS in a playground setting",
+      "sfert_ora": "2"
+    },
+    {
+      "cale_imagine": "robot-friends.webp",
+      "titlu": "Robot Friends",
+      "descriere": "Friendly robots helping children learn to code",
+      "sfert_ora": "3"
+    },
+    {
+      "cale_imagine": "robot-friends.webp",
+      "titlu": "Robot Friends",
+      "descriere": "Friendly robots helping children learn to code",
+      "sfert_ora": "4"
+    },
+    {
+      "cale_imagine": "robot-friends.webp",
+      "titlu": "Robot Friends",
+      "descriere": "Friendly robots helping children learn to code",
+      "sfert_ora": "4"
+    },
+    {
+      "cale_imagine": "robot-friends.webp",
+      "titlu": "Robot Friends",
+      "descriere": "Friendly robots helping children learn to code",
+      "sfert_ora": "4"
+    },
+
+    {
+      "cale_imagine": "robot-friends.webp",
+      "titlu": "Robot Friends",
+      "descriere": "Friendly robots helping children learn to code",
+      "sfert_ora": "4"
+    },
+    {
+      "cale_imagine": "robot-friends.webp",
+      "titlu": "Robot Friends",
+      "descriere": "Friendly robots helping children learn to code",
+      "sfert_ora": "4"
+    },
+
+    {
+      "cale_imagine": "puzzle-game.webp",
+      "titlu": "Puzzle Programming",
+      "descriere": "Interactive puzzle game teaching basic programming logic",
+      "sfert_ora": "4"
+    },
+    {
+      "cale_imagine": "web-design-colors.webp",
+      "titlu": "Web Design with Colors",
+      "descriere": "A colorful introduction to web design for kids",
+      "sfert_ora": "1"
+    },
+    {
+      "cale_imagine": "javascript-jungle.webp",
+      "titlu": "JavaScript Jungle",
+      "descriere": "Learning JavaScript through adventure in the jungle",
+      "sfert_ora": "2"
+    },
+    {
+      "cale_imagine": "interactive-storytelling.webp",
+      "titlu": "Interactive Storytelling",
+      "descriere": "Creating interactive stories with simple coding tools",
+      "sfert_ora": "3"
+    },
+    {
+      "cale_imagine": "coding-workshop.webp",
+      "titlu": "Coding Workshop",
+      "descriere": "Children engaging in a fun coding workshop",
+      "sfert_ora": "1"
+    },
+    {
+      "cale_imagine": "html-css-playground.webp",
+      "titlu": "HTML & CSS Playground",
+      "descriere": "Kids exploring HTML and CSS in a playground setting",
+      "sfert_ora": "2"
+    },
+    {
+      "cale_imagine": "robot-friends.webp",
+      "titlu": "Robot Friends",
+      "descriere": "Friendly robots helping children learn to code",
+      "sfert_ora": "3"
+    },
+    {
+      "cale_imagine": "puzzle-game.webp",
+      "titlu": "Puzzle Programming",
+      "descriere": "Interactive puzzle game teaching basic programming logic",
+      "sfert_ora": "4"
+    },
+    {
+      "cale_imagine": "web-design-colors.webp",
+      "titlu": "Web Design with Colors",
+      "descriere": "A colorful introduction to web design for kids",
+      "sfert_ora": "1"
+    },
+    {
+      "cale_imagine": "javascript-jungle.webp",
+      "titlu": "JavaScript Jungle",
+      "descriere": "Learning JavaScript through adventure in the jungle",
+      "sfert_ora": "2"
+    },
+    {
+      "cale_imagine": "interactive-storytelling.webp",
+      "titlu": "Interactive Storytelling",
+      "descriere": "Creating interactive stories with simple coding tools",
+      "sfert_ora": "3"
+    },
+    {
+      "cale_imagine": "coding-workshop.webp",
+      "titlu": "Coding Workshop",
+      "descriere": "Children engaging in a fun coding workshop",
+      "sfert_ora": "1"
+    },
+    {
+      "cale_imagine": "html-css-playground.webp",
+      "titlu": "HTML & CSS Playground",
+      "descriere": "Kids exploring HTML and CSS in a playground setting",
+      "sfert_ora": "2"
+    },
+    {
+      "cale_imagine": "robot-friends.webp",
+      "titlu": "Robot Friends",
+      "descriere": "Friendly robots helping children learn to code",
+      "sfert_ora": "3"
+    },
+    {
+      "cale_imagine": "puzzle-game.webp",
+      "titlu": "Puzzle Programming",
+      "descriere": "Interactive puzzle game teaching basic programming logic",
+      "sfert_ora": "4"
+    },
+    {
+      "cale_imagine": "web-design-colors.webp",
+      "titlu": "Web Design with Colors",
+      "descriere": "A colorful introduction to web design for kids",
+      "sfert_ora": "1"
+    },
+    {
+      "cale_imagine": "javascript-jungle.webp",
+      "titlu": "JavaScript Jungle",
+      "descriere": "Learning JavaScript through adventure in the jungle",
+      "sfert_ora": "2"
+    },
+    {
+      "cale_imagine": "interactive-storytelling.webp",
+      "titlu": "Interactive Storytelling",
+      "descriere": "Creating interactive stories with simple coding tools",
+      "sfert_ora": "3"
+    },
+    {
+      "cale_imagine": "coding-workshop.webp",
+      "titlu": "Coding Workshop",
+      "descriere": "Children engaging in a fun coding workshop",
+      "sfert_ora": "1"
+    },
+    {
+      "cale_imagine": "html-css-playground.webp",
+      "titlu": "HTML & CSS Playground",
+      "descriere": "Kids exploring HTML and CSS in a playground setting",
+      "sfert_ora": "2"
+    },
+    {
+      "cale_imagine": "robot-friends.webp",
+      "titlu": "Robot Friends",
+      "descriere": "Friendly robots helping children learn to code",
+      "sfert_ora": "3"
+    },
+    {
+      "cale_imagine": "puzzle-game.webp",
+      "titlu": "Puzzle Programming",
+      "descriere": "Interactive puzzle game teaching basic programming logic",
+      "sfert_ora": "4"
+    },
+    {
+      "cale_imagine": "web-design-colors.webp",
+      "titlu": "Web Design with Colors",
+      "descriere": "A colorful introduction to web design for kids",
+      "sfert_ora": "1"
+    },
+    {
+      "cale_imagine": "javascript-jungle.webp",
+      "titlu": "JavaScript Jungle",
+      "descriere": "Learning JavaScript through adventure in the jungle",
+      "sfert_ora": "2"
+    },
+    {
+      "cale_imagine": "interactive-storytelling.webp",
+      "titlu": "Interactive Storytelling",
+      "descriere": "Creating interactive stories with simple coding tools",
+      "sfert_ora": "3"
+    },
+    {
+      "cale_imagine": "coding-workshop.webp",
+      "titlu": "Coding Workshop",
+      "descriere": "Children engaging in a fun coding workshop",
+      "sfert_ora": "1"
+    },
+    {
+      "cale_imagine": "html-css-playground.webp",
+      "titlu": "HTML & CSS Playground",
+      "descriere": "Kids exploring HTML and CSS in a playground setting",
+      "sfert_ora": "2"
+    },
+    {
+      "cale_imagine": "robot-friends.webp",
+      "titlu": "Robot Friends",
+      "descriere": "Friendly robots helping children learn to code",
+      "sfert_ora": "3"
+    },
+    {
+      "cale_imagine": "puzzle-game.webp",
+      "titlu": "Puzzle Programming",
+      "descriere": "Interactive puzzle game teaching basic programming logic",
+      "sfert_ora": "4"
+    },
+    {
+      "cale_imagine": "web-design-colors.webp",
+      "titlu": "Web Design with Colors",
+      "descriere": "A colorful introduction to web design for kids",
+      "sfert_ora": "1"
+    },
+    {
+      "cale_imagine": "javascript-jungle.webp",
+      "titlu": "JavaScript Jungle",
+      "descriere": "Learning JavaScript through adventure in the jungle",
+      "sfert_ora": "2"
+    },
+    {
+      "cale_imagine": "interactive-storytelling.webp",
+      "titlu": "Interactive Storytelling",
+      "descriere": "Creating interactive stories with simple coding tools",
+      "sfert_ora": "3"
+    },
+    {
+      "cale_imagine": "coding-workshop.webp",
+      "titlu": "Coding Workshop",
+      "descriere": "Children engaging in a fun coding workshop",
+      "sfert_ora": "1"
+    },
+    {
+      "cale_imagine": "html-css-playground.webp",
+      "titlu": "HTML & CSS Playground",
+      "descriere": "Kids exploring HTML and CSS in a playground setting",
+      "sfert_ora": "2"
+    },
+    {
+      "cale_imagine": "robot-friends.webp",
+      "titlu": "Robot Friends",
+      "descriere": "Friendly robots helping children learn to code",
+      "sfert_ora": "3"
+    },
+    {
+      "cale_imagine": "puzzle-game.webp",
+      "titlu": "Puzzle Programming",
+      "descriere": "Interactive puzzle game teaching basic programming logic",
+      "sfert_ora": "4"
+    },
+    {
+      "cale_imagine": "web-design-colors.webp",
+      "titlu": "Web Design with Colors",
+      "descriere": "A colorful introduction to web design for kids",
+      "sfert_ora": "1"
+    },
+    {
+      "cale_imagine": "javascript-jungle.webp",
+      "titlu": "JavaScript Jungle",
+      "descriere": "Learning JavaScript through adventure in the jungle",
+      "sfert_ora": "2"
+    },
+    {
+      "cale_imagine": "interactive-storytelling.webp",
+      "titlu": "Interactive Storytelling",
+      "descriere": "Creating interactive stories with simple coding tools",
+      "sfert_ora": "3"
+    },
+    {
+      "cale_imagine": "coding-workshop.webp",
+      "titlu": "Coding Workshop",
+      "descriere": "Children engaging in a fun coding workshop",
+      "sfert_ora": "1"
+    },
+    {
+      "cale_imagine": "html-css-playground.webp",
+      "titlu": "HTML & CSS Playground",
+      "descriere": "Kids exploring HTML and CSS in a playground setting",
+      "sfert_ora": "2"
+    },
+    {
+      "cale_imagine": "robot-friends.webp",
+      "titlu": "Robot Friends",
+      "descriere": "Friendly robots helping children learn to code",
+      "sfert_ora": "3"
+    },
+    {
+      "cale_imagine": "puzzle-game.webp",
+      "titlu": "Puzzle Programming",
+      "descriere": "Interactive puzzle game teaching basic programming logic",
+      "sfert_ora": "4"
+    },
+    {
+      "cale_imagine": "web-design-colors.webp",
+      "titlu": "Web Design with Colors",
+      "descriere": "A colorful introduction to web design for kids",
+      "sfert_ora": "1"
+    },
+    {
+      "cale_imagine": "javascript-jungle.webp",
+      "titlu": "JavaScript Jungle",
+      "descriere": "Learning JavaScript through adventure in the jungle",
+      "sfert_ora": "2"
+    },
+    {
+      "cale_imagine": "interactive-storytelling.webp",
+      "titlu": "Interactive Storytelling",
+      "descriere": "Creating interactive stories with simple coding tools",
+      "sfert_ora": "3"
+    },
+    {
+      "cale_imagine": "coding-workshop.webp",
+      "titlu": "Coding Workshop",
+      "descriere": "Children engaging in a fun coding workshop",
+      "sfert_ora": "1"
+    },
+    {
+      "cale_imagine": "html-css-playground.webp",
+      "titlu": "HTML & CSS Playground",
+      "descriere": "Kids exploring HTML and CSS in a playground setting",
+      "sfert_ora": "2"
+    },
+    {
+      "cale_imagine": "robot-friends.webp",
+      "titlu": "Robot Friends",
+      "descriere": "Friendly robots helping children learn to code",
+      "sfert_ora": "3"
+    },
+    {
+      "cale_imagine": "puzzle-game.webp",
+      "titlu": "Puzzle Programming",
+      "descriere": "Interactive puzzle game teaching basic programming logic",
+      "sfert_ora": "4"
+    },
+    {
+      "cale_imagine": "web-design-colors.webp",
+      "titlu": "Web Design with Colors",
+      "descriere": "A colorful introduction to web design for kids",
+      "sfert_ora": "1"
+    },
+    {
+      "cale_imagine": "javascript-jungle.webp",
+      "titlu": "JavaScript Jungle",
+      "descriere": "Learning JavaScript through adventure in the jungle",
+      "sfert_ora": "2"
+    },
+    {
+      "cale_imagine": "interactive-storytelling.webp",
+      "titlu": "Interactive Storytelling",
+      "descriere": "Creating interactive stories with simple coding tools",
+      "sfert_ora": "3"
+    }
+  ]
+}

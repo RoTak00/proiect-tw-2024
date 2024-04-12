@@ -1,23 +1,27 @@
 const express = require("express");
 const fs = require("fs");
+const sharp = require("sharp");
 const sass = require("sass");
 const path = require("path");
 const app = express();
 const port = process.env.PORT || 8080;
 
 const errorInfoPath = path.join(__dirname, "erori.json");
+const galleryJSON = require(path.join(__dirname, "resurse/data/gallery.json"));
 var obGlobal = {
   obErori: null,
   folderScss: path.join(__dirname, "resurse/scss/"),
   folderCss: path.join(__dirname, "resurse/css/"),
   folderBackup: path.join(__dirname, "resurse/css/backup/"),
+  cssFiles: "",
+  galleryData: null,
 };
 
 if (!initErori()) {
   console.error("Nu se pot initializa erorile.");
   process.exit(1);
 }
-
+obGlobal.galleryData = filterImagesByTime(galleryJSON);
 compilareScss();
 fs.watch(obGlobal.folderScss, (eventType, filename) => {
   if (eventType === "rename" || eventType === "change") {
@@ -82,7 +86,33 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
   res.locals.ip = req.ip; // Setează adresa IP în `locals`, făcând-o disponibilă în toate template-urile
+  res.locals.cssFile = obGlobal.cssFiles;
+  obGlobal.galleryData = filterImagesByTime(galleryJSON);
+  res.locals.galleryData = obGlobal.galleryData;
+  res.locals.convertToRoman = convertToRoman;
   next();
+});
+
+// Route to handle resized images, allowing for subdirectories
+app.get("/resized-images/:size/*", async (req, res) => {
+  const size = parseInt(req.params.size);
+  const imagePath = path.join(__dirname, "resurse", "imagini", req.params[0]); // req.params[0] contains the wildcard part of the URL
+  const directory = path.dirname(imagePath);
+  const outputImagePath = path.join(
+    directory,
+    `${size}_${path.basename(imagePath)}`
+  );
+
+  try {
+    if (!fs.existsSync(outputImagePath)) {
+      // Check if the resized image already exists
+      await sharp(imagePath).resize(size).toFile(outputImagePath);
+    }
+    res.sendFile(outputImagePath);
+  } catch (error) {
+    console.error("Error processing image:", error);
+    res.status(500).send("Error processing image");
+  }
 });
 
 app.get(["/", "/index", "/home"], (req, res) => {
@@ -190,6 +220,7 @@ function initErori() {
 }
 
 function compilareScss(specific_name = null) {
+  if (!specific_name) obGlobal.cssFiles = "";
   // daca nu exista folderul css, il cream
   if (!fs.existsSync(obGlobal.folderCss)) {
     fs.mkdirSync(obGlobal.folderCss, { recursive: true });
@@ -230,6 +261,16 @@ function compilareScss(specific_name = null) {
         );
       }
 
+      if (!specific_name) {
+        if (path.basename(scssFile, ".scss") !== "reset") {
+          let link_tag =
+            '<link rel="stylesheet" href="' +
+            path.join("css", path.basename(scssFile, ".scss")) +
+            '.css" />';
+          obGlobal.cssFiles += link_tag;
+        }
+      }
+
       // scriem noul fisier css
       fs.writeFileSync(
         path.join(
@@ -239,4 +280,42 @@ function compilareScss(specific_name = null) {
         result.css
       );
     });
+}
+
+function filterImagesByTime(data) {
+  const currentHour = new Date().getHours();
+  const currentQuarter = Math.floor(new Date().getMinutes() / 15) + 1;
+  const filteredImages = data.imagini.filter(
+    (img) => parseInt(img.sfert_ora) === currentQuarter
+  );
+  return {
+    ...data,
+    imagini: filteredImages.slice(0, 10), // Limitare la 10 imagini
+  };
+}
+
+function convertToRoman(num) {
+  const romanLookup = {
+    M: 1000,
+    CM: 900,
+    D: 500,
+    CD: 400,
+    C: 100,
+    XC: 90,
+    L: 50,
+    XL: 40,
+    X: 10,
+    IX: 9,
+    V: 5,
+    IV: 4,
+    I: 1,
+  };
+  let roman = "";
+  for (let i in romanLookup) {
+    while (num >= romanLookup[i]) {
+      roman += i;
+      num -= romanLookup[i];
+    }
+  }
+  return roman;
 }

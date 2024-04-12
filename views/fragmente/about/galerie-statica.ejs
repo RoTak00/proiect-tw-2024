@@ -1,0 +1,24 @@
+<div class="static-gallery">
+  <% galleryData.imagini.forEach((img, index) => { %>
+  <figure class="gallery-item">
+    <picture>
+      <source
+        media="(max-width: 599px)"
+        srcset="/resized-images/300/<%=galleryData.cale_galerie%><%= img.cale_imagine %>"
+      />
+      <source
+        media="(max-width: 1199px)"
+        srcset="/resized-images/500/<%=galleryData.cale_galerie%><%= img.cale_imagine %>"
+      />
+      <img
+        src="/resized-images/700/<%=galleryData.cale_galerie%><%= img.cale_imagine %>"
+        alt="<%= img.descriere || img.titlu %>"
+        title="<%= img.titlu %>"
+      />
+    </picture>
+    <figcaption class="gallery-caption">
+      <%= locals.convertToRoman(index + 1) %>. <%= img.titlu %>
+    </figcaption>
+  </figure>
+  <% }); %>
+</div>

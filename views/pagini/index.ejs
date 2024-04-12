@@ -54,171 +54,20 @@
         </section>
 
         <section id="section-table">
-          <table>
-            <caption>Orarul cursurilor</caption>
-            <thead>
-              <tr>
-                <th>Grupa</th>
-                <th>Luni</th>
-                <th>Marti</th>
-                <th>Miercuri</th>
-                <th>Joi</th>
-                <th>Vineri</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th colspan="6" scope="rowgroup">Programare Începători</th>
-              </tr>
-              <tr>
-                <th scope="col">A.1</th>
-                <td>C 9:00 - 11:00</td>
-                <td>
-                  <ul>
-                    <li>L 9:00 - 11:00</li>
-                    <li>L 13:00 - 15:00</li>
-                  </ul>
-                </td>
-                <td>-</td>
-                <td>C 9:00 - 11:00</td>
-                <td>
-                  <ul>
-                    <li>L 9:00 - 11:00</li>
-                    <li>L 13:00 - 15:00</li>
-                  </ul>
-                </td>
-              </tr>
-              <tr>
-                <th scope="col">A.2</th>
-                <td>
-                  <ul>
-                    <li>L 9:00 - 11:00</li>
-                    <li>L 13:00 - 15:00</li>
-                  </ul>
-                </td>
-                <td>C 9:00 - 11:00</td>
-                <td>
-                  <ul>
-                    <li>L 9:00 - 11:00</li>
-                    <li>L 13:00 - 15:00</li>
-                  </ul>
-                </td>
-                <td>-</td>
-                <td>C 9:00 - 11:00</td>
-              </tr>
-              <tr>
-                <th colspan="6" scope="rowgroup">Programare Intermediari</th>
-              </tr>
-              <tr>
-                <th scope="col">B.1</th>
-                <td>C 9:00 - 11:00</td>
-                <td>
-                  <ul>
-                    <li>L 9:00 - 11:00</li>
-                    <li>L 13:00 - 15:00</li>
-                  </ul>
-                </td>
-                <td>-</td>
-                <td>C 9:00 - 11:00</td>
-                <td>
-                  <ul>
-                    <li>L 9:00 - 11:00</li>
-                    <li>L 13:00 - 15:00</li>
-                  </ul>
-                </td>
-              </tr>
-              <tr>
-                <th scope="col">B.2</th>
-                <td>
-                  <ul>
-                    <li>L 9:00 - 11:00</li>
-                    <li>L 13:00 - 15:00</li>
-                  </ul>
-                </td>
-                <td>C 9:00 - 11:00</td>
-                <td>
-                  <ul>
-                    <li>L 9:00 - 11:00</li>
-                    <li>L 13:00 - 15:00</li>
-                  </ul>
-                </td>
-                <td>-</td>
-                <td>C 9:00 - 11:00</td>
-              </tr>
-              <tr>
-                <th colspan="6" scope="rowgroup">Programare Avansați</th>
-              </tr>
-              <tr>
-                <th scope="col">C.1</th>
-                <td>C 9:00 - 11:00</td>
-                <td>
-                  <ul>
-                    <li>L 9:00 - 11:00</li>
-                    <li>L 13:00 - 15:00</li>
-                  </ul>
-                </td>
-                <td>-</td>
-                <td>C 9:00 - 11:00</td>
-                <td>
-                  <ul>
-                    <li>L 9:00 - 11:00</li>
-                    <li>L 13:00 - 15:00</li>
-                  </ul>
-                </td>
-              </tr>
-              <tr>
-                <th scope="col">C.2</th>
-                <td>
-                  <ul>
-                    <li>L 9:00 - 11:00</li>
-                    <li>L 13:00 - 15:00</li>
-                  </ul>
-                </td>
-                <td>C 9:00 - 11:00</td>
-                <td>
-                  <ul>
-                    <li>L 9:00 - 11:00</li>
-                    <li>L 13:00 - 15:00</li>
-                  </ul>
-                </td>
-                <td>-</td>
-                <td>C 9:00 - 11:00</td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colspan="6">L - Laborator; C - Curs</td>
-              </tr>
-            </tfoot>
-          </table>
+          <%-include('../fragmente/home/tabel-orar.ejs')-%>
         </section>
 
         <section id="section-calendar">
-          <h2>Calendar de evenimente</h2>
-          <p>
-            Pellentesque habitant morbi tristique senectus et netus et malesuada
-            fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae,
-            ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam
-            egestas semper. Aenean ultricies mi vitae est. Mauris placerat
-            eleifend leo.
-          </p>
+          <%-include('../fragmente/home/calendar-evenimente.ejs')-%>
         </section>
 
         <section id="section-announcements">
-          <h2>Anunțuri importante</h2>
-          <ul>
-            <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-            <li>Aliquam tincidunt mauris eu risus.</li>
-            <li>Vestibulum auctor dapibus neque.</li>
-            <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
-            <li>Aliquam tincidunt mauris eu risus.</li>
-            <li>Vestibulum auctor dapibus neque.</li>
-          </ul>
+          <%-include('../fragmente/home/anunturi.ejs')-%>
         </section>
 
         <section id="section-users">
           <h2>Despre tine</h2>
-          <p>IP-ul tau este: <%= ip %></p>
+          <p>IP-ul tau este: <%= locals.ip %></p>
         </section>
         <section id="section-stats">
           <h2>Statistici</h2>
@@ -247,54 +96,10 @@
         <section id="section-content">
           <!-- T1.5 -->
           <section id="section-2">
-            <h2>Ce oferim?</h2>
-            <div id="section-2-wrapper">
-              <section>
-                <h3>Cursuri de programare pentru copii</h3>
-                <!-- T1.10.a -->
-                <p>
-                  Programa cursurilor noastre de programare este împărțită în
-                  <b>cursuri teoretice</b>
-                  de scurtă durată și concise, și
-                  <b>laboratoare IT</b>
-                  interactive, împreună cu profesori de progamare dedicați. De
-                  aceasta, copilul dumneavoastră va avea activitate interesantă
-                  și continuă, și va avea parte de cursuri distractive, dar care
-                  îl vor învăța atât să programeze după standardele domeniului,
-                  cât și să învețe să caute singur materiale, permițându-i să
-                  <b>învețe programare de unul singur</b>
-                  .
-                </p>
-              </section>
-              <section>
-                <h3>Resurse IT oferite studenților noștri</h3>
-                <p>
-                  Odată cu înscrierea la cursurile de programare, cursanții
-                  noștri vor va avea acces la toate materialele de curs și toate
-                  <b>resursele de programare</b>
-                  de care are nevoie pentru a se putea dezvolta în domeniul IT.
-                </p>
-              </section>
-              <section>
-                <h3>Cursuri de programare înregistrate</h3>
-                <p>
-                  Toate cursurile și laboratoarele IT predate studenților noștri
-                  sunt înregistrate și transmise exclusiv cursanților. Astfel,
-                  materialele pot fi revizuite oricând se dorește.
-                </p>
-                <aside>
-                  <p>
-                    Înregistrările nu vor fi distribuite altor terțe și nu vor
-                    fi folosite intern decât pentru îmbunătățirea cursurilor
-                    noastre.
-                  </p>
-                </aside>
-              </section>
-            </div>
+            <%-include('../fragmente/home/descriere-1.ejs')-%>
           </section>
           <section id="section-3">
-            <h3>Cine sunt profesorii noștri?</h3>
-            <p>Cine-o fi? Nu vom sti</p>
+            <%-include('../fragmente/home/profesori.ejs')-%>
           </section>
           <section id="section-4">
             <h3>Întrebări frecvente</h3>
@@ -515,6 +320,9 @@
                 </a>
               </div>
             </div>
+          </section>
+          <section id="section-8">
+            <%-include('../fragmente/about/galerie-statica.ejs')-%>
           </section>
         </section>
       </main>
