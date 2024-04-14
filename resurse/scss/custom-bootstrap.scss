@@ -1,0 +1,41 @@
+// Import Bootstrap source
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+$theme-colors: (
+  "primary": #db962b,
+  "secondary": #2cc7db,
+);
+
+$background-color-primary: #f2f2f2;
+$background-color-secondary: rgb(224, 218, 210);
+
+// Culorile fonturilor
+$body-color: #33302c;
+$button-color: #171614;
+
+// Breakpoints pentru responsive
+$grid-breakpoints: (
+  "md": 768px,
+  "lg": 1200px,
+);
+
+// Razele de border
+$btn-border-radius: 0.5rem;
+
+// Dimensiunea literelor pentru titluri
+$font-sizes: (
+  "h1": 2.5rem,
+  "h2": 2rem,
+  "h3": 1.75rem,
+);
+
+// Familia de font implicită
+$font-family-base: "Arial", sans-serif;
+
+// Alte personalizări
+$link-hover-color: #2c59db;
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

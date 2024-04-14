@@ -1,3 +1,5 @@
+// ----------------------- INCLUDERI MODULE -------------------------
+
 const express = require("express");
 const fs = require("fs");
 const sharp = require("sharp");
@@ -5,6 +7,10 @@ const sass = require("sass");
 const path = require("path");
 const app = express();
 const port = process.env.PORT || 8080;
+
+const { filterImagesByTime, convertToRoman } = require("./module/functions");
+
+// ----------------------- DEFINIRE VARIABILE INITIALE -------------------------
 
 const errorInfoPath = path.join(__dirname, "erori.json");
 const galleryJSON = require(path.join(__dirname, "resurse/data/gallery.json"));
@@ -48,6 +54,8 @@ folders_to_create.forEach((folder) => {
     }
   });
 });
+
+// ************************ MIDDLE WARES SI SETARI *****************************************
 
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
@@ -93,10 +101,12 @@ app.use((req, res, next) => {
   next();
 });
 
+// ************************ ROUTES *****************************************
+
 // Route to handle resized images, allowing for subdirectories
 app.get("/resized-images/:size/*", async (req, res) => {
   const size = parseInt(req.params.size);
-  const imagePath = path.join(__dirname, "resurse", "imagini", req.params[0]); // req.params[0] contains the wildcard part of the URL
+  const imagePath = path.join(__dirname, "resurse", "imagini", req.params[0]);
   const directory = path.dirname(imagePath);
   const outputImagePath = path.join(
     directory,
@@ -116,13 +126,6 @@ app.get("/resized-images/:size/*", async (req, res) => {
 });
 
 app.get(["/", "/index", "/home"], (req, res) => {
-  /*console.log(`Directorul curent: ${__dirname}`);
-  console.log(`Fișierul curent: ${__filename}`);
-  console.log(`Folderul curent de lucru: ${process.cwd()}`);
-
-  const isSame = __dirname === process.cwd();
-  console.log(`__dirname și process.cwd() sunt aceleași?: ${isSame}`);*/
-
   res.render("pagini/index");
 });
 
@@ -161,9 +164,13 @@ app.get("/*", (req, res) => {
   });
 });
 
+// ************************ SERVER *****************************************
+
 app.listen(port, () => {
   console.log(`Serverul rulează pe portul ${port}`);
 });
+
+// ************************ FUNCTIONS *****************************************
 
 function afisareEroare(res, identifier, title, text, image) {
   let errorInfo = obGlobal.obErori.eroare_default;
@@ -196,8 +203,6 @@ function afisareEroare(res, identifier, title, text, image) {
     imagine: outputErrorInfo.imagine,
   });
 }
-
-// FUNCTII
 
 function initErori() {
   try {
@@ -280,42 +285,4 @@ function compilareScss(specific_name = null) {
         result.css
       );
     });
-}
-
-function filterImagesByTime(data) {
-  const currentHour = new Date().getHours();
-  const currentQuarter = Math.floor(new Date().getMinutes() / 15) + 1;
-  const filteredImages = data.imagini.filter(
-    (img) => parseInt(img.sfert_ora) === currentQuarter
-  );
-  return {
-    ...data,
-    imagini: filteredImages.slice(0, 10), // Limitare la 10 imagini
-  };
-}
-
-function convertToRoman(num) {
-  const romanLookup = {
-    M: 1000,
-    CM: 900,
-    D: 500,
-    CD: 400,
-    C: 100,
-    XC: 90,
-    L: 50,
-    XL: 40,
-    X: 10,
-    IX: 9,
-    V: 5,
-    IV: 4,
-    I: 1,
-  };
-  let roman = "";
-  for (let i in romanLookup) {
-    while (num >= romanLookup[i]) {
-      roman += i;
-      num -= romanLookup[i];
-    }
-  }
-  return roman;
 }
