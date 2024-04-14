@@ -259,9 +259,9 @@ function compilareScss(specific_name = null) {
         fs.copyFileSync(
           obGlobal.folderCss + path.basename(scssFile, ".scss") + ".css",
           obGlobal.folderBackup +
-            Date.now() +
-            "-" +
             path.basename(scssFile, ".scss") +
+            "-" +
+            Date.now() +
             ".css"
         );
       }
