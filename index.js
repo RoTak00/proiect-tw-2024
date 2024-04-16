@@ -7,8 +7,18 @@ const sass = require("sass");
 const path = require("path");
 const app = express();
 const port = process.env.PORT || 8080;
+const Client = require("pg").Client;
 
 const { filterImagesByTime, convertToRoman } = require("./module/functions");
+
+var client = new Client({
+  database: "InvatWeb_Local",
+  user: "vsc_user",
+  password: "vscpa55",
+  host: "localhost",
+  port: 5432,
+});
+client.connect();
 
 // ----------------------- DEFINIRE VARIABILE INITIALE -------------------------
 
@@ -133,6 +143,31 @@ app.get("/favicon.ico", (req, res) => {
   res.sendFile(path.join(__dirname, "resurse", "ico", "favicon.ico"));
 });
 
+app.get("/cursuri", (req, res) => {
+  client.query("SELECT * FROM cursuri", (err, result) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      afisareEroare(res, 500);
+    } else {
+      res.render("pagini/cursuri", {
+        cursuri: parseCourses(result.rows),
+        optiuni: [],
+      });
+    }
+  });
+});
+
+app.get("/cursuri/:id", (req, res) => {
+  client.query("SELECT * FROM cursuri", (err, result) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      afisareEroare(res, 500);
+    } else {
+      res.render("pagini/curs", { curs: result.rows[0] });
+    }
+  });
+});
+
 app.get("/*", (req, res) => {
   let page = req.params[0];
   if (page.endsWith("/")) {
@@ -242,7 +277,14 @@ function compilareScss(specific_name = null) {
     .forEach((scssFile) => {
       // calculam rezultatul css
       const filePath = path.join(obGlobal.folderScss, scssFile);
-      const result = sass.compile(filePath, { style: "expanded" });
+      let result = null;
+      try {
+        result = sass.compile(filePath, { style: "expanded" });
+      } catch (error) {
+        console.log(error);
+        return;
+      }
+      if (!result) return;
 
       // daca nu exista folderul backup, il cream
       if (!fs.existsSync(obGlobal.folderBackup)) {
@@ -270,7 +312,7 @@ function compilareScss(specific_name = null) {
         if (path.basename(scssFile, ".scss") !== "reset") {
           let link_tag =
             '<link rel="stylesheet" href="' +
-            path.join("css", path.basename(scssFile, ".scss")) +
+            path.join("/css", path.basename(scssFile, ".scss")) +
             '.css" />';
           obGlobal.cssFiles += link_tag;
         }
@@ -285,4 +327,26 @@ function compilareScss(specific_name = null) {
         result.css
       );
     });
+}
+
+function parseCourses(rows) {
+  return rows.map((row) => {
+    DICT_CAT = {
+      curs_incepator: "Curs incepatori",
+      curs_intermediar: "Curs intermediar",
+      curs_avansat: "Curs avansat",
+      curs_profesori: "Curs pentru profesori",
+      workshop: "Workshop",
+    };
+
+    return {
+      id: row.id,
+      nume: row.nume,
+      descriere: row.descriere,
+      imagine: row.imagine,
+      pret: row.pret,
+      categorie: DICT_CAT[row.categorie],
+      numar_ore: row.numar_ore,
+    };
+  });
 }

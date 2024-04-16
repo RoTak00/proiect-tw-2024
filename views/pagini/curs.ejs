@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ÎnvățWeb - Curs</title>
+    <meta
+      name="description"
+      content="ÎnvățWeb. Cursuri Programare Web.
+      Școală de programare pentru copilul tău.
+      Profesori de programare dedicați. Cursuri la cel mai mic preț."
+    />
+    <%-include('../fragmente/head.ejs')-%>
+  </head>
+  <body>
+    <%-include('../fragmente/header.ejs')-%>
+
+    <div class="main-wrapper not-index">
+      <main>
+        <h2>Detalii Curs: <%- locals.curs.nume %></h2>
+        <section>
+          <article id="art-curs">
+            <h3><span class="nume"><%- locals.curs.nume %></span></h3>
+            <p>
+              Preț:
+              <span class="pret"><%- locals.curs.pret %> RON</span>
+            </p>
+            <p>
+              Descriere:
+              <span class="descriere"><%- locals.curs.descriere %></span>
+            </p>
+            <p>
+              Număr zile curs:
+              <span class="numar_zile"><%- locals.curs.numar_zile %></span>
+              zile
+            </p>
+            <p>
+              Durată curs (ore):
+              <span class="numar_ore"><%- locals.curs.numar_ore %></span>
+              ore
+            </p>
+            <p>
+              Format:
+              <span class="locatie"><%- locals.curs.locatie %></span>
+            </p>
+            <p>
+              Categorie:
+              <span class="categorie"><%- locals.curs.categorie %></span>
+            </p>
+            <p>
+              Accesibil pentru persoane cu dizabilități:
+              <span class="accesibil_dizabilitati">
+                <%- locals.curs.accesibil_dizabilitati ? 'Da' : 'Nu' %>
+              </span>
+            </p>
+            <p>
+              Data start curs:
+              <span class="data_start">
+                <%- new Date(locals.curs.data_start).toLocaleDateString("ro-RO")
+                %>
+              </span>
+            </p>
+            <figure class="imag-curs">
+              <% if (locals.curs.imagine) { %>
+              <img
+                src="/resurse/imagini/cursuri/<%- locals.curs.imagine %>"
+                alt="Imagine curs <%= locals.curs.nume %>"
+              />
+              <% } else { %>
+              <img
+                src="/resurse/imagini/cursuri/default.jpg"
+                alt="Fără imagine disponibilă pentru <%= locals.curs.nume %>"
+              />
+              <% } %>
+            </figure>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <%-include('../fragmente/footer.ejs')-%>
+  </body>
+</html>

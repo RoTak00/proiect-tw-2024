@@ -47,7 +47,7 @@ header {
   background-color: $--color-accent-2;
 }
 
-main a:not(.iframe-tabs *) {
+main a:not(.iframe-tabs *, .prevent-default-a) {
   color: $--color-secondary;
 
   background-image: radial-gradient(

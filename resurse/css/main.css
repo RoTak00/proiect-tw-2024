@@ -45,7 +45,7 @@ header {
   background-color: #487f86;
 }
 
-main a:not(.iframe-tabs *) {
+main a:not(.iframe-tabs *, .prevent-default-a) {
   color: #2cc7db;
   background-image: radial-gradient(circle, #2c59db 0%, #2c59db 40%, transparent 80%, transparent 100%);
   background-position: center;
@@ -56,21 +56,21 @@ main a:not(.iframe-tabs *) {
   /* Asigură că textul linkului este vizibil și peste gradient */
   display: inline-block; /* Permite aplicarea padding și a dimensiunii de background */
 }
-main a:not(.iframe-tabs *):hover {
+main a:not(.iframe-tabs *, .prevent-default-a):hover {
   color: #1fa4b5;
   background-size: 100% 100%;
 }
-main a:not(.iframe-tabs *):focus {
+main a:not(.iframe-tabs *, .prevent-default-a):focus {
   background-size: 100% 100%;
 }
-main a:not(.iframe-tabs *):active {
+main a:not(.iframe-tabs *, .prevent-default-a):active {
   color: #58d3e2;
   border: 1px solid black;
 }
-main a:not(.iframe-tabs *):visited {
+main a:not(.iframe-tabs *, .prevent-default-a):visited {
   color: #485886;
 }
-main a:not(.iframe-tabs *)[href^=http]:not(.iframe-tabs *)::before {
+main a:not(.iframe-tabs *, .prevent-default-a)[href^=http]:not(.iframe-tabs *)::before {
   font-family: "Font Awesome 5 Free";
   font-weight: 400;
   content: "⮳";
@@ -78,6 +78,6 @@ main a:not(.iframe-tabs *)[href^=http]:not(.iframe-tabs *)::before {
   vertical-align: middle; /* Ajustează alinierea verticală a simbolului */
   margin-right: 0.1em; /* Adaugă un spațiu între simbol și textul linkului */
 }
-main a:not(.iframe-tabs *)[href^=http]:not(.iframe-tabs *):hover::before {
+main a:not(.iframe-tabs *, .prevent-default-a)[href^=http]:not(.iframe-tabs *):hover::before {
   color: #1fa4b5;
 }
