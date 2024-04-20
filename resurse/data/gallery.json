@@ -26,32 +26,32 @@
       "sfert_ora": "4"
     },
     {
-      "cale_imagine": "robot-friends.webp",
+      "cale_imagine": "imagine-1.webp",
       "titlu": "Robot Friends",
       "descriere": "Friendly robots helping children learn to code",
       "sfert_ora": "4"
     },
     {
-      "cale_imagine": "robot-friends.webp",
-      "titlu": "Robot Friends",
-      "descriere": "Friendly robots helping children learn to code",
-      "sfert_ora": "4"
-    },
-
-    {
-      "cale_imagine": "robot-friends.webp",
-      "titlu": "Robot Friends",
-      "descriere": "Friendly robots helping children learn to code",
-      "sfert_ora": "4"
-    },
-    {
-      "cale_imagine": "robot-friends.webp",
+      "cale_imagine": "imagine-2.webp",
       "titlu": "Robot Friends",
       "descriere": "Friendly robots helping children learn to code",
       "sfert_ora": "4"
     },
 
     {
+      "cale_imagine": "imagine-3.webp",
+      "titlu": "Robot Friends",
+      "descriere": "Friendly robots helping children learn to code",
+      "sfert_ora": "4"
+    },
+    {
+      "cale_imagine": "imagine-4.webp",
+      "titlu": "Robot Friends",
+      "descriere": "Friendly robots helping children learn to code",
+      "sfert_ora": "4"
+    },
+
+    {
       "cale_imagine": "puzzle-game.webp",
       "titlu": "Puzzle Programming",
       "descriere": "Interactive puzzle game teaching basic programming logic",
@@ -76,7 +76,7 @@
       "sfert_ora": "3"
     },
     {
-      "cale_imagine": "coding-workshop.webp",
+      "cale_imagine": "imagine-1.webp",
       "titlu": "Coding Workshop",
       "descriere": "Children engaging in a fun coding workshop",
       "sfert_ora": "1"
@@ -106,7 +106,7 @@
       "sfert_ora": "1"
     },
     {
-      "cale_imagine": "javascript-jungle.webp",
+      "cale_imagine": "imagine-1.webp",
       "titlu": "JavaScript Jungle",
       "descriere": "Learning JavaScript through adventure in the jungle",
       "sfert_ora": "2"
@@ -118,7 +118,7 @@
       "sfert_ora": "3"
     },
     {
-      "cale_imagine": "coding-workshop.webp",
+      "cale_imagine": "imagine-2.webp",
       "titlu": "Coding Workshop",
       "descriere": "Children engaging in a fun coding workshop",
       "sfert_ora": "1"
@@ -148,7 +148,7 @@
       "sfert_ora": "1"
     },
     {
-      "cale_imagine": "javascript-jungle.webp",
+      "cale_imagine": "imagine-2.webp",
       "titlu": "JavaScript Jungle",
       "descriere": "Learning JavaScript through adventure in the jungle",
       "sfert_ora": "2"
@@ -160,7 +160,7 @@
       "sfert_ora": "3"
     },
     {
-      "cale_imagine": "coding-workshop.webp",
+      "cale_imagine": "imagine-3.webp",
       "titlu": "Coding Workshop",
       "descriere": "Children engaging in a fun coding workshop",
       "sfert_ora": "1"
@@ -190,7 +190,7 @@
       "sfert_ora": "1"
     },
     {
-      "cale_imagine": "javascript-jungle.webp",
+      "cale_imagine": "imagine-3.webp",
       "titlu": "JavaScript Jungle",
       "descriere": "Learning JavaScript through adventure in the jungle",
       "sfert_ora": "2"
@@ -202,7 +202,7 @@
       "sfert_ora": "3"
     },
     {
-      "cale_imagine": "coding-workshop.webp",
+      "cale_imagine": "imagine-4.webp",
       "titlu": "Coding Workshop",
       "descriere": "Children engaging in a fun coding workshop",
       "sfert_ora": "1"
@@ -232,7 +232,7 @@
       "sfert_ora": "1"
     },
     {
-      "cale_imagine": "javascript-jungle.webp",
+      "cale_imagine": "imagine-4.webp",
       "titlu": "JavaScript Jungle",
       "descriere": "Learning JavaScript through adventure in the jungle",
       "sfert_ora": "2"
