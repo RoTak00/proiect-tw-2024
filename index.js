@@ -97,6 +97,8 @@ app.use((req, res, next) => {
   res.locals.cssFile = obGlobal.cssFiles;
   obGlobal.galleryData = filterImagesByTime(galleryJSON);
   res.locals.galleryData = obGlobal.galleryData;
+  obGlobal.dynamicGallery = filterImagesByTime(galleryJSON, 1);
+  res.locals.dynamicGallery = obGlobal.dynamicGallery;
   res.locals.convertToRoman = convertToRoman;
   next();
 });

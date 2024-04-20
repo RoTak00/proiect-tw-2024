@@ -1,6 +1,6 @@
 <div class="static-gallery">
   <% galleryData.imagini.forEach((img, index) => { %>
-  <figure class="gallery-item">
+  <figure class="gallery-item" data-z-index="<%= 100 - index %>">
     <picture>
       <source
         media="(max-width: 599px)"
