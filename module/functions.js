@@ -1,12 +1,29 @@
-function filterImagesByTime(data) {
+const shuffle = (array) => {
+  return array.sort(() => Math.random() - 0.5);
+};
+
+function getRandomInt(min, max) {
+  const minCeiled = Math.ceil(min);
+  const maxFloored = Math.floor(max);
+  return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
+}
+
+function filterImagesByTime(data, dynamic_gallery = false) {
   const currentHour = new Date().getHours();
   const currentQuarter = Math.floor(new Date().getMinutes() / 15) + 1;
   const filteredImages = data.imagini.filter(
     (img) => parseInt(img.sfert_ora) === currentQuarter
   );
+
+  if (dynamic_gallery) {
+    return {
+      ...data,
+      imagini: shuffle(filteredImages).slice(0, getRandomInt(6, 12)),
+    }; // Shuffle();
+  }
   return {
     ...data,
-    imagini: filteredImages.slice(0, 10), // Limitare la 10 imagini
+    imagini: shuffle(filteredImages).slice(0, 10),
   };
 }
 

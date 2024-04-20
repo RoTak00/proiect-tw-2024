@@ -1,0 +1,92 @@
+<div class="dynamic-gallery-wrapper">
+  <div id="dynamic-gallery" class="dynamic-gallery">
+    <% dynamicGallery.imagini.forEach(function(img, index) { %>
+    <img
+      src="/resized-images/700/<%=galleryData.cale_galerie%><%= img.cale_imagine %>"
+      alt="<%= img.descriere || img.titlu %>"
+      title="<%= img.titlu %>"
+      style="z-index: <%- 100 - index -%>"
+    />
+    <% }); %>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const gallery = document.getElementById("dynamic-gallery");
+    const images = gallery.getElementsByTagName("img");
+    const numImages = images.length;
+
+    var currentIndex = 0;
+    let timeoutHandles = [];
+    let animating = false;
+
+    const clearAnimationTimeouts = () => {
+      timeoutHandles.forEach((handle) => clearTimeout(handle));
+      timeoutHandles = [];
+    };
+
+    const startAnimation = () => {
+      if (!animating) {
+        animating = true;
+        const currentImage = images[currentIndex];
+        currentImage.style.opacity = "1";
+        currentImage.style.transform = "translateX(0)";
+
+        images[(currentIndex - 2 + numImages) % numImages].style.opacity = "1";
+        images[(currentIndex - 2 + numImages) % numImages].transform =
+          "translateX(0)";
+
+        // Sequence of animation steps
+        timeoutHandles.push(
+          setTimeout(() => {
+            currentImage.style.transform = "translateX(5%)";
+          }, 1000)
+        );
+
+        timeoutHandles.push(
+          setTimeout(() => {
+            currentImage.style.transform = "translateX(-5%)";
+          }, 2000)
+        );
+
+        timeoutHandles.push(
+          setTimeout(() => {
+            currentImage.style.transform = "translateX(100%)";
+            currentImage.style.opacity = "0";
+          }, 3000)
+        );
+
+        timeoutHandles.push(
+          setTimeout(() => {
+            currentImage.style.transform = "translateX(-100%)";
+            currentIndex = (currentIndex + 1) % numImages;
+            animating = false;
+            requestAnimationFrame(startAnimation);
+          }, 4000)
+        );
+      }
+    };
+
+    let animationFrameId;
+
+    const resumeAnimation = () => {
+      if (!animating) {
+        startAnimation();
+      }
+    };
+
+    const pauseAnimation = () => {
+      clearAnimationTimeouts();
+      cancelAnimationFrame(animationFrameId);
+      animating = false;
+    };
+
+    // Initial animation start
+    animationFrameId = requestAnimationFrame(startAnimation);
+
+    // Stop and restart animation on hover
+    gallery.onmouseover = pauseAnimation;
+    gallery.onmouseout = resumeAnimation;
+  });
+</script>
