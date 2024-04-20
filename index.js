@@ -5,6 +5,9 @@ const fs = require("fs");
 const sharp = require("sharp");
 const sass = require("sass");
 const path = require("path");
+const moment = require("moment");
+require("moment/locale/ro");
+moment.locale("ro");
 const app = express();
 const port = process.env.PORT || 8080;
 const Client = require("pg").Client;
@@ -345,8 +348,13 @@ function parseCourses(rows) {
       descriere: row.descriere,
       imagine: row.imagine,
       pret: row.pret,
-      categorie: DICT_CAT[row.categorie],
+      categorie: row.categorie,
+      categorie_text: DICT_CAT[row.categorie],
       numar_ore: row.numar_ore,
+      data_start: row.data_start,
+      tema_principala: row.tema_principala,
+      distributie_ore: row.distributie_ore,
+      data_start_text: moment(row.data_start).format("D-MMMM-YYYY (dddd)"),
     };
   });
 }

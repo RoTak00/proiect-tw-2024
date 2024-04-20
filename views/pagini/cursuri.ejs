@@ -91,41 +91,93 @@
 
         <section id="produse">
           <div class="grid-courses">
-            <% for( let curs of locals.cursuri) { %>
-            <article class="course">
-              <h3 class="nume">
-                <a href="/cursuri/<%-curs.id %>" class="prevent-default-a">
-                  <%- curs.nume%>
+            <% for(let curs of locals.cursuri) { %>
+            <article
+              class="course <%- curs.categorie %>"
+              id="produs_<%- curs.id %>"
+            >
+              <h3>
+                <a class="prevent-default-a" href="/cursuri/<%= curs.id %>">
+                  <%- curs.nume %>
                 </a>
               </h3>
-              <p class="course-description"><%-curs.descriere%></p>
-              <hr />
-              <div class="course-info">
-                <p class="pret">
-                  Pret:
-                  <span class="val-pret"><%- curs.pret%></span>
-                </p>
-                <p class="categorie">
-                  Categorie:
-                  <span class="val-categorie"><%- curs.categorie%></span>
-                </p>
-                <p class="numar-ore">
-                  Numar ore:
-                  <span class="val-calorii"><%- curs.numar_ore%></span>
-                </p>
-              </div>
+              <div class="course-container">
+                <div class="course-image">
+                  <a
+                    href="/cursuri/<%= curs.id %>"
+                    class="prevent-default-a"
+                    title="<%= curs.nume %>"
+                  >
+                    <figure>
+                      <picture>
+                        <source
+                          media="(max-width: 599px)"
+                          srcset="/resized-images/300/cursuri/<%= curs.imagine %>"
+                        />
+                        <source
+                          media="(max-width: 1199px)"
+                          srcset="/resized-images/500/cursuri/<%= curs.imagine %>"
+                        />
+                        <img
+                          src="/resized-images/700/cursuri/<%= curs.imagine %>"
+                          alt="<%=curs.nume %>"
+                          title="<%= curs.nume %>"
+                        />
+                      </picture>
+                    </figure>
+                  </a>
+                  <div class="course-details-1">
+                    <p class="course-category">
+                      Categorie:
+                      <strong><%- curs.categorie_text %></strong>
+                    </p>
+                    <p class="course-price">
+                      Preț:
+                      <em><%- curs.pret %> RON</em>
+                    </p>
+                  </div>
+                </div>
 
-              <figure>
-                <a href="/cursuri/<%-curs.id %>">
-                  <img
-                    src="/resurse/imagini/cursuri/<%- curs.imagine %>"
-                    style="width: 50%; height: auto"
-                    alt="[imagine <%- curs.nume %>]"
-                  />
-                </a>
-              </figure>
+                <div class="course-details">
+                  <p class="course-description"><%- curs.descriere %></p>
+                  <details>
+                    <summary>Specificații</summary>
+                    <ul>
+                      <li>
+                        <strong>Temă:</strong>
+                        <em><%- curs.tema_principala %></em>
+                      </li>
+                      <li>
+                        <strong>Număr Ore:</strong>
+                        <em><%- curs.numar_ore %></em>
+                      </li>
+                      <% if (curs.distributie_ore) { %>
+                      <li>
+                        <strong>Distribuție ore:</strong>
+                        <em><%- curs.distributie_ore.join(', ') %></em>
+                      </li>
+                      <% } %>
+
+                      <li>
+                        <strong>Dată început:</strong>
+                        <time
+                          datetime="<%- new Date(curs.data_start).toISOString() %>"
+                        >
+                          <em><%- curs.data_start_text %></em>
+                        </time>
+                      </li>
+                      <li>
+                        <strong>Accesibil dizabilități:</strong>
+                        <em>
+                          <%- curs.accesibil_dizabilitati ? 'Da' : 'Nu' %>
+                        </em>
+                      </li>
+                    </ul>
+                  </details>
+                </div>
+              </div>
             </article>
-            <% }%>
+            <% } %>
           </div>
         </section>
       </main>

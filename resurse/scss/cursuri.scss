@@ -1,52 +1,51 @@
 @import "colors.scss";
 
 .grid-courses {
-  display: grid;
-  grid-gap: 1rem;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(300px, 1fr)
-  ); // Default to 1 column for very small screens
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
 
-  @media (min-width: 768px) {
-    padding: 0 1em;
-    // Medium screens (tablets): 2 columns
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .course {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex-basis: calc(50% - 10px);
 
-  @media (min-width: 1200px) {
-    // Large screens (desktops): 3 columns
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  & .course {
-    border-radius: 2rem;
-    box-shadow: 0px 0px 0.8rem 0.3rem grey;
-    overflow: hidden;
-
-    & h3 {
-      background-color: $--color-background-2;
-      text-align: center;
-      margin-top: 0;
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
-      font-size: 1.2rem;
+    @media screen and (max-width: 700px) {
+      flex-basis: 100%;
     }
 
-    & .course-description {
-      text-align: justify;
-      margin: 0;
+    & .course-details-1 p {
+      margin: 0.2em 0;
+      padding: 0;
     }
-
-    & .course-info {
+    .course-container {
       display: flex;
-      flex-direction: column;
-      gap: 5px;
+      flex-direction: row;
+      gap: 20px;
 
-      & > p {
-        margin: 0;
-        padding: 0;
-        padding-left: 1em;
+      .course-image {
+        flex: 1;
+
+        figure picture {
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      .course-details {
+        flex: 2;
+
+        @media (max-width: 1200px) {
+          flex: 1;
+        }
+        details {
+          summary {
+            cursor: pointer;
+          }
+        }
       }
     }
   }
