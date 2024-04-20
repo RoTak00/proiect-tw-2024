@@ -36,7 +36,20 @@ function convertToRoman(num) {
   return roman;
 }
 
+function categoryNameByKey(key) {
+  DICT_CAT = {
+    curs_incepator: "Curs incepatori",
+    curs_intermediar: "Curs intermediar",
+    curs_avansat: "Curs avansat",
+    curs_profesor: "Curs pentru profesori",
+    workshop: "Workshop",
+  };
+
+  return DICT_CAT[key] ?? key;
+}
+
 module.exports = {
   filterImagesByTime,
   convertToRoman,
+  categoryNameByKey,
 };

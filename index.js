@@ -10,18 +10,14 @@ require("moment/locale/ro");
 moment.locale("ro");
 const app = express();
 const port = process.env.PORT || 8080;
-const Client = require("pg").Client;
 
-const { filterImagesByTime, convertToRoman } = require("./module/functions");
+const {
+  filterImagesByTime,
+  convertToRoman,
+  categoryNameByKey,
+} = require("./module/functions");
 
-var client = new Client({
-  database: "InvatWeb_Local",
-  user: "vsc_user",
-  password: "vscpa55",
-  host: "localhost",
-  port: 5432,
-});
-client.connect();
+const { dbClient } = require("./module/database");
 
 // ----------------------- DEFINIRE VARIABILE INITIALE -------------------------
 
@@ -59,11 +55,9 @@ folders_to_create.forEach((folder) => {
         if (err) {
           console.error(`Eroare la crearea folderului ${folder_path}:`, err);
         } else {
-          console.log(`Folderul ${folder_path} a fost creat cu succes.`);
         }
       });
     } else {
-      console.log(`Folderul ${folder_path} există deja.`);
     }
   });
 });
@@ -101,16 +95,16 @@ app.use((req, res, next) => {
 app.use(express.static(__dirname + "/resurse"));
 
 app.use((req, res, next) => {
-  console.log(`Received request for ${req.url}`);
   next();
 });
 
-app.use((req, res, next) => {
-  res.locals.ip = req.ip; // Setează adresa IP în `locals`, făcând-o disponibilă în toate template-urile
+app.use(async (req, res, next) => {
+  res.locals.ip = req.ip;
   res.locals.cssFile = obGlobal.cssFiles;
   obGlobal.galleryData = filterImagesByTime(galleryJSON);
   res.locals.galleryData = obGlobal.galleryData;
   res.locals.convertToRoman = convertToRoman;
+  res.locals.availableCourseCategories = await dbClient.fetchCourseCategories();
   next();
 });
 
@@ -146,29 +140,41 @@ app.get("/favicon.ico", (req, res) => {
   res.sendFile(path.join(__dirname, "resurse", "ico", "favicon.ico"));
 });
 
-app.get("/cursuri", (req, res) => {
-  client.query("SELECT * FROM cursuri", (err, result) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      afisareEroare(res, 500);
-    } else {
-      res.render("pagini/cursuri", {
-        cursuri: parseCourses(result.rows),
-        optiuni: [],
-      });
+app.get("/cursuri", async (req, res) => {
+  let filters = {};
+  if (req.query.filter) {
+    if (req.query.filter_category) {
+      filters["filter_category"] = req.query.filter_category;
     }
-  });
+  }
+
+  try {
+    const results = await dbClient.fetchCourses(filters);
+    res.render("pagini/cursuri", {
+      cursuri: parseCourses(results),
+      optiuni: [],
+    });
+  } catch (error) {
+    console.error("Error executing query:", error);
+    afisareEroare(res, 500);
+  }
 });
 
-app.get("/cursuri/:id", (req, res) => {
-  client.query("SELECT * FROM cursuri", (err, result) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      afisareEroare(res, 500);
-    } else {
-      res.render("pagini/curs", { curs: result.rows[0] });
+app.get("/cursuri/:id", async (req, res) => {
+  let filters = { filter_id: req.params.id };
+  try {
+    const result = await dbClient.fetchCourses(filters);
+    if (result.length === 0) {
+      afisareEroare(res, 404);
     }
-  });
+    res.render("pagini/curs", {
+      curs: result[0],
+      optiuni: [],
+    });
+  } catch (error) {
+    console.error("Error executing query:", error);
+    afisareEroare(res, 500);
+  }
 });
 
 app.get("/*", (req, res) => {
@@ -251,7 +257,6 @@ function initErori() {
       error.imagine = path.join(obGlobal.obErori.cale_baza, error.imagine);
     });
 
-    console.log("Erorile au fost incarcate cu succes.", obGlobal.obErori);
     return true;
   } catch (error) {
     console.error(
@@ -334,14 +339,6 @@ function compilareScss(specific_name = null) {
 
 function parseCourses(rows) {
   return rows.map((row) => {
-    DICT_CAT = {
-      curs_incepator: "Curs incepatori",
-      curs_intermediar: "Curs intermediar",
-      curs_avansat: "Curs avansat",
-      curs_profesori: "Curs pentru profesori",
-      workshop: "Workshop",
-    };
-
     return {
       id: row.id,
       nume: row.nume,
@@ -349,7 +346,7 @@ function parseCourses(rows) {
       imagine: row.imagine,
       pret: row.pret,
       categorie: row.categorie,
-      categorie_text: DICT_CAT[row.categorie],
+      categorie_text: categoryNameByKey(row.categorie),
       numar_ore: row.numar_ore,
       data_start: row.data_start,
       tema_principala: row.tema_principala,

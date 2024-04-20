@@ -12,8 +12,10 @@
     </div>
     <ul>
       <li>
-        <i class="fa-solid fa-house"></i>
-        <a class="hide-1200" href="/">Acasă</a>
+        <a href="/">
+          <i class="fa-solid fa-house"></i>
+          <span class="hide-1200">Acasă</span>
+        </a>
         <ul class="open-right">
           <li><a href="/#section-1">Bine ați venit</a></li>
           <li><a href="/#section-2">Cursuri IT</a></li>
@@ -25,11 +27,22 @@
         </ul>
       </li>
       <li>
-        <a href="/despre-cursuri">
+        <a href="/cursuri">
           <i class="fa-solid fa-book"></i>
-          <span class="hide-500">Despre cursuri</span>
+          <span class="hide-500">Cursuri</span>
         </a>
+        <ul class="open-right">
+          <% for (let category of locals.availableCourseCategories) { %>
+
+          <li>
+            <a href="/cursuri?filter=true&filter_category=<%-category.key%>">
+              <%-category.value%>
+            </a>
+          </li>
+          <% } %>
+        </ul>
       </li>
+
       <li>
         <a href="/contact">
           <i class="fa-solid fa-phone"></i>
@@ -46,7 +59,7 @@
         <i class="fa-solid fa-gear"></i>
         <span class="hide-500">Utile</span>
         <ul class="open-left">
-          <li><a href="/cursuri">Lista Cursuri</a></li>
+          <li><a href="/despre-cursuri">Despre Cursuri</a></li>
           <li>
             <a href="/politica-confidentialitate">
               Politica de Confidentialitate
