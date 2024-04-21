@@ -43,3 +43,13 @@
 .grid-courses .course .course-container .course-details details summary {
   cursor: pointer;
 }
+
+.filter-wrapper {
+  padding: 1em;
+}
+.filter-wrapper .filter-element {
+  margin: 1em 0;
+}
+.filter-wrapper .filter-element > * {
+  display: block;
+}

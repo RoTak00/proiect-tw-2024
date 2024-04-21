@@ -152,8 +152,11 @@ app.get("/cursuri", async (req, res) => {
 
   try {
     const results = await dbClient.fetchCourses(filters);
+    const price_interval = await dbClient.fetchPriceRange();
     res.render("pagini/cursuri", {
       cursuri: parseCourses(results),
+      pret_minim: price_interval["min"],
+      pret_maxim: price_interval["max"],
       optiuni: [],
     });
   } catch (error) {

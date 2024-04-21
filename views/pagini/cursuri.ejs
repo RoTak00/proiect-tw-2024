@@ -16,78 +16,98 @@
     <div class="main-wrapper not-index">
       <main>
         <h2>Lista cursurilor oferite</h2>
-        <!--<label>
-          Nume:
-          <input type="text" id="inp-nume" />
-        </label>
-        <label> Maxim calorii: <input type="number" id="inp-calorii" value="10000"></label>
-        <div>
-          Calorii:
-          <p>
-            <label>
-              Dietetic (calorii &lt; 350)
-              <input id="i_rad1" name="gr_rad" value="0:350" type="radio" />
-            </label>
-          </p>
-          <p>
-            <label>
-              Mediu (350 &le; calorii &lt; 700)
-              <input id="i_rad2" name="gr_rad" value="350:750" type="radio" />
-            </label>
-          </p>
+        <h3>Filtrare</h3>
 
-          <p>
-            <label>
-              Ridicat caloric (700 &le; calorii)
+        <div class="filter-wrapper">
+          <div class="row">
+            <div class="col-sm-6 filter-element">
+              <label for="filter_name">Nume</label>
               <input
-                id="i_rad3"
-                name="gr_rad"
-                value="700:1000000000"
-                type="radio"
+                type="text"
+                id="filter_name"
+                name="filter_name"
+                data-filter="nume"
               />
-            </label>
-          </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <label>Interval Pret Cursuri</label>
+              <!-- /* Copyright (c) 2024 by Predrag (https://codepen.io/predragdavidovic/pen/mdpMoWo)
 
-          <p>
-            <label>
-              Toate
-              <input
-                id="i_rad4"
-                checked
-                name="gr_rad"
-                value="toate"
-                type="radio"
-              />
-            </label>
-          </p>
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+*/-->
+              <div class="range_container filter-element">
+                <div class="sliders_control">
+                  <input
+                    id="filter_min_price"
+                    name="filter_min_price"
+                    data-filter="pret_minim"
+                    type="range"
+                    value="<%-locals.pret_minim%>"
+                    min="<%-locals.pret_minim%>"
+                    max="<%-locals.pret_maxim%>"
+                  />
+                  <input
+                    id="filter_max_price"
+                    name="filter_max_price"
+                    data-filter="pret_maxim"
+                    type="range"
+                    value="<%-locals.pret_maxim%>"
+                    min="<%-locals.pret_minim%>"
+                    max="<%-locals.pret_maxim%>"
+                  />
+                </div>
+                <div class="form_control">
+                  <div class="form_control_container">
+                    <div class="form_control_container__time">Min</div>
+                    <input
+                      class="form_control_container__time__input"
+                      type="number"
+                      id="fromInput"
+                      name="filter_min_price"
+                      data-filter="pret_minim"
+                      value="<%-locals.pret_minim%>"
+                    />
+                  </div>
+                  <div class="form_control_container">
+                    <div class="form_control_container__time">Max</div>
+                    <input
+                      class="form_control_container__time__input"
+                      type="number"
+                      id="toInput"
+                      name="filter_max_price"
+                      data-filter="pret_maxim"
+                      value="<%-locals.pret_maxim%>"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 filter-element">
+              <fieldset>
+                <legend>Categorie</legend>
+                <% for (let category of locals.availableCourseCategories) { %>
+                <div>
+                  <input
+                    type="checkbox"
+                    id="filter_category"
+                    name="filter_category"
+                    value="<%-category.key%>"
+                    data-filter="categorie"
+                  />
+                  <label for="filter_category"><%-category.value%></label>
+                </div>
+                <% } %>
+              </fieldset>
+            </div>
+          </div>
         </div>
-
-        <label>
-          Pret minim:
-          <input type="range" id="inp-pret" value="0" min="0" max="70" />
-          <span id="infoRange">(0)</span>
-        </label>
-        <label>
-          Select simplu:
-          <select id="inp-categorie">
-            <option id="sel-toate" selected value="toate">toate</option>
-            <% for (let opt of locals.optiuni) { %>
-            <option value="<%- opt.unnest %>"><%- opt.unnest %></option>
-            <% } %>
-          </select>
-        </label>
-        <p>
-          <button id="filtrare">Filtreaza</button>
-
-          <button id="resetare">Reseteaza</button>
-          <br />
-          <button id="sortCrescNume">
-            Sorteaza crescator dupa pret si nume
-          </button>
-          <button id="sortDescrescNume">
-            Sorteaza descrescator dupa pret si nume
-          </button>
-        </p>-->
 
         <section id="produse">
           <div class="grid-courses">
@@ -97,7 +117,11 @@
               id="produs_<%- curs.id %>"
             >
               <h3>
-                <a class="prevent-default-a" href="/cursuri/<%= curs.id %>">
+                <a
+                  class="prevent-default-a"
+                  data-element="nume"
+                  href="/cursuri/<%= curs.id %>"
+                >
                   <%- curs.nume %>
                 </a>
               </h3>
@@ -127,13 +151,19 @@
                     </figure>
                   </a>
                   <div class="course-details-1">
-                    <p class="course-category">
+                    <p
+                      class="course-category"
+                      data-element="categorie"
+                      data-key="<%- curs.categorie %>"
+                    >
                       Categorie:
                       <strong><%- curs.categorie_text %></strong>
                     </p>
                     <p class="course-price">
                       Preț:
-                      <em><%- curs.pret %> RON</em>
+                      <em data-element="pret" data-key="<%- curs.pret %>">
+                        <%- curs.pret %> RON
+                      </em>
                     </p>
                   </div>
                 </div>
@@ -186,3 +216,6 @@
     <%-include('../fragmente/footer.ejs')-%>
   </body>
 </html>
+
+<script src="/js/cursuri-filtering.js"></script>
+<script src="/js/double-slider.js"></script>

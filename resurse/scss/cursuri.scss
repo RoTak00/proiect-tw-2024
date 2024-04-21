@@ -50,3 +50,13 @@
     }
   }
 }
+
+.filter-wrapper {
+  padding: 1em;
+  & .filter-element {
+    margin: 1em 0;
+    & > * {
+      display: block;
+    }
+  }
+}

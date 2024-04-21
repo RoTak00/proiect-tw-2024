@@ -48,6 +48,17 @@ class DatabaseClient {
     }
   }
 
+  async fetchPriceRange() {
+    let query = "SELECT min(pret) as min, max(pret) as max FROM cursuri";
+    try {
+      const results = await this.client.query(query);
+      return results.rows[0];
+    } catch (error) {
+      console.error("Error executing query:", error);
+      throw error;
+    }
+  }
+
   // Method to add query functions
   async executeQuery(query) {
     try {
