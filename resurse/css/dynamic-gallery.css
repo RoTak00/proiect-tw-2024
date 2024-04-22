@@ -18,13 +18,7 @@
   overflow: hidden;
   position: relative;
   height: 500px;
-  border: 10px solid transparent;
-  border-image: url("resurse/imagini/galerie/border.webp");
-  border-image-slice: 30;
-  border-image-repeat: round;
-}
-.dynamic-gallery:hover {
-  animation-play-state: paused;
+  background-size: contain;
 }
 .dynamic-gallery img {
   position: absolute;
@@ -34,4 +28,23 @@
   height: auto;
   flex-shrink: 0;
   transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+}
+
+@keyframes perform_dynamic_gallery_animation {
+  0% {
+    transform: translateX(0);
+    oapcity: 1;
+  }
+  25% {
+    transform: translateX(10%);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(-10%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
 }
