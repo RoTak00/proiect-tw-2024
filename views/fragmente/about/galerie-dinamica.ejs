@@ -12,80 +12,69 @@
 </div>
 
 <script>
+  var ANIMATION_SPEED_S = 3;
   document.addEventListener("DOMContentLoaded", () => {
     const gallery = document.getElementById("dynamic-gallery");
     const images = gallery.getElementsByTagName("img");
-    const numImages = images.length;
+    gallery.style.backgroundImage = `url(
+      "/resized-images/700/<%=galleryData.cale_galerie%><%= galleryData.imagini[0].cale_imagine %>"
+    )`;
 
-    var currentIndex = 0;
-    let timeoutHandles = [];
-    let animating = false;
+    gallery.addEventListener("mouseover", () => {
+      pauseAnimations(images);
+    });
 
-    const clearAnimationTimeouts = () => {
-      timeoutHandles.forEach((handle) => clearTimeout(handle));
-      timeoutHandles = [];
-    };
+    gallery.addEventListener("mouseout", () => {
+      resumeAnimations(images);
+    });
+    images[images.length - 1].addEventListener("animationend", () => {
+      resetAnimations(images);
 
-    const startAnimation = () => {
-      if (!animating) {
-        animating = true;
-        const currentImage = images[currentIndex];
-        currentImage.style.opacity = "1";
-        currentImage.style.transform = "translateX(0)";
+      setTimeout(() => {
+        setAnimations(images);
+      }, 1);
+    });
 
-        images[(currentIndex - 2 + numImages) % numImages].style.opacity = "1";
-        images[(currentIndex - 2 + numImages) % numImages].transform =
-          "translateX(0)";
-
-        timeoutHandles.push(
-          setTimeout(() => {
-            currentImage.style.transform = "translateX(5%)";
-          }, 1000)
-        );
-
-        timeoutHandles.push(
-          setTimeout(() => {
-            currentImage.style.transform = "translateX(-5%)";
-          }, 2000)
-        );
-
-        timeoutHandles.push(
-          setTimeout(() => {
-            currentImage.style.transform = "translateX(100%)";
-            currentImage.style.opacity = "0";
-          }, 3000)
-        );
-
-        timeoutHandles.push(
-          setTimeout(() => {
-            currentImage.style.transform = "translateX(-100%)";
-            currentIndex = (currentIndex + 1) % numImages;
-            animating = false;
-            requestAnimationFrame(startAnimation);
-          }, 4000)
-        );
-      }
-    };
-
-    let animationFrameId;
-
-    const resumeAnimation = () => {
-      if (!animating) {
-        startAnimation();
-      }
-    };
-
-    const pauseAnimation = () => {
-      clearAnimationTimeouts();
-      cancelAnimationFrame(animationFrameId);
-      animating = false;
-    };
-
-    // Initial animation start
-    animationFrameId = requestAnimationFrame(startAnimation);
-
-    // Stop and restart animation on hover
-    gallery.onmouseover = pauseAnimation;
-    gallery.onmouseout = resumeAnimation;
+    setAnimations(images);
   });
+
+  function setAnimations(images) {
+    let numImages = images.length;
+    for (let i = 0; i < numImages; i++) {
+      let image = images[i];
+      image.style.animationName = "perform_dynamic_gallery_animation";
+      image.style.animationDuration = ANIMATION_SPEED_S + "s";
+      image.style.animationFillMode = "forwards";
+      image.style.animationTimingFunction = "ease-in-out";
+      image.style.animationDelay = ANIMATION_SPEED_S * i + "s";
+    }
+  }
+
+  function pauseAnimations(images) {
+    let numImages = images.length;
+    for (let i = 0; i < numImages; i++) {
+      let image = images[i];
+      image.style.animationPlayState = "paused";
+    }
+  }
+
+  function resumeAnimations(images) {
+    let numImages = images.length;
+    for (let i = 0; i < numImages; i++) {
+      let image = images[i];
+      image.style.animationPlayState = "running";
+    }
+  }
+
+  function resetAnimations(images) {
+    let numImages = images.length;
+    for (let i = 0; i < numImages; i++) {
+      let image = images[i];
+      image.style.animationName = "";
+      image.style.animationDuration = "";
+      image.style.animationFillMode = "";
+      image.style.animationTimingFunction = "";
+      image.style.animationDelay = "";
+    }
+  }
 </script>
