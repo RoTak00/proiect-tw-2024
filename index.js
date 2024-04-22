@@ -157,6 +157,7 @@ app.get("/cursuri", async (req, res) => {
       (row) => row.tema_principala
     );
     const course_start_months = await dbClient.fetchCourseStartMonths();
+    const course_locations = await dbClient.fetchCourseLocations();
 
     res.render("pagini/cursuri", {
       cursuri: parseCourses(results),
@@ -164,6 +165,7 @@ app.get("/cursuri", async (req, res) => {
       pret_maxim: price_interval["max"],
       course_themes: course_themes,
       course_start_months: course_start_months,
+      course_locations: course_locations,
       optiuni: [],
     });
   } catch (error) {
@@ -359,11 +361,11 @@ function parseCourses(rows) {
       pret: row.pret,
       categorie: row.categorie,
       categorie_text: categoryNameByKey(row.categorie),
-      numar_ore: row.numar_ore,
+      locatie: row.locatie,
       data_start: row.data_start,
       tema_principala: row.tema_principala,
-      distributie_ore: row.distributie_ore,
       data_start_text: moment(row.data_start).format("D-MMMM-YYYY (dddd)"),
+      rating: row.rating,
     };
   });
 }

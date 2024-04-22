@@ -572,6 +572,9 @@ h3 {
 .main-wrapper.not-index p {
   padding: 1em 0.5em;
 }
+.main-wrapper.not-index main > h3 {
+  padding: 0 0.5em;
+}
 
 .main-wrapper.error-wrapper > div {
   display: flex;

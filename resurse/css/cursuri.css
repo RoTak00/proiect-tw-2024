@@ -43,6 +43,15 @@
 .grid-courses .course .course-container .course-details details summary {
   cursor: pointer;
 }
+.grid-courses .course .course-rating {
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.1em;
+  padding: 0.5em 0;
+}
+.grid-courses .course .course-rating i.active {
+  color: #2cc7db;
+}
 
 .filter-wrapper {
   padding: 1em;

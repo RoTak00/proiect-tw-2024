@@ -48,6 +48,17 @@
         }
       }
     }
+
+    .course-rating {
+      display: flex;
+      justify-content: flex-start;
+      gap: 0.1em;
+      padding: 0.5em 0;
+
+      i.active {
+        color: $--color-secondary;
+      }
+    }
   }
 }
 

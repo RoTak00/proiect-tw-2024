@@ -71,6 +71,22 @@ class DatabaseClient {
     }
   }
 
+  async fetchCourseLocations() {
+    let query = "SELECT DISTINCT locatie FROM cursuri";
+    try {
+      const results = await this.client.query(query);
+      return results.rows.map((row) => {
+        return {
+          value: row.locatie.charAt(0).toUpperCase() + row.locatie.slice(1),
+          key: row.locatie,
+        };
+      });
+    } catch (error) {
+      console.error("Error executing query:", error);
+      throw error;
+    }
+  }
+
   async fetchCourseStartMonths() {
     let query = "SELECT DISTINCT data_start FROM cursuri";
     try {

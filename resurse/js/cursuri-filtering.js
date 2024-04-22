@@ -4,13 +4,13 @@ var courseList = null;
 $(document).ready(function () {
   courseList = $(".course");
   $(
-    ".filter-element input[type='text'], .filter-element input[type='number'], .filter-element input[type='range']"
+    ".filter-element input[type='text'], .filter-element input[type='number'], .filter-element input[type='range'], .filter-element textarea"
   ).on("change", function () {
     let filter = $(this).data("filter");
     let value = $(this).val();
 
     if (value.length > 0) {
-      filters[filter] = value;
+      filters[filter] = value.toLowerCase().trim();
     } else {
       delete filters[filter];
     }
@@ -36,6 +36,20 @@ $(document).ready(function () {
       delete filters[filter];
     }
 
+    filterCoursesByFilter();
+  });
+
+  $(".filter-element input[type='radio']").on("change", function () {
+    let filter = $(this).data("filter");
+    let value = $(this).val();
+
+    if ($(this).is(":checked")) {
+      filters[filter] = value;
+    }
+
+    if (!value) {
+      delete filters[filter];
+    }
     filterCoursesByFilter();
   });
 
@@ -128,6 +142,37 @@ function filterCoursesByFilter() {
                   target_element.attr("datetime").split("-")[1]
                 ).toString()
               )
+            ) {
+              return false;
+            }
+            break;
+
+          case "rating":
+            if (
+              parseInt(target_element.attr("data-key")) < parseInt(filter_value)
+            ) {
+              return false;
+            }
+            break;
+
+          case "locatie":
+            if (
+              !filter_value
+                .toLowerCase()
+                .trim()
+                .includes(target_element.text().toLowerCase().trim())
+            ) {
+              return false;
+            }
+            break;
+
+          case "descriere":
+            if (
+              !target_element
+                .text()
+                .toLowerCase()
+                .trim()
+                .includes(filter_value.toLowerCase().trim())
             ) {
               return false;
             }

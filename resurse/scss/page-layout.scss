@@ -681,6 +681,10 @@ h3 {
   p {
     padding: 1em 0.5em;
   }
+
+  & main > h3 {
+    padding: 0 0.5em;
+  }
 }
 
 .main-wrapper.error-wrapper {

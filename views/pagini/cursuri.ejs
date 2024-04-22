@@ -104,19 +104,49 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 </div>
               </div>
             </div>
-            <div class="col-sm-6 filter-element">
+            <!--<div class="col-sm-6 filter-element">
               <fieldset>
-                <legend>Categorie</legend>
+                <span>Categorie</span>
                 <% for (let category of locals.availableCourseCategories) { %>
                 <div>
                   <input
                     type="checkbox"
-                    id="filter_category"
+                    id="filter_category_<%-category.key%>"
                     name="filter_category"
                     value="<%-category.key%>"
                     data-filter="categorie"
                   />
-                  <label for="filter_category"><%-category.value%></label>
+                  <label for="filter_category_<%-category.key%>">
+                    <%-category.value%>
+                  </label>
+                </div>
+                <% } %>
+              </fieldset>
+            </div>-->
+            <div class="col-sm-6 filter-element">
+              <fieldset>
+                <span>Rating</span>
+                <div>
+                  <input
+                    type="radio"
+                    id="filter_rating_all"
+                    name="filter_rating"
+                    value=""
+                    data-filter="rating"
+                    checked
+                  />
+                  <label for="filter_rating_all">Toate</label>
+                </div>
+                <% for (let i = 1; i <= 5; i++) { %>
+                <div>
+                  <input
+                    type="radio"
+                    id="filter_rating_<%-i%>"
+                    name="filter_rating"
+                    value="<%-i%>"
+                    data-filter="rating"
+                  />
+                  <label for="filter_rating_<%-i%>"><%-i%></label>
                 </div>
                 <% } %>
               </fieldset>
@@ -135,6 +165,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 <option value="<%-mo.key%>"><%-mo.value%></option>
                 <% }) %>
               </select>
+            </div>
+            <div class="col-sm-6 filter-element">
+              <label for="filter_location">Locatie</label>
+              <select
+                id="filter_location"
+                name="filter_location"
+                data-filter="locatie"
+              >
+                <option value="">Toate</option>
+                <% locals.course_locations.forEach((loc)=> { %>
+                <option value="<%-loc.key%>"><%-loc.value%></option>
+                <% }) %>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 filter-element">
+              <label for="filter_description">Descriere</label>
+              <textarea
+                id="filter_description"
+                name="filter_description"
+                data-filter="descriere"
+                style="width: 100%; height: 100px"
+              ></textarea>
             </div>
           </div>
         </div>
@@ -155,6 +209,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                   <%- curs.nume %>
                 </a>
               </h3>
+              <div
+                class="course-rating"
+                data-element="rating"
+                data-key="<%- curs.rating %>"
+              >
+                <% for (let i = 0; i < 5; i++) { %>
+                <i
+                  class="fa fa-star <%- i < curs.rating ? 'active' : '' %>"
+                ></i>
+                <% } %>
+              </div>
               <div class="course-container">
                 <div class="course-image">
                   <a
@@ -199,7 +264,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 </div>
 
                 <div class="course-details">
-                  <p class="course-description"><%- curs.descriere %></p>
+                  <p class="course-description" data-element="descriere">
+                    <%- curs.descriere %>
+                  </p>
                   <details>
                     <summary>Specificații</summary>
                     <ul>
@@ -208,15 +275,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                         <em data-element="tema"><%- curs.tema_principala %></em>
                       </li>
                       <li>
-                        <strong>Număr Ore:</strong>
-                        <em><%- curs.numar_ore %></em>
+                        <strong>Locatie:</strong>
+                        <em data-element="locatie">
+                          <%- curs.locatie.charAt(0).toUpperCase() +
+                          curs.locatie.slice(1) %>
+                        </em>
                       </li>
-                      <% if (curs.distributie_ore) { %>
-                      <li>
-                        <strong>Distribuție ore:</strong>
-                        <em><%- curs.distributie_ore.join(', ') %></em>
-                      </li>
-                      <% } %>
 
                       <li>
                         <strong>Dată început:</strong>
