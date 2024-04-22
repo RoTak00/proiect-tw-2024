@@ -59,6 +59,17 @@ class DatabaseClient {
     }
   }
 
+  async fetchCourseThemes() {
+    let query = "SELECT DISTINCT tema_principala FROM cursuri";
+    try {
+      const results = await this.client.query(query);
+      return results.rows;
+    } catch (error) {
+      console.error("Error executing query:", error);
+      throw error;
+    }
+  }
+
   // Method to add query functions
   async executeQuery(query) {
     try {

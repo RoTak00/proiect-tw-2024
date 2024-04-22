@@ -50,6 +50,6 @@
 .filter-wrapper .filter-element {
   margin: 1em 0;
 }
-.filter-wrapper .filter-element > * {
+.filter-wrapper .filter-element > *:not(datalist) {
   display: block;
 }

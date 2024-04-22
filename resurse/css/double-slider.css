@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 .range_container .sliders_control {
   position: relative;
-  min-height: 50px;
+  min-height: 30px;
 }
 .range_container .form_control {
   position: relative;
@@ -23,7 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
-  font-size: 24px;
+  font-size: 16px;
   color: #635a5a;
 }
 .range_container input[type=range]::-webkit-slider-thumb {

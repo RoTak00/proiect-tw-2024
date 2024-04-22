@@ -55,6 +55,7 @@ function filterCoursesByFilter() {
         let target_element = $(this).find(
           `[data-element='${target_element_key}']`
         );
+
         switch (filter_key) {
           // daca nu se potriveste numele
           case "nume":
@@ -88,6 +89,16 @@ function filterCoursesByFilter() {
           case "pret_maxim":
             if (
               parseInt(target_element.attr("data-key")) > parseInt(filter_value)
+            ) {
+              return false;
+            }
+            break;
+
+          case "tema":
+            if (
+              !filter_value
+                .toLowerCase()
+                .includes(target_element.text().toLowerCase())
             ) {
               return false;
             }
