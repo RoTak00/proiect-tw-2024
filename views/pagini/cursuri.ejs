@@ -122,6 +122,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               </fieldset>
             </div>
           </div>
+          <div class="row">
+            <div class="col-sm-6 filter-element">
+              <label>Luna de inceput</label>
+              <select
+                id="filter_start_month"
+                name="filter_start_month"
+                data-filter="luna_start"
+                multiple
+              >
+                <% locals.course_start_months.forEach((mo)=> { %>
+                <option value="<%-mo.key%>"><%-mo.value%></option>
+                <% }) %>
+              </select>
+            </div>
+          </div>
         </div>
 
         <section id="produse">
@@ -206,6 +221,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                       <li>
                         <strong>Dată început:</strong>
                         <time
+                          data-element="luna"
                           datetime="<%- new Date(curs.data_start).toISOString() %>"
                         >
                           <em><%- curs.data_start_text %></em>

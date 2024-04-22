@@ -1,5 +1,6 @@
 const { Client } = require("pg");
 const { categoryNameByKey } = require("./functions");
+const moment = require("moment");
 
 class DatabaseClient {
   constructor() {
@@ -64,6 +65,32 @@ class DatabaseClient {
     try {
       const results = await this.client.query(query);
       return results.rows;
+    } catch (error) {
+      console.error("Error executing query:", error);
+      throw error;
+    }
+  }
+
+  async fetchCourseStartMonths() {
+    let query = "SELECT DISTINCT data_start FROM cursuri";
+    try {
+      const results = await this.client.query(query);
+
+      let months = results.rows.map((row) => {
+        return moment(row.data_start).format("MMMM");
+      });
+      months = months.map((month) => {
+        return {
+          value: month,
+          key: moment(month, "MMMM").format("M"),
+        };
+      });
+
+      let unique_months = [
+        ...new Map(months.map((item) => [item.key, item])).values(),
+      ];
+
+      return unique_months.toSorted((a, b) => a.key - b.key);
     } catch (error) {
       console.error("Error executing query:", error);
       throw error;

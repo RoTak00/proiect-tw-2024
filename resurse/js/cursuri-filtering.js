@@ -38,6 +38,23 @@ $(document).ready(function () {
 
     filterCoursesByFilter();
   });
+
+  $(".filter-element select").on("change", function () {
+    let filter = $(this).data("filter");
+    let value = $(this).val();
+
+    if (!filters[filter]) {
+      filters[filter] = [];
+    }
+
+    filters[filter] = value;
+
+    if (!value) {
+      delete filters[filter];
+    }
+
+    filterCoursesByFilter();
+  });
 });
 
 function filterCoursesByFilter() {
@@ -99,6 +116,18 @@ function filterCoursesByFilter() {
               !filter_value
                 .toLowerCase()
                 .includes(target_element.text().toLowerCase())
+            ) {
+              return false;
+            }
+            break;
+
+          case "luna_start":
+            if (
+              !filter_value.includes(
+                parseInt(
+                  target_element.attr("datetime").split("-")[1]
+                ).toString()
+              )
             ) {
               return false;
             }
