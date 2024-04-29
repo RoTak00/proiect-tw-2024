@@ -62,3 +62,7 @@
 .filter-wrapper .filter-element > *:not(datalist) {
   display: block;
 }
+
+.sort-wrapper {
+  padding: 1em;
+}

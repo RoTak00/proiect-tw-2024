@@ -18,6 +18,20 @@
         <h2>Lista cursurilor oferite</h2>
         <h3>Filtrare</h3>
 
+        <div class="sort-wrapper">
+          <div class="row">
+            <div class="col-sm-1">
+              <button
+                id="button-sort"
+                class="btn btn-sm btn-secondary"
+                data-sort="asc"
+              >
+                <i class="fa-solid fa-angles-up"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
         <div class="filter-wrapper">
           <div class="row">
             <div class="col-sm-6 filter-element">
@@ -182,6 +196,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           </div>
           <div class="row">
             <div class="col-sm-12 filter-element">
+              <fieldset>
+                <input
+                  type="checkbox"
+                  id="filter_luna_start_special"
+                  name="filter_luna_start_special"
+                  value="true"
+                  data-filter="luna_start_special"
+                />
+                <label for="filter_luna_start_special">
+                  Afiseaza doar cele cu discount
+                </label>
+              </fieldset>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 filter-element">
               <label for="filter_description">Descriere</label>
               <textarea
                 id="filter_description"
@@ -189,6 +219,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 data-filter="descriere"
                 style="width: 100%; height: 100px"
               ></textarea>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <button id="button-reset" class="btn btn-primary">
+                Reseteaza Filtre
+              </button>
+            </div>
+            <div class="col-sm-6">
+              <button id="button-calculate" class="btn btn-primary">
+                Calculare Pret
+              </button>
             </div>
           </div>
         </div>
@@ -307,6 +349,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         </section>
       </main>
     </div>
+
+    <dialog id="modal-reset">
+      <button autofocus style="float: right" id="reset-close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <p>Sunteti sigur ca doriti sa resetati filtrele?</p>
+      <button class="btn btn-primary" id="reset-confirm">Reseteaza</button>
+    </dialog>
+
+    <dialog id="modal-calculate">
+      <button autofocus style="float: right" id="calculate-close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <p>
+        Pret calculat:
+        <br />
+        <strong></strong>
+      </p>
+    </dialog>
 
     <%-include('../fragmente/footer.ejs')-%>
   </body>
