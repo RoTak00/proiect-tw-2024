@@ -17,11 +17,25 @@ body {
   }
 }
 
+body {
+  background-color: $--color-background-back;
+  color: $--color-text;
+}
+
 div.main-wrapper {
   min-height: 85vh;
   background-color: $--color-background;
   width: var(--main-width);
   margin: 0 auto;
+}
+
+body.dark-theme {
+  background-color: $--color-background-back-dark;
+  color: $--color-text-dark;
+}
+
+body.dark-theme div.main-wrapper {
+  background-color: $--color-background-dark;
 }
 
 main.index-page {

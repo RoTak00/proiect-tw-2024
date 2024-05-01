@@ -13,11 +13,25 @@ body {
     --main-width: 100%;
   }
 }
+body {
+  background-color: #ffffff;
+  color: #33302c;
+}
+
 div.main-wrapper {
   min-height: 85vh;
   background-color: #f2f2f2;
   width: var(--main-width);
   margin: 0 auto;
+}
+
+body.dark-theme {
+  background-color: #000000;
+  color: #f2f2f2;
+}
+
+body.dark-theme div.main-wrapper {
+  background-color: #171614;
 }
 
 main.index-page {
