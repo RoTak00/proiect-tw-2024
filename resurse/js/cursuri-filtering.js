@@ -216,6 +216,8 @@ function filterCoursesByFilter() {
       for (let filter_key in filters) {
         let filter_value = filters[filter_key];
 
+        filter_value = removeAccents(filter_value);
+
         // pentru situatii cum ar fi pret_minim, pret_maxim
         let target_element_key = filter_key.split("_")[0];
         let target_element = $(this).find(
@@ -226,8 +228,7 @@ function filterCoursesByFilter() {
           // daca nu se potriveste numele
           case "nume":
             if (
-              target_element
-                .text()
+              removeAccents(target_element.text())
                 .toLowerCase()
                 .indexOf(filter_value.toLowerCase()) < 0
             ) {
@@ -264,7 +265,7 @@ function filterCoursesByFilter() {
             if (
               !filter_value
                 .toLowerCase()
-                .includes(target_element.text().toLowerCase())
+                .includes(removeAccents(target_element.text()).toLowerCase())
             ) {
               return false;
             }
@@ -315,8 +316,7 @@ function filterCoursesByFilter() {
 
           case "descriere":
             if (
-              !target_element
-                .text()
+              !removeAccents(target_element.text())
                 .toLowerCase()
                 .trim()
                 .includes(filter_value.toLowerCase().trim())
@@ -329,4 +329,14 @@ function filterCoursesByFilter() {
       return true;
     })
     .show();
+}
+
+function removeAccents(str) {
+  // Normalize the string to decompose accented characters
+  const normalizedStr = str.normalize("NFD");
+
+  // Use a regex to remove the combining diacritical marks
+  const cleanedStr = normalizedStr.replace(/[\u0300-\u036f]/g, "");
+
+  return cleanedStr;
 }
