@@ -1,8 +1,16 @@
 var filters = [];
+var errors = [];
 var courseList = null;
 
 $(document).ready(function () {
   courseList = $(".course");
+
+  $(".filter-element").on("change", function () {
+    checkFilterError();
+
+    updateErrors();
+  });
+
   $(
     ".filter-element input[type='text'], .filter-element input[type='number'], .filter-element input[type='range'], .filter-element textarea"
   ).on("change", function () {
@@ -14,6 +22,8 @@ $(document).ready(function () {
     } else {
       delete filters[filter];
     }
+
+    checkFilterError(filter, value);
 
     filterCoursesByFilter();
   });
@@ -36,6 +46,8 @@ $(document).ready(function () {
       delete filters[filter];
     }
 
+    checkFilterError(filter, value);
+
     filterCoursesByFilter();
   });
 
@@ -50,10 +62,13 @@ $(document).ready(function () {
     if (!value) {
       delete filters[filter];
     }
+
+    checkFilterError(filter, value);
+
     filterCoursesByFilter();
   });
 
-  $(".filter-element select").on("change", function () {
+  $(".filter-element select").on("change", function (e) {
     let filter = $(this).data("filter");
     let value = $(this).val();
 
@@ -63,9 +78,11 @@ $(document).ready(function () {
 
     filters[filter] = value;
 
-    if (!value) {
+    if (value == false) {
       delete filters[filter];
     }
+
+    checkFilterError(filter, value);
 
     filterCoursesByFilter();
   });
@@ -91,7 +108,7 @@ $(document).ready(function () {
     $("#modal-reset")[0].showModal();
   });
 
-  $(document).on("click", "#reset-close", function () {
+  $(document).on("click", ".reset-close", function () {
     $("#modal-reset")[0].close();
   });
 
@@ -135,10 +152,10 @@ $(document).ready(function () {
 
     setTimeout(function () {
       $("#modal-calculate")[0].close();
-    }, 3000);
+    }, 2000);
   });
 
-  $(document).on("click", "#calculate-close", function () {
+  $(document).on("click", ".calculate-close", function () {
     $("#modal-calculate")[0].close();
   });
 });
@@ -207,7 +224,9 @@ function sortCourses(current_state) {
 }
 
 function filterCoursesByFilter() {
-  console.log(filters);
+  if (errors.length > 0) {
+    return;
+  }
 
   courseList.hide();
 
@@ -216,7 +235,8 @@ function filterCoursesByFilter() {
       for (let filter_key in filters) {
         let filter_value = filters[filter_key];
 
-        filter_value = removeAccents(filter_value);
+        if (typeof filter_value === "string")
+          filter_value = removeAccents(filter_value);
 
         // pentru situatii cum ar fi pret_minim, pret_maxim
         let target_element_key = filter_key.split("_")[0];
@@ -329,6 +349,86 @@ function filterCoursesByFilter() {
       return true;
     })
     .show();
+}
+
+function checkFilterError() {
+  errors = [];
+  for (let filter_key in filters) {
+    value = removeAccents(filters[filter_key]);
+    switch (filter_key) {
+      case "nume":
+        if (/[^a-zA-Z0-9-_ ]/.test(value)) {
+          errors.push({
+            filter: filter_key,
+            value: "Numele nu poate contine caractere speciale",
+          });
+        }
+
+        if (value.length > 256) {
+          errors.push({
+            filter: filter_key,
+            value: "Numele nu poate avea mai mult de 256 de caractere",
+          });
+        }
+        break;
+
+      case "pret_minim":
+      case "pret_maxim":
+        if (/[^0-9]/.test(value)) {
+          errors.push({
+            filter: filter_key,
+            value: "Pretul nu poate contine caractere speciale",
+          });
+        }
+        break;
+
+      case "tema":
+        if (/[^a-zA-Z0-9-_ ]/.test(value)) {
+          errors.push({
+            filter: filter_key,
+            value: "Tema nu poate contine caractere speciale",
+          });
+        }
+
+        if (value.length > 256) {
+          errors.push({
+            filter: filter_key,
+            value: "Tema nu poate avea mai mult de 256 de caractere",
+          });
+        }
+
+        let teme_existente = $("#filter_tema_datalist option")
+          .map((index, element) => {
+            return removeAccents($(element).attr("value").toLowerCase().trim());
+          })
+          .get();
+
+        console.log(teme_existente);
+        console.log(value);
+        if (!teme_existente.includes(value)) {
+          errors.push({
+            filter: filter_key,
+            value: "Tema selectata nu exista",
+          });
+        }
+        break;
+    }
+  }
+}
+
+function updateErrors() {
+  let errorsElement = $("#filter-errors");
+
+  errorsElement.empty();
+
+  if (errors.length > 0) {
+    let errorContent = $("<ul></ul>");
+    errors.forEach((error) => {
+      errorContent.append(`<li class = 'text-danger'>${error.value}</li>`);
+    });
+
+    errorsElement.append(errorContent);
+  }
 }
 
 function removeAccents(str) {

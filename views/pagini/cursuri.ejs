@@ -32,6 +32,10 @@
           </div>
         </div>
 
+        <div class="errors-wrapper">
+          <div id="filter-errors"></div>
+        </div>
+
         <div class="filter-wrapper">
           <div class="row">
             <div class="col-sm-6 filter-element form-group">
@@ -187,7 +191,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 class="form-select"
               >
                 <% locals.course_start_months.forEach((mo)=> { %>
-                <option value="<%-mo.key%>"><%-mo.value%></option>
+                <option value="<%-mo.key%>" selected><%-mo.value%></option>
                 <% }) %>
               </select>
             </div>
@@ -366,23 +370,50 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       </main>
     </div>
 
-    <dialog id="modal-reset">
-      <button autofocus style="float: right" id="reset-close">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-      <p>Sunteti sigur ca doriti sa resetati filtrele?</p>
-      <button class="btn btn-primary" id="reset-confirm">Reseteaza</button>
+    <dialog id="modal-reset" class="filter-modal">
+      <div class="interior">
+        <p class="title">
+          Resetare filtre
+          <button autofocus style="float: right" class="reset-close">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </p>
+        <div class="content">
+          <p>Sunteti sigur ca doriti sa resetati filtrele?</p>
+        </div>
+
+        <div class="buttons">
+          <button class="btn btn-primary" id="reset-confirm">
+            <i class="fa-solid fa-trash"></i>
+            Reseteaza
+          </button>
+          <button class="btn btn-secondary reset-close">
+            <i class="fa-solid fa-ban"></i>
+            Nu, anulare
+          </button>
+        </div>
+      </div>
     </dialog>
 
-    <dialog id="modal-calculate">
-      <button autofocus style="float: right" id="calculate-close">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-      <p>
-        Pret calculat:
-        <br />
-        <strong></strong>
-      </p>
+    <dialog id="modal-calculate" class="filter-modal">
+      <div class="interior">
+        <p class="title">
+          Pret total calculat
+          <button autofocus style="float: right" class="calculate-close">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </p>
+        <div class="content">
+          <strong></strong>
+        </div>
+
+        <div class="buttons">
+          <button class="btn btn-primary calculate-close">
+            <i class="fa-solid fa-square-check"></i>
+            Inchide
+          </button>
+        </div>
+      </div>
     </dialog>
 
     <%-include('../fragmente/footer.ejs')-%>

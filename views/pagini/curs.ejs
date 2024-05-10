@@ -17,60 +17,104 @@
       <main>
         <h2>Detalii Curs: <%- locals.curs.nume %></h2>
         <section>
-          <article id="art-curs">
-            <h3><span class="nume"><%- locals.curs.nume %></span></h3>
-            <p>
-              Preț:
-              <span class="pret"><%- locals.curs.pret %> RON</span>
-            </p>
-            <p>
-              Descriere:
-              <span class="descriere"><%- locals.curs.descriere %></span>
-            </p>
-            <p>
-              Număr zile curs:
-              <span class="numar_zile"><%- locals.curs.numar_zile %></span>
-              zile
-            </p>
-            <p>
-              Durată curs (ore):
-              <span class="numar_ore"><%- locals.curs.numar_ore %></span>
-              ore
-            </p>
-            <p>
-              Format:
-              <span class="locatie"><%- locals.curs.locatie %></span>
-            </p>
-            <p>
-              Categorie:
-              <span class="categorie"><%- locals.curs.categorie %></span>
-            </p>
-            <p>
-              Accesibil pentru persoane cu dizabilități:
-              <span class="accesibil_dizabilitati">
-                <%- locals.curs.accesibil_dizabilitati ? 'Da' : 'Nu' %>
-              </span>
-            </p>
-            <p>
-              Data start curs:
-              <span class="data_start">
-                <%- new Date(locals.curs.data_start).toLocaleDateString("ro-RO")
-                %>
-              </span>
-            </p>
-            <figure class="imag-curs">
-              <% if (locals.curs.imagine) { %>
-              <img
-                src="/resurse/imagini/cursuri/<%- locals.curs.imagine %>"
-                alt="Imagine curs <%= locals.curs.nume %>"
-              />
-              <% } else { %>
-              <img
-                src="/resurse/imagini/cursuri/default.jpg"
-                alt="Fără imagine disponibilă pentru <%= locals.curs.nume %>"
-              />
-              <% } %>
-            </figure>
+          <article
+            class="course <%- locals.curs.categorie %>"
+            id="produs_<%- locals.curs.id %>"
+          >
+            <div class="course-container">
+              <div class="course-image">
+                <a
+                  href="/cursuri/<%= locals.curs.id %>"
+                  class="prevent-default-a"
+                  title="<%= locals.curs.nume %>"
+                >
+                  <figure>
+                    <picture>
+                      <source
+                        media="(max-width: 599px)"
+                        srcset="/resized-images/300/cursuri/<%= locals.curs.imagine %>"
+                      />
+                      <source
+                        media="(max-width: 1199px)"
+                        srcset="/resized-images/500/cursuri/<%= locals.curs.imagine %>"
+                      />
+                      <img
+                        src="/resized-images/700/cursuri/<%= locals.curs.imagine %>"
+                        alt="<%=locals.curs.nume %>"
+                        title="<%= locals.curs.nume %>"
+                      />
+                    </picture>
+                  </figure>
+                </a>
+                <div
+                  class="course-rating"
+                  data-element="rating"
+                  data-key="<%- locals.curs.rating %>"
+                >
+                  <% for (let i = 0; i < 5; i++) { %>
+                  <i
+                    class="fa fa-star <%- i < locals.curs.rating ? 'active' : '' %>"
+                  ></i>
+                  <% } %>
+                </div>
+                <div class="course-details-1">
+                  <p
+                    class="course-category"
+                    data-element="categorie"
+                    data-key="<%- locals.curs.categorie %>"
+                  >
+                    Categorie:
+                    <strong><%- locals.curs.categorie_text %></strong>
+                  </p>
+                  <p class="course-price">
+                    Preț:
+                    <em data-element="pret" data-key="<%- locals.curs.pret %>">
+                      <%- locals.curs.pret %> RON
+                    </em>
+                  </p>
+                </div>
+              </div>
+
+              <div class="course-details">
+                <p class="course-description" data-element="descriere">
+                  <%- locals.curs.descriere %>
+                </p>
+                <details>
+                  <summary>Specificații</summary>
+                  <ul>
+                    <li>
+                      <strong>Temă:</strong>
+                      <em data-element="tema">
+                        <%- locals.curs.tema_principala %>
+                      </em>
+                    </li>
+                    <li>
+                      <strong>Locatie:</strong>
+                      <em data-element="locatie">
+                        <%- locals.curs.locatie.charAt(0).toUpperCase() +
+                        locals.curs.locatie.slice(1) %>
+                      </em>
+                    </li>
+
+                    <li>
+                      <strong>Dată început:</strong>
+                      <time
+                        data-element="luna"
+                        datetime="<%- new Date(locals.curs.data_start).toISOString() %>"
+                      >
+                        <em><%- locals.curs.data_start_text %></em>
+                      </time>
+                    </li>
+                    <li>
+                      <strong>Accesibil dizabilități:</strong>
+                      <em>
+                        <%- locals.curs.accesibil_dizabilitati ? 'Da' : 'Nu' %>
+                      </em>
+                    </li>
+                  </ul>
+                </details>
+              </div>
+            </div>
           </article>
         </section>
       </main>
