@@ -20,14 +20,59 @@
 
         <div class="sort-wrapper">
           <div class="row">
-            <div class="col-sm-1">
-              <button
-                id="button-sort"
-                class="btn btn-sm btn-secondary"
-                data-sort="asc"
-              >
-                <i class="fa fa-angles-up"></i>
-              </button>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="sorting_key_1" class="form-label"></label>
+                <div class="input-group">
+                  <select
+                    id="sorting_key_1"
+                    class="form-select select-sort"
+                    data-priority="0"
+                  >
+                    <option value="nume">Nume</option>
+                    <option value="pret" selected>Pret</option>
+                    <option value="rating">Rating</option>
+                    <option value="tema">Tema</option>
+                    <option value="descriere">Descriere</option>
+                  </select>
+                  <div class="input-group-append">
+                    <button
+                      id="button-sort-1"
+                      class="btn btn-secondary button-sort"
+                      data-sort="asc"
+                    >
+                      <i class="fa fa-angles-up"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="sorting_key_2" class="form-label"></label>
+                <div class="input-group">
+                  <select
+                    id="sorting_key_2"
+                    class="form-select select-sort"
+                    data-priority="1"
+                  >
+                    <option value="nume" selected>Nume</option>
+                    <option value="pret">Pret</option>
+                    <option value="rating">Rating</option>
+                    <option value="tema">Tema</option>
+                    <option value="descriere">Descriere</option>
+                  </select>
+                  <div class="input-group-append">
+                    <button
+                      id="button-sort-2"
+                      class="btn btn-secondary button-sort"
+                      data-sort="asc"
+                    >
+                      <i class="fa fa-angles-up"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -244,11 +289,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           <div class="row">
             <div class="col-sm-6">
               <button id="button-reset" class="btn btn-primary">
+                <i class="fa-solid fa-trash"></i>
                 Reseteaza Filtre
               </button>
             </div>
             <div class="col-sm-6">
               <button id="button-calculate" class="btn btn-primary">
+                <i class="fa-solid fa-money-bill"></i>
                 Calculare Pret
               </button>
             </div>

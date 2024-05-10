@@ -1,5 +1,6 @@
 var filters = [];
 var errors = [];
+var sorting_keys = [];
 var courseList = null;
 
 $(document).ready(function () {
@@ -89,7 +90,7 @@ $(document).ready(function () {
 
   // sortare
 
-  $("#button-sort").on("click", function () {
+  $(".button-sort").on("click", function () {
     let current_state = $(this).attr("data-sort");
 
     if (current_state == "asc") {
@@ -101,8 +102,32 @@ $(document).ready(function () {
     }
 
     $(this).attr("data-sort", current_state);
-    sortCourses(current_state);
+
+    let parent_select = $(this).parents(".input-group").find("select");
+    let priority = parent_select.attr("data-priority");
+    let value = parent_select.val();
+
+    sorting_keys[priority] = {
+      value: value,
+      state: current_state,
+    };
+
+    sortCourses();
   });
+
+  $(".select-sort").on("change", function () {
+    let priority = $(this).attr("data-priority");
+    let value = $(this).val();
+
+    sorting_keys[priority] = {
+      value: value,
+      state: sorting_keys[priority] ? sorting_keys[priority].state : "asc",
+    };
+
+    sortCourses();
+  });
+
+  initializeSort();
 
   $(document).on("click", "#button-reset", function () {
     $("#modal-reset")[0].showModal();
@@ -136,13 +161,14 @@ $(document).ready(function () {
     $("#toInput").val(max_price);
     $("#filter_rating_all").prop("checked", true);
 
+    // todo
     if ($("#button-sort").attr("data-sort") == "desc") {
       $("#button-sort")
         .find("i")
         .removeClass("fa-angles-down")
         .addClass("fa-angles-up");
       $("#button-sort").attr("data-sort", "asc");
-      sortCourses("asc");
+      sortCourses();
     }
   });
 
@@ -177,45 +203,106 @@ function calculateOpenCoursesPrice() {
   return price;
 }
 
-function sortCourses(current_state) {
+function sortCourses() {
   let courses_wrapper = $(".grid-courses");
 
   let courses = courses_wrapper.children(".course");
 
   courses
     .sort(function (a, b) {
-      let price_a = $(a).find('[data-element="pret"]').data("key");
-      let price_b = $(b).find('[data-element="pret"]').data("key");
+      for (let key in sorting_keys) {
+        let ascdesc = sorting_keys[key].state == "asc" ? 1 : -1;
 
-      let ascdesc = current_state === "asc" ? 1 : -1;
+        switch (sorting_keys[key].value) {
+          case "nume":
+            let name_a = $(a).find('[data-element="nume"]').text();
+            let name_b = $(b).find('[data-element="nume"]').text();
 
-      if (price_a * ascdesc > price_b * ascdesc) {
-        return 1;
+            if (ascdesc == 1 && name_a > name_b) {
+              return 1;
+            }
+
+            if (ascdesc == -1 && name_a < name_b) {
+              return 1;
+            }
+
+            if (ascdesc == 1 && name_a < name_b) {
+              return -1;
+            }
+
+            if (ascdesc == -1 && name_a > name_b) {
+              return -1;
+            }
+            break;
+
+          case "pret":
+            let price_a = $(a).find('[data-element="pret"]').data("key");
+            let price_b = $(b).find('[data-element="pret"]').data("key");
+
+            if (price_a * ascdesc > price_b * ascdesc) {
+              return 1;
+            }
+
+            if (price_a * ascdesc < price_b * ascdesc) {
+              return -1;
+            }
+            break;
+
+          case "rating":
+            let rating_a = $(a).find('[data-element="rating"]').data("key");
+            let rating_b = $(b).find('[data-element="rating"]').data("key");
+
+            if (rating_a * ascdesc > rating_b * ascdesc) {
+              return 1;
+            }
+
+            if (rating_a * ascdesc < rating_b * ascdesc) {
+              return -1;
+            }
+            break;
+          case "tema":
+            let tema_a = $(a).find('[data-element="tema"]').text();
+            let tema_b = $(b).find('[data-element="tema"]').text();
+
+            if (ascdesc == 1 && tema_a > tema_b) {
+              return 1;
+            }
+
+            if (ascdesc == -1 && tema_a < tema_b) {
+              return 1;
+            }
+
+            if (ascdesc == 1 && tema_a < tema_b) {
+              return -1;
+            }
+
+            if (ascdesc == -1 && tema_a > tema_b) {
+              return -1;
+            }
+            break;
+
+          case "descriere":
+            let descriere_a = $(a).find('[data-element="descriere"]').text();
+            let descriere_b = $(b).find('[data-element="descriere"]').text();
+
+            if (ascdesc == 1 && descriere_a > descriere_b) {
+              return 1;
+            }
+
+            if (ascdesc == -1 && descriere_a < descriere_b) {
+              return 1;
+            }
+
+            if (ascdesc == 1 && descriere_a < descriere_b) {
+              return -1;
+            }
+
+            if (ascdesc == -1 && descriere_a > descriere_b) {
+              return -1;
+            }
+            break;
+        }
       }
-
-      if (price_a * ascdesc < price_b * ascdesc) {
-        return -1;
-      }
-
-      let name_a = $(a).find('[data-element="nume"]').text();
-      let name_b = $(b).find('[data-element="nume"]').text();
-
-      if (ascdesc == 1 && name_a > name_b) {
-        return 1;
-      }
-
-      if (ascdesc == -1 && name_a < name_b) {
-        return 1;
-      }
-
-      if (ascdesc == 1 && name_a < name_b) {
-        return -1;
-      }
-
-      if (ascdesc == -1 && name_a > name_b) {
-        return -1;
-      }
-
       return 0;
     })
     .each(function () {
@@ -403,8 +490,6 @@ function checkFilterError() {
           })
           .get();
 
-        console.log(teme_existente);
-        console.log(value);
         if (!teme_existente.includes(value)) {
           errors.push({
             filter: filter_key,
@@ -439,4 +524,10 @@ function removeAccents(str) {
   const cleanedStr = normalizedStr.replace(/[\u0300-\u036f]/g, "");
 
   return cleanedStr;
+}
+
+function initializeSort() {
+  $(".select-sort").each((index, element) => {
+    $(element).change();
+  });
 }
