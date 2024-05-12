@@ -308,13 +308,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             <article
               class="course <%- curs.categorie %>"
               id="produs_<%- curs.id %>"
+              data-id="<%= curs.id %>"
             >
               <h3>
-                <a
-                  class="prevent-default-a"
-                  data-element="nume"
-                  href="/cursuri/<%= curs.id %>"
-                >
+                <a class="prevent-default-a" data-element="nume">
                   <%- curs.nume %>
                 </a>
               </h3>
@@ -331,11 +328,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               </div>
               <div class="course-container">
                 <div class="course-image">
-                  <a
-                    href="/cursuri/<%= curs.id %>"
-                    class="prevent-default-a"
-                    title="<%= curs.nume %>"
-                  >
+                  <a class="prevent-default-a" title="<%= curs.nume %>">
                     <figure>
                       <picture>
                         <source
@@ -417,7 +410,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       </main>
     </div>
 
-    <dialog id="modal-reset" class="filter-modal">
+    <dialog id="modal-reset" class="filter-modal modal-custom">
       <div class="interior">
         <p class="title">
           Resetare filtre
@@ -442,7 +435,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       </div>
     </dialog>
 
-    <dialog id="modal-calculate" class="filter-modal">
+    <dialog id="modal-calculate" class="filter-modal modal-custom">
       <div class="interior">
         <p class="title">
           Pret total calculat
@@ -463,9 +456,85 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       </div>
     </dialog>
 
+    <dialog id="modal-course-info" class="info-modal modal-custom">
+      <div class="interior">
+        <p class="title">
+          <span id="modal-info-course-name"></span>
+          <button autofocus style="float: right" class="info-close">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </p>
+        <div class="content">
+          <div class="modal-info-image">
+            <figure id="modal-info-course-figure">
+              <picture>
+                <source media="(max-width: 599px)" />
+                <img />
+              </picture>
+            </figure>
+          </div>
+
+          <div class="modal-info-details">
+            <div class="rating">
+              <div class="course-rating" id="modal-info-course-rating">
+                <% for (let i = 0; i < 5; i++) { %>
+                <i class="fa fa-star"></i>
+                <% } %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-sm-12">
+                <p class="modal-info-category">
+                  Categorie:
+                  <span id="modal-info-course-category"></span>
+                </p>
+              </div>
+              <div class="col-md-6 col-sm-12">
+                <p class="modal-info-price">
+                  Pret:
+                  <span id="modal-info-course-price"></span>
+                </p>
+              </div>
+            </div>
+
+            <p id="modal-info-course-description"></p>
+
+            <ul>
+              <li>
+                <strong>Temă:</strong>
+                <span id="modal-info-course-tema"></span>
+              </li>
+              <li>
+                <strong>Locatie:</strong>
+                <span id="modal-info-course-locatie"></span>
+              </li>
+              <li>
+                <strong>Data inceput:</strong>
+                <span id="modal-info-course-data-start"></span>
+              </li>
+              <li>
+                <strong>Accesibil dizabilități:</strong>
+                <span id="modal-info-course-accesibil-dizabilitati"></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="buttons">
+          <a
+            role="button"
+            id="modal-info-course-button"
+            class="btn btn-primary"
+          >
+            Citeste mai mult
+          </a>
+        </div>
+      </div>
+    </dialog>
+
     <%-include('../fragmente/footer.ejs')-%>
   </body>
 </html>
 
 <script src="/js/cursuri-filtering.js"></script>
+<script src="/js/cursuri-modal.js"></script>
 <script src="/js/double-slider.js"></script>

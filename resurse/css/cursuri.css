@@ -78,24 +78,18 @@
   padding: 0 1em;
 }
 
-.filter-modal {
-  max-width: 80vw;
-  max-width: 600px;
-  width: 100%;
-  max-height: 80vh;
-  max-height: 600px;
-  height: 100%;
+.modal-custom {
   margin: 0;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 }
-.filter-modal .interior {
+.modal-custom .interior {
   height: 100%;
   display: flex;
   flex-direction: column;
 }
-.filter-modal .interior .title {
+.modal-custom .interior .title {
   margin: 0.5em 0;
   font-weight: bold;
   font-size: 1.2em;
@@ -103,14 +97,55 @@
   padding: 0.5em;
   border-bottom: 1px solid #ccc;
 }
-.filter-modal .interior .content {
+.modal-custom .interior .content {
   padding: 0.5em;
 }
-.filter-modal .interior .buttons {
+.modal-custom .interior .buttons {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
   gap: 1em;
   padding: 0.5em;
   flex-grow: 1;
+}
+
+.info-modal {
+  max-width: 90vw;
+  max-width: 1000px;
+  width: 100%;
+  max-height: 90vh;
+  max-height: 1000px;
+  height: 100%;
+}
+.info-modal .modal-info-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+.info-modal .modal-info-image figure {
+  max-width: 100%;
+  max-width: 600px;
+}
+.info-modal #modal-info-course-rating {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  gap: 0.1em;
+  padding: 0.5em 0;
+}
+.info-modal #modal-info-course-rating i {
+  font-size: 1.5em;
+}
+.info-modal #modal-info-course-rating i.active {
+  color: #2cc7db;
+}
+
+.filter-modal {
+  max-width: 80vw;
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  max-height: 600px;
+  height: 100%;
 }

@@ -89,14 +89,7 @@
   padding: 0 1em;
 }
 
-.filter-modal {
-  max-width: 80vw;
-  max-width: 600px;
-  width: 100%;
-
-  max-height: 80vh;
-  max-height: 600px;
-  height: 100%;
+.modal-custom {
   margin: 0;
 
   left: 50%;
@@ -131,4 +124,52 @@
       flex-grow: 1;
     }
   }
+}
+
+.info-modal {
+  max-width: 90vw;
+  max-width: 1000px;
+  width: 100%;
+
+  max-height: 90vh;
+  max-height: 1000px;
+  height: 100%;
+
+  .modal-info-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+
+    figure {
+      max-width: 100%;
+      max-width: 600px;
+    }
+  }
+
+  #modal-info-course-rating {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    gap: 0.1em;
+    padding: 0.5em 0;
+
+    i {
+      font-size: 1.5em;
+    }
+
+    i.active {
+      color: $--color-secondary;
+    }
+  }
+}
+
+.filter-modal {
+  max-width: 80vw;
+  max-width: 600px;
+  width: 100%;
+
+  max-height: 80vh;
+  max-height: 600px;
+  height: 100%;
 }

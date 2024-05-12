@@ -191,6 +191,35 @@ app.get("/cursuri/:id", async (req, res) => {
   }
 });
 
+// ************************ ENDPOINT-URI API ******************************
+
+app.get("/api/curs/:id", async (req, res) => {
+  let id = req.params.id;
+
+  if (isNaN(id)) {
+    return res.status(400).json({ error: "ID-ul trebuie sa fie un numar" });
+  }
+
+  id = parseInt(id);
+
+  if (id <= 0) {
+    return res.status(400).json({ error: "ID-ul nu e corect" });
+  }
+
+  let filters = { filter_id: id };
+
+  try {
+    const result = await dbClient.fetchCourses(filters);
+    if (result.length === 0) {
+      return res.status(404).json({ error: "Cursul nu a fost gasit" });
+    }
+    res.json(parseCourseFull(result[0]));
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Error executing query" });
+  }
+});
+
 app.get("/*", (req, res) => {
   let page = req.params[0];
   if (page.endsWith("/")) {
@@ -368,4 +397,22 @@ function parseCourses(rows) {
       rating: row.rating,
     };
   });
+}
+
+function parseCourseFull(row) {
+  return {
+    id: row.id,
+    nume: row.nume,
+    descriere: row.descriere,
+    imagine: row.imagine,
+    pret: row.pret,
+    categorie: row.categorie,
+    categorie_text: categoryNameByKey(row.categorie),
+    locatie: row.locatie,
+    data_start: row.data_start,
+    tema_principala: row.tema_principala,
+    data_start_text: moment(row.data_start).format("D-MMMM-YYYY (dddd)"),
+    rating: row.rating,
+    accesibil_dizabilitati: row.accesibil_dizabilitati,
+  };
 }
