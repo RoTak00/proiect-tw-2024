@@ -6,6 +6,7 @@ const sharp = require("sharp");
 const sass = require("sass");
 const path = require("path");
 const moment = require("moment");
+const session = require("express-session");
 require("moment/locale/ro");
 moment.locale("ro");
 const app = express();
@@ -17,7 +18,9 @@ const {
   categoryNameByKey,
 } = require("./module/functions");
 
-const { dbClient } = require("./module/database");
+const { dbInstance } = require("./module/database");
+
+const { Utilizator } = require("./module/users");
 
 // ----------------------- DEFINIRE VARIABILE INITIALE -------------------------
 
@@ -44,7 +47,7 @@ fs.watch(obGlobal.folderScss, (eventType, filename) => {
   }
 });
 
-const folders_to_create = ["temp", "backup"];
+const folders_to_create = ["temp", "backup", "poze_uploadate"];
 
 folders_to_create.forEach((folder) => {
   const folder_path = path.join(__dirname, folder);
@@ -66,6 +69,14 @@ folders_to_create.forEach((folder) => {
 
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
+
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 app.use("/resurse", (req, res, next) => {
   const fullPath = path.join(__dirname, "resurse", req.path);
@@ -106,7 +117,8 @@ app.use(async (req, res, next) => {
   obGlobal.dynamicGallery = filterImagesByTime(galleryJSON, 1);
   res.locals.dynamicGallery = obGlobal.dynamicGallery;
   res.locals.convertToRoman = convertToRoman;
-  res.locals.availableCourseCategories = await dbClient.fetchCourseCategories();
+  res.locals.availableCourseCategories =
+    await dbInstance.fetchCourseCategories();
   next();
 });
 
@@ -151,13 +163,13 @@ app.get("/cursuri", async (req, res) => {
   }
 
   try {
-    const results = await dbClient.fetchCourses(filters);
-    const price_interval = await dbClient.fetchPriceRange();
-    const course_themes = (await dbClient.fetchCourseThemes()).map(
+    const results = await dbInstance.fetchCourses(filters);
+    const price_interval = await dbInstance.fetchPriceRange();
+    const course_themes = (await dbInstance.fetchCourseThemes()).map(
       (row) => row.tema_principala
     );
-    const course_start_months = await dbClient.fetchCourseStartMonths();
-    const course_locations = await dbClient.fetchCourseLocations();
+    const course_start_months = await dbInstance.fetchCourseStartMonths();
+    const course_locations = await dbInstance.fetchCourseLocations();
 
     res.render("pagini/cursuri", {
       cursuri: parseCourses(results),
@@ -177,7 +189,7 @@ app.get("/cursuri", async (req, res) => {
 app.get("/cursuri/:id", async (req, res) => {
   let filters = { filter_id: req.params.id };
   try {
-    const result = await dbClient.fetchCourses(filters);
+    const result = await dbInstance.fetchCourses(filters);
     if (result.length === 0) {
       afisareEroare(res, 404);
     }
@@ -209,7 +221,7 @@ app.get("/api/curs/:id", async (req, res) => {
   let filters = { filter_id: id };
 
   try {
-    const result = await dbClient.fetchCourses(filters);
+    const result = await dbInstance.fetchCourses(filters);
     if (result.length === 0) {
       return res.status(404).json({ error: "Cursul nu a fost gasit" });
     }
@@ -237,6 +249,7 @@ app.get("/*", (req, res) => {
         { page: page },
         function (error, renderResult) {
           if (error) {
+            console.error("Error:", error);
             if (error.message.startsWith("Failed to lookup view")) {
               afisareEroare(res, 404);
             } else {

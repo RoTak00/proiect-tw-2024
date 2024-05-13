@@ -3,114 +3,211 @@ const { categoryNameByKey } = require("./functions");
 const moment = require("moment");
 
 class DatabaseClient {
+  static instance = null;
   constructor() {
-    if (!DatabaseClient.instance) {
-      DatabaseClient.instance = this;
-      this.client = new Client({
-        database: "InvatWeb_Local",
-        user: "vsc_user",
-        password: "vscpa55",
-        host: "localhost",
-        port: 5432,
-      });
-      this.client.connect();
+    if (DatabaseClient.instance !== null) {
+      throw new Error(
+        "Error: Instantiation failed: Use DatabaseClient.getInstance() instead of new."
+      );
     }
+    DatabaseClient.instance = this;
+
     return DatabaseClient.instance;
   }
 
-  async fetchCourses(filters = {}) {
-    let query = "SELECT * FROM cursuri WHERE true";
+  /**
+   * Se initializeaza si deschide conexiunea la baza de date PostgreSQL
+   *
+   * @param {string} database
+   * @param {string} user
+   * @param {string} password
+   * @param {string} host
+   * @param {integer} port
+   * @returns {void}
+   *
+   *
+   */
+  connectToDatabase(database, user, password, host, port) {
+    this.client = new Client({
+      database,
+      user,
+      password,
+      host,
+      port,
+    });
+    this.client.connect();
+  }
 
-    if (filters["filter_id"])
-      query += ` AND id = ${parseInt(filters["filter_id"])}`;
+  /**
+   *
+   * Database client getter
+   *
+   * @returns {Client}
+   */
+  getClient() {
+    return this.client;
+  }
 
-    if (filters["filter_category"])
-      query += ` AND categorie = '${filters["filter_category"]}'`;
+  /**
+   *
+   * Database query instance getter
+   *
+   * @returns {Client}
+   */
+  getInstance() {
+    if (DatabaseClient.instance === null) {
+      DatabaseClient.instance = this;
+    }
+
+    this.connectToDatabase(
+      "InvatWeb_Local",
+      "vsc_user",
+      "vscpa55",
+      "localhost",
+      5432
+    );
+
+    return DatabaseClient.instance;
+  }
+
+  /**
+   *
+   * @param {array[]} params
+   * @param {*} callback
+   */
+  select(params, callback) {
+    const { tableName, fields, conditions } = params;
+    const query = `SELECT ${fields.join(", ")} FROM ${tableName} WHERE ${
+      conditions.length ? conditions.join(" AND ") : "true"
+    }`;
+
+    this.client.query(query, (err, res) => {
+      callback(err, res ? res.rows : null);
+    });
+  }
+
+  async selectAsync(params) {
+    const { tableName, fields, conditions } = params;
+    const query = `SELECT ${fields.join(", ")} FROM ${tableName} WHERE ${
+      conditions.length ? conditions.join(" AND ") : "true"
+    }`;
 
     try {
-      const results = await this.client.query(query);
-      return results.rows;
-    } catch (error) {
-      console.error("Error executing query:", error);
-      throw error;
+      const res = await this.client.query(query);
+      return res.rows;
+    } catch (err) {
+      throw err;
     }
   }
 
+  update(params, callback) {
+    const { tableName, fields, values, conditions } = params;
+    const setClause = fields
+      .map((field, i) => `${field} = '${values[i]}'`)
+      .join(", ");
+    const query = `UPDATE ${tableName} SET ${setClause} WHERE ${
+      conditions.length ? conditions.join(" AND ") : "true"
+    }`;
+
+    this.client.query(query, (err, res) => {
+      callback(err, res);
+    });
+  }
+
+  insert(params, callback) {
+    const { tableName, fields, values } = params;
+    const query = `INSERT INTO ${tableName} (${fields.join(
+      ", "
+    )}) VALUES (${values.map((value) => `'${value}'`).join(", ")})`;
+
+    this.client.query(query, (err, res) => {
+      callback(err, res);
+    });
+  }
+
+  deleteRecord(params, callback) {
+    const { tableName, conditions } = params;
+    const query = `DELETE FROM ${tableName} WHERE ${
+      conditions.length ? conditions.join(" AND ") : "true"
+    }`;
+
+    this.client.query(query, (err, res) => {
+      callback(err, res);
+    });
+  }
+
+  async fetchCourses(filters = {}) {
+    let conditions = ["true"]; // Always true, to concatenate conditions safely
+
+    if (filters.filter_id) {
+      conditions.push(`id = ${parseInt(filters.filter_id)}`);
+    }
+    if (filters.filter_category) {
+      conditions.push(`categorie = '${filters.filter_category}'`);
+    }
+
+    return await this.selectAsync({
+      tableName: "cursuri",
+      fields: ["*"],
+      conditions: conditions,
+    });
+  }
+
   async fetchCourseCategories() {
-    let query = "SELECT DISTINCT categorie FROM cursuri";
+    const query = "SELECT DISTINCT categorie FROM cursuri";
     try {
       const results = await this.client.query(query);
       return results.rows.map((row) => {
         return { key: row.categorie, value: categoryNameByKey(row.categorie) };
       });
     } catch (error) {
-      console.error("Error executing query:", error);
-      throw error;
+      console.error("Error executing query:", query, error);
+      throw error; // Ensure the error is thrown after logging it
     }
   }
 
   async fetchPriceRange() {
-    let query = "SELECT min(pret) as min, max(pret) as max FROM cursuri";
-    try {
-      const results = await this.client.query(query);
-      return results.rows[0];
-    } catch (error) {
-      console.error("Error executing query:", error);
-      throw error;
-    }
+    return this.selectAsync({
+      tableName: "cursuri",
+      fields: ["MIN(pret) AS min", "MAX(pret) AS max"],
+      conditions: [],
+    }).then((results) => results[0]);
   }
 
   async fetchCourseThemes() {
-    let query = "SELECT DISTINCT tema_principala FROM cursuri";
-    try {
-      const results = await this.client.query(query);
-      return results.rows;
-    } catch (error) {
-      console.error("Error executing query:", error);
-      throw error;
-    }
+    return this.selectAsync({
+      tableName: "cursuri",
+      fields: ["DISTINCT tema_principala"],
+      conditions: [],
+    });
   }
 
   async fetchCourseLocations() {
-    let query = "SELECT DISTINCT locatie FROM cursuri";
-    try {
-      const results = await this.client.query(query);
-      return results.rows.map((row) => {
-        return {
-          value: row.locatie.charAt(0).toUpperCase() + row.locatie.slice(1),
-          key: row.locatie,
-        };
-      });
-    } catch (error) {
-      console.error("Error executing query:", error);
-      throw error;
-    }
+    const locations = await this.selectAsync({
+      tableName: "cursuri",
+      fields: ["DISTINCT locatie"],
+      conditions: [],
+    });
+    return locations.map((row) => ({
+      value: row.locatie.charAt(0).toUpperCase() + row.locatie.slice(1),
+      key: row.locatie,
+    }));
   }
 
   async fetchCourseStartMonths() {
-    let query = "SELECT DISTINCT data_start FROM cursuri";
-    try {
-      const results = await this.client.query(query);
+    const results = await this.selectAsync({
+      tableName: "cursuri",
+      fields: ["DISTINCT data_start"],
+      conditions: [],
+    });
 
-      let months = results.rows.map((row) => {
-        return moment(row.data_start).format("MMMM");
-      });
-      months = months.map((month) => {
-        return {
-          value: month,
-          key: moment(month, "MMMM").format("M"),
-        };
-      });
+    let months = results.map((row) => moment(row.data_start).format("MMMM"));
+    months = [...new Set(months)]; // Ensure uniqueness
 
-      let unique_months = [
-        ...new Map(months.map((item) => [item.key, item])).values(),
-      ];
-
-      return unique_months.toSorted((a, b) => a.key - b.key);
-    } catch (error) {
-      console.error("Error executing query:", error);
-      throw error;
-    }
+    return months.map((month) => ({
+      value: month,
+      key: moment(month, "MMMM").format("M"),
+    }));
   }
 
   // Method to add query functions
@@ -126,6 +223,6 @@ class DatabaseClient {
 }
 
 const dbClient = new DatabaseClient();
-Object.freeze(dbClient);
+const dbInstance = dbClient.getInstance();
 
-module.exports = { dbClient };
+module.exports = { dbInstance };
