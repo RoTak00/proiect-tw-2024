@@ -1,0 +1,64 @@
+@import "colors.scss";
+
+#cookie-banner {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #c1c1c1; /* c1 */
+  border: 2px solid #c3c3c3; /* c3 */
+  color: white;
+  text-align: center;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 5s linear, background-color 5s linear,
+    border-color 5s linear;
+  transform: translateX(-100%);
+
+  &.cookie-banner-show {
+    transform: translateX(0);
+    animation: slideIn 5s forwards;
+  }
+
+  .cookie-banner-hidden {
+    display: none;
+  }
+
+  p {
+    color: $--color-text;
+  }
+
+  button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(-100%);
+    background-color: $--color-main; /* c1 */
+    border-color: $--color-secondary; /* c3 */
+  }
+  50% {
+    background-color: $--color-secondary; /* c3 */
+    border-color: $--color-background; /* c2 */
+  }
+  100% {
+    transform: translateX(0);
+    background-color: $--color-background; /* c2 */
+    border-color: $--color-secondary; /* c3 */
+  }
+}
+
+@media (max-width: 768px) {
+  #cookie-banner {
+    transform: none !important;
+    animation: none !important;
+  }
+}

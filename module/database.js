@@ -82,8 +82,8 @@ class DatabaseClient {
   select(params, callback) {
     const { tableName, fields, conditions } = params;
     const conditionsString = conditions
-      .map((group) => `(${group.join(" AND ")})`)
-      .join(" OR ");
+      ? conditions.map((group) => `(${group.join(" AND ")})`).join(" OR ")
+      : "true";
     const query = `SELECT ${fields.join(
       ", "
     )} FROM ${tableName} WHERE ${conditionsString}`;
@@ -103,8 +103,9 @@ class DatabaseClient {
   async selectAsync(params) {
     const { tableName, fields, conditions } = params;
     const conditionsString = conditions
-      .map((group) => `(${group.join(" AND ")})`)
-      .join(" OR ");
+      ? conditions.map((group) => `(${group.join(" AND ")})`).join(" OR ")
+      : "true";
+
     const query = `SELECT ${fields.join(
       ", "
     )} FROM ${tableName} WHERE ${conditionsString}`;
@@ -130,8 +131,8 @@ class DatabaseClient {
       .map((field, index) => `${field} = '${values[index]}'`)
       .join(", ");
     const conditionsString = conditions
-      .map((group) => `(${group.join(" AND ")})`)
-      .join(" OR ");
+      ? conditions.map((group) => `(${group.join(" AND ")})`).join(" OR ")
+      : "true";
     const query = `UPDATE ${tableName} SET ${setString} WHERE ${conditionsString}`;
 
     this.client.query(query, (err, res) => {
@@ -167,8 +168,8 @@ class DatabaseClient {
   deleteRecord(params, callback) {
     const { tableName, conditions } = params;
     const conditionsString = conditions
-      .map((group) => `(${group.join(" AND ")})`)
-      .join(" OR ");
+      ? conditions.map((group) => `(${group.join(" AND ")})`).join(" OR ")
+      : "true";
     const query = `DELETE FROM ${tableName} WHERE ${conditionsString}`;
 
     this.client.query(query, (err, res) => {
@@ -203,6 +204,24 @@ class DatabaseClient {
   }
 
   /**
+   * Preia un numar de produse aleatorii
+   *
+   * @param {number} limit - Numarul de produse dorite
+   * @return {array} products
+   */
+  async fetchRandomProducts(limit) {
+    const query = `SELECT * FROM cursuri ORDER BY RANDOM() LIMIT $1`;
+    const values = [limit];
+    try {
+      const result = await this.client.query(query, values);
+      return result.rows;
+    } catch (error) {
+      console.error("Error fetching random products:", error);
+      throw error;
+    }
+  }
+
+  /**
    * Selecteaza toate categoriile diferite de cursuri care exista
    *
    * @returns {array} categories
@@ -211,7 +230,7 @@ class DatabaseClient {
     const results = await this.selectAsync({
       tableName: "cursuri",
       fields: ["DISTINCT categorie"],
-      conditions: [[]],
+      conditions: null,
     });
 
     return results.map((row) => {
@@ -228,7 +247,7 @@ class DatabaseClient {
     return this.selectAsync({
       tableName: "cursuri",
       fields: ["MIN(pret) AS min", "MAX(pret) AS max"],
-      conditions: [[]],
+      conditions: null,
     }).then((results) => results[0]);
   }
 
@@ -241,7 +260,7 @@ class DatabaseClient {
     return this.selectAsync({
       tableName: "cursuri",
       fields: ["DISTINCT tema_principala"],
-      conditions: [[]],
+      conditions: null,
     });
   }
 
@@ -254,7 +273,7 @@ class DatabaseClient {
     const locations = await this.selectAsync({
       tableName: "cursuri",
       fields: ["DISTINCT locatie"],
-      conditions: [[]],
+      conditions: null,
     });
     return locations.map((row) => ({
       value: row.locatie.charAt(0).toUpperCase() + row.locatie.slice(1),
@@ -271,7 +290,7 @@ class DatabaseClient {
     const results = await this.selectAsync({
       tableName: "cursuri",
       fields: ["DISTINCT data_start"],
-      conditions: [[]],
+      conditions: null,
     });
 
     let months = results.map((row) => moment(row.data_start).format("MMMM"));

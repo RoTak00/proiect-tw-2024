@@ -1,4 +1,4 @@
-var filters = [];
+var filters = {};
 var errors = [];
 var sorting_keys = [];
 var courseList = null;
@@ -6,10 +6,13 @@ var courseList = null;
 $(document).ready(function () {
   courseList = $(".course");
 
+  loadFiltersFromCookies();
+  applyFiltersFromCookies();
+
   $(".filter-element").on("change", function () {
     checkFilterError();
-
     updateErrors();
+    saveFiltersInCookies();
   });
 
   $(
@@ -25,7 +28,6 @@ $(document).ready(function () {
     }
 
     checkFilterError(filter, value);
-
     filterCoursesByFilter();
   });
 
@@ -48,7 +50,6 @@ $(document).ready(function () {
     }
 
     checkFilterError(filter, value);
-
     filterCoursesByFilter();
   });
 
@@ -65,7 +66,6 @@ $(document).ready(function () {
     }
 
     checkFilterError(filter, value);
-
     filterCoursesByFilter();
   });
 
@@ -84,12 +84,10 @@ $(document).ready(function () {
     }
 
     checkFilterError(filter, value);
-
     filterCoursesByFilter();
   });
 
-  // sortare
-
+  // Sorting
   $(".button-sort").on("click", function () {
     let current_state = $(this).attr("data-sort");
 
@@ -113,6 +111,7 @@ $(document).ready(function () {
     };
 
     sortCourses();
+    saveFiltersInCookies();
   });
 
   $(".select-sort").on("change", function () {
@@ -125,6 +124,7 @@ $(document).ready(function () {
     };
 
     sortCourses();
+    saveFiltersInCookies();
   });
 
   initializeSort();
@@ -139,11 +139,10 @@ $(document).ready(function () {
 
   $(document).on("click", "#reset-confirm", function () {
     $("#modal-reset")[0].close();
-    filters = [];
+    filters = {};
     filterCoursesByFilter();
 
-    // resetare
-
+    // Reset filters
     $(
       ".filter-element input[type='text'], .filter-element input[type='number'], .filter-element input[type='range'], .filter-element textarea"
     ).val("");
@@ -151,7 +150,7 @@ $(document).ready(function () {
     $(".filter-element input[type='radio']").prop("checked", false);
     $(".filter-element select").val("");
 
-    // fixare
+    // Reset price range
     let min_price = $("#filter_max_price").attr("min");
     let max_price = $("#filter_max_price").attr("max");
 
@@ -161,7 +160,7 @@ $(document).ready(function () {
     $("#toInput").val(max_price);
     $("#filter_rating_all").prop("checked", true);
 
-    // todo
+    // Reset sorting
     if ($("#button-sort").attr("data-sort") == "desc") {
       $("#button-sort")
         .find("i")
@@ -170,6 +169,8 @@ $(document).ready(function () {
       $("#button-sort").attr("data-sort", "asc");
       sortCourses();
     }
+
+    deleteAllCookies();
   });
 
   $(document).on("click", "#button-calculate", function () {
@@ -188,12 +189,10 @@ $(document).ready(function () {
 
 function calculateOpenCoursesPrice() {
   let price = 0;
-
   let courseList = $(".course");
 
   courseList.each(function () {
     let course = $(this);
-
     let priceElement = course.find('[data-element="pret"]');
     let priceValue = priceElement.data("key");
 
@@ -205,7 +204,6 @@ function calculateOpenCoursesPrice() {
 
 function sortCourses() {
   let courses_wrapper = $(".grid-courses");
-
   let courses = courses_wrapper.children(".course");
 
   courses
@@ -260,6 +258,7 @@ function sortCourses() {
               return -1;
             }
             break;
+
           case "tema":
             let tema_a = $(a).find('[data-element="tema"]').text();
             let tema_b = $(b).find('[data-element="tema"]').text();
@@ -529,5 +528,93 @@ function removeAccents(str) {
 function initializeSort() {
   $(".select-sort").each((index, element) => {
     $(element).change();
+  });
+}
+
+function saveFiltersInCookies() {
+  const data = {
+    filters: filters,
+    sorting_keys: sorting_keys,
+  };
+  const dataJSON = JSON.stringify(data);
+  setCookie("filter_sorting_data", dataJSON, 1); // Set the cookie for 1 day
+}
+
+function loadFiltersFromCookies() {
+  const dataJSON = getCookie("filter_sorting_data");
+  if (dataJSON) {
+    const data = JSON.parse(dataJSON);
+    filters = data.filters || {};
+    sorting_keys = data.sorting_keys || [];
+  }
+}
+
+function applyFiltersFromCookies() {
+  // Apply filters
+  for (let filter in filters) {
+    const filterValue = filters[filter];
+    const filterElement = $(`[data-filter='${filter}']`);
+
+    if (Array.isArray(filterValue)) {
+      filterValue.forEach((value) => {
+        filterElement.filter(`[value='${value}']`).prop("checked", true);
+      });
+    } else {
+      filterElement.val(filterValue);
+    }
+  }
+  filterCoursesByFilter();
+
+  // Apply sorting
+  for (let key in sorting_keys) {
+    const sortKey = sorting_keys[key];
+    if (sortKey) {
+      const selectElement = $(`select[data-priority='${key}']`);
+      selectElement.val(sortKey.value);
+      console.log(selectElement);
+      const buttonElement = selectElement.siblings("div").find(".button-sort");
+      console.log(buttonElement);
+      buttonElement.attr("data-sort", sortKey.state);
+      if (sortKey.state == "asc") {
+        buttonElement
+          .find("i")
+          .removeClass("fa-angles-down")
+          .addClass("fa-angles-up");
+      } else {
+        buttonElement
+          .find("i")
+          .removeClass("fa-angles-up")
+          .addClass("fa-angles-down");
+      }
+    }
+  }
+  sortCourses();
+}
+
+function setCookie(name, value, days) {
+  const date = new Date();
+  date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+  const expires = "expires=" + date.toUTCString();
+  document.cookie = `${name}=${value}; ${expires}; path=/`;
+}
+
+function getCookie(name) {
+  const nameEQ = name + "=";
+  const ca = document.cookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == " ") c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+}
+
+function deleteCookie(name) {
+  document.cookie = name + "=; Max-Age=-99999999;";
+}
+
+function deleteAllCookies() {
+  document.cookie.split(";").forEach(function (c) {
+    document.cookie = c.trim().split("=")[0] + "=; Max-Age=-99999999;";
   });
 }

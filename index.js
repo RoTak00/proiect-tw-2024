@@ -232,6 +232,21 @@ app.get("/api/curs/:id", async (req, res) => {
   }
 });
 
+app.get("/api/random-products", async (req, res) => {
+  const limit = 9; // Number of random products to fetch
+
+  try {
+    const result = await dbInstance.fetchRandomProducts(limit);
+    if (result.length === 0) {
+      return res.status(404).json({ error: "No products found" });
+    }
+    res.json(parseCourses(result));
+  } catch (error) {
+    console.error("Error fetching random products:", error);
+    res.status(500).json({ error: "Error executing query" });
+  }
+});
+
 app.get("/*", (req, res) => {
   let page = req.params[0];
   if (page.endsWith("/")) {
