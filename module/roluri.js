@@ -4,44 +4,41 @@ const Rights = require("./drepturi");
 class Rol {
   constructor(cod) {
     this.cod = cod;
-    this.drepturi = [];
+    this.rights = [];
   }
 
-  get listaDrepturi() {
-    return this.drepturi;
+  get getRights() {
+    return this.rights;
   }
 
-  areDreptul(drept) {
-    return this.drepturi.includes(drept);
+  hasRight(right) {
+    return this.rights.includes(right);
   }
 }
 
 class RolClient extends Rol {
   constructor() {
     super("comun");
-    this.drepturi = [Rights.VIEW_DATA, Rights.ADD_DATA];
+    this.rights = [Rights.VIEW_PRODUCT, Rights.BUY_PRODUCT, Rights.VIEW_USER];
   }
 }
 
 class RolAdmin extends Rol {
   constructor() {
     super("admin");
-    this.drepturi = [
-      Rights.VIEW_DATA,
-      Rights.EDIT_DATA,
-      Rights.DELETE_DATA,
-      Rights.ADD_DATA,
-      Rights.VIEW_REPORTS,
-      Rights.EDIT_SETTINGS,
-      Rights.MANAGE_USERS,
-    ];
+    this.drepturi = Object.values(Rights);
   }
 }
 
 class RolModerator extends Rol {
   constructor() {
     super("moderator");
-    this.drepturi = [Rights.VIEW_DATA, Rights.EDIT_DATA, Rights.MANAGE_USERS];
+    this.drepturi = [
+      Rights.VIEW_USER,
+      Rights.EDIT_USER,
+      Rights.DELETE_USER,
+      Rights.ADD_USER,
+    ];
   }
 }
 

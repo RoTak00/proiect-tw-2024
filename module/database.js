@@ -40,7 +40,7 @@ class DatabaseClient {
 
   /**
    *
-   * Database client getter
+   * Gettern pentru client de baza de date
    *
    * @returns {Client}
    */
@@ -50,7 +50,7 @@ class DatabaseClient {
 
   /**
    *
-   * Database query instance getter
+   * Getter pentru instanta de baza de date
    *
    * @returns {Client}
    */
@@ -71,26 +71,43 @@ class DatabaseClient {
   }
 
   /**
+   * Selecteaza din tabela tableName campurile fields pe baza conditiilor conditions
+   * Apeleaza functia callback pe rezultat
    *
-   * @param {array[]} params
-   * @param {*} callback
+   * @param {array[tableName, fields, conditions]} params
+   * @param {(err, res)} callback
+   *
+   *
    */
   select(params, callback) {
     const { tableName, fields, conditions } = params;
-    const query = `SELECT ${fields.join(", ")} FROM ${tableName} WHERE ${
-      conditions.length ? conditions.join(" AND ") : "true"
-    }`;
+    const conditionsString = conditions
+      .map((group) => `(${group.join(" AND ")})`)
+      .join(" OR ");
+    const query = `SELECT ${fields.join(
+      ", "
+    )} FROM ${tableName} WHERE ${conditionsString}`;
 
     this.client.query(query, (err, res) => {
       callback(err, res ? res.rows : null);
     });
   }
 
+  /**
+   * Selecteaza din tabela tableName campurile fields pe baza conditiilor conditions
+   *
+   * @param {array[tableName, fields, conditions]} params
+   *
+   * @returns {array} results
+   */
   async selectAsync(params) {
     const { tableName, fields, conditions } = params;
-    const query = `SELECT ${fields.join(", ")} FROM ${tableName} WHERE ${
-      conditions.length ? conditions.join(" AND ") : "true"
-    }`;
+    const conditionsString = conditions
+      .map((group) => `(${group.join(" AND ")})`)
+      .join(" OR ");
+    const query = `SELECT ${fields.join(
+      ", "
+    )} FROM ${tableName} WHERE ${conditionsString}`;
 
     try {
       const res = await this.client.query(query);
@@ -100,20 +117,35 @@ class DatabaseClient {
     }
   }
 
+  /**
+   * Actualizeaza in tabela tableName campurile fields cu valorile values pe baza conditiilor conditions
+   * Apeleaza functia callback pe rezultat
+   *
+   * @param {array[tableName, fields, conditions]} params
+   * @param {(err, res)} callback
+   */
   update(params, callback) {
     const { tableName, fields, values, conditions } = params;
-    const setClause = fields
-      .map((field, i) => `${field} = '${values[i]}'`)
+    const setString = fields
+      .map((field, index) => `${field} = '${values[index]}'`)
       .join(", ");
-    const query = `UPDATE ${tableName} SET ${setClause} WHERE ${
-      conditions.length ? conditions.join(" AND ") : "true"
-    }`;
+    const conditionsString = conditions
+      .map((group) => `(${group.join(" AND ")})`)
+      .join(" OR ");
+    const query = `UPDATE ${tableName} SET ${setString} WHERE ${conditionsString}`;
 
     this.client.query(query, (err, res) => {
-      callback(err, res);
+      callback(err, res ? res.rowCount : null);
     });
   }
 
+  /**
+   * Insereaza in tabela tableName campurile fields valorile values
+   * Apeleaza functia callback pe rezultat
+   *
+   * @param {array[tableName, fields, values]} params
+   * @param {(err, res)} callback
+   */
   insert(params, callback) {
     const { tableName, fields, values } = params;
     const query = `INSERT INTO ${tableName} (${fields.join(
@@ -125,17 +157,32 @@ class DatabaseClient {
     });
   }
 
+  /**
+   * Sterge din tabela tableName pe vaza conditions
+   * Apeleaza functia callback pe rezultat
+   *
+   * @param {array[tableName, conditions]} params
+   * @param {(err, res)} callback
+   */
   deleteRecord(params, callback) {
     const { tableName, conditions } = params;
-    const query = `DELETE FROM ${tableName} WHERE ${
-      conditions.length ? conditions.join(" AND ") : "true"
-    }`;
+    const conditionsString = conditions
+      .map((group) => `(${group.join(" AND ")})`)
+      .join(" OR ");
+    const query = `DELETE FROM ${tableName} WHERE ${conditionsString}`;
 
     this.client.query(query, (err, res) => {
-      callback(err, res);
+      callback(err, res ? res.rowCount : null);
     });
   }
 
+  /**
+   * Selecteaza produsele pe baza filtrelor date
+   *
+   * @param {{filters}} filters
+   *
+   * @returns {array} courses
+   */
   async fetchCourses(filters = {}) {
     let conditions = ["true"]; // Always true, to concatenate conditions safely
 
@@ -146,6 +193,8 @@ class DatabaseClient {
       conditions.push(`categorie = '${filters.filter_category}'`);
     }
 
+    conditions = [conditions];
+
     return await this.selectAsync({
       tableName: "cursuri",
       fields: ["*"],
@@ -153,40 +202,59 @@ class DatabaseClient {
     });
   }
 
+  /**
+   * Selecteaza toate categoriile diferite de cursuri care exista
+   *
+   * @returns {array} categories
+   */
   async fetchCourseCategories() {
-    const query = "SELECT DISTINCT categorie FROM cursuri";
-    try {
-      const results = await this.client.query(query);
-      return results.rows.map((row) => {
-        return { key: row.categorie, value: categoryNameByKey(row.categorie) };
-      });
-    } catch (error) {
-      console.error("Error executing query:", query, error);
-      throw error; // Ensure the error is thrown after logging it
-    }
+    const results = await this.selectAsync({
+      tableName: "cursuri",
+      fields: ["DISTINCT categorie"],
+      conditions: [[]],
+    });
+
+    return results.map((row) => {
+      return { key: row.categorie, value: categoryNameByKey(row.categorie) };
+    });
   }
 
+  /**
+   * Selecteaza pretul minim si maxim al cursurilor de vanzare
+   *
+   * @returns {min: number, max: number} result
+   */
   async fetchPriceRange() {
     return this.selectAsync({
       tableName: "cursuri",
       fields: ["MIN(pret) AS min", "MAX(pret) AS max"],
-      conditions: [],
+      conditions: [[]],
     }).then((results) => results[0]);
   }
 
+  /**
+   * Selecteaza temele principale de cursuri
+   *
+   * @returns {array} themes
+   */
   async fetchCourseThemes() {
     return this.selectAsync({
       tableName: "cursuri",
       fields: ["DISTINCT tema_principala"],
-      conditions: [],
+      conditions: [[]],
     });
   }
 
+  /**
+   * Functie asincrona care selecteaza locatiile de cursuri
+   *
+   * @returns {array} result
+   */
   async fetchCourseLocations() {
     const locations = await this.selectAsync({
       tableName: "cursuri",
       fields: ["DISTINCT locatie"],
-      conditions: [],
+      conditions: [[]],
     });
     return locations.map((row) => ({
       value: row.locatie.charAt(0).toUpperCase() + row.locatie.slice(1),
@@ -194,11 +262,16 @@ class DatabaseClient {
     }));
   }
 
+  /**
+   * Selecteaza toate lunile de cursuri
+   *
+   * @return {array} result
+   */
   async fetchCourseStartMonths() {
     const results = await this.selectAsync({
       tableName: "cursuri",
       fields: ["DISTINCT data_start"],
-      conditions: [],
+      conditions: [[]],
     });
 
     let months = results.map((row) => moment(row.data_start).format("MMMM"));
@@ -210,7 +283,12 @@ class DatabaseClient {
     }));
   }
 
-  // Method to add query functions
+  /**
+   * Executa un query
+   *
+   * @param {string} query - query-ul de executat
+   * @return {array} result
+   */
   async executeQuery(query) {
     try {
       const results = await this.client.query(query);

@@ -19,13 +19,14 @@ class Utilizator {
     this.rol = rol;
   }
 
+  /**
+   * Salveaza datele utilizatorului in baza de date, dupa o verificare de existenta
+   *
+   * @return {Promise} Promisiune care se rezolva dupa salvarea utilizatorului
+   */
   async salvareUtilizator() {
-    const exists = await dbInstance.selectAsync({
-      tableName: "utilizatori",
-      fields: ["id"],
-      conditions: [`username = '${this.username}'`],
-    });
-    if (exists.length > 0) {
+    const exists = this.getUtilizDupaUsernameAsync(this.username);
+    if (exists !== null) {
       throw new Error("Username already exists.");
     }
 
@@ -44,6 +45,12 @@ class Utilizator {
     );
   }
 
+  /**
+   * Functie de modificare a datelor utilizatorului
+   *
+   * @param {Object} updateParams - Obiect cu datele de modificare
+   * @return {Promise} O promisiune care se rezolva dupa modificarea utilizatorului
+   */
   async modifica(updateParams) {
     if (!this.id) {
       throw new Error("Cannot update a user without an ID.");
@@ -65,6 +72,11 @@ class Utilizator {
     );
   }
 
+  /**
+   * Sterge utilizatorul din baza de date
+   *
+   * @return {Promise} Promisiune care se rezolva dupa stergerea utilizatorului
+   */
   async sterge() {
     if (!this.id) {
       throw new Error("Cannot delete a user without an ID.");
@@ -84,23 +96,44 @@ class Utilizator {
     );
   }
 
-  static async getUtilizDupaUsername(username) {
+  /**
+   * Functie de aflare a unui utilizator dupa username
+   *
+   * @param {string} username - Username-ul utilizatorului
+   * @param {Array} fields - Campurile pe care se aplica callback-ul
+   * @param {Function} callback - Functia de callback
+   *
+   * @return {Utilizator | null} Utilizatorul cu username-ul dat, sau null daca nu exista
+   */
+  static async getUtilizDupaUsername(username, fields, callback) {
     const result = await dbInstance.selectAsync({
       tableName: "utilizatori",
       fields: ["*"],
-      conditions: [`username = '${username}'`],
+      conditions: [[`username = '${username}'`]],
     });
     if (result.length === 0) {
       return null;
     }
-    return new Utilizator(result[0]);
+
+    const utilizator = new Utilizator(result[0]);
+
+    if (fields) {
+      callback(utilizator, fields);
+    }
+    return utilizator;
   }
 
+  /**
+   * Functie de aflare a unui utilizator dupa username
+   *
+   * @param {string} username - Username-ul utilizatorului
+   * @return {Utilizator | null} Utilizatorul cu username-ul dat, sau null daca nu exista
+   */
   static async getUtilizDupaUsernameAsync(username) {
     const results = await dbInstance.selectAsync({
       tableName: "utilizatori",
       fields: ["*"],
-      conditions: [`username = '${username}'`],
+      conditions: [[`username = '${username}'`]],
     });
     if (results.length === 0) {
       return null;
@@ -108,11 +141,20 @@ class Utilizator {
     return new Utilizator(results[0]);
   }
 
+  /**
+   * Functie de aflare a unor utilizatori dupa un set de parametri
+   *
+   * @param {Object} obParam - Obiectul de parametri
+   * @param {Function} callback - Functia de callback
+   * @return {void}
+   */
   static cauta(obParam, callback) {
     const fields = Object.keys(obParam).filter(
       (key) => obParam[key] !== undefined
     );
-    const conditions = fields.map((field) => `${field} = '${obParam[field]}'`);
+    const conditions = [
+      fields.map((field) => `${field} = '${obParam[field]}'`),
+    ];
 
     dbInstance.select(
       {
@@ -131,11 +173,19 @@ class Utilizator {
     );
   }
 
+  /**
+   * Functie de aflare a unor utilizatori dupa un set de parametri
+   *
+   * @param {Object} obParam - Obiectul de parametri
+   * @return {Array} utilizatori
+   */
   static async cautaAsync(obParam) {
     const fields = Object.keys(obParam).filter(
       (key) => obParam[key] !== undefined
     );
-    const conditions = fields.map((field) => `${field} = '${obParam[field]}'`);
+    const conditions = [
+      fields.map((field) => `${field} = '${obParam[field]}'`),
+    ];
 
     const results = await dbInstance.selectAsync({
       tableName: "utilizatori",
@@ -145,6 +195,12 @@ class Utilizator {
     return results.map((user) => new Utilizator(user));
   }
 
+  /**
+   * Functie de verificare a dreptului utilizatorului.
+   *
+   * @param {string} drept - Dreptul pe care se verifica
+   * @return {boolean} True daca utilizatorul are dreptul, false in caz contrar
+   */
   areDreptul(drept) {
     if (!this.rol || !Rights[this.rol]) {
       return false;
@@ -152,6 +208,16 @@ class Utilizator {
     return Rights[this.rol].includes(drept);
   }
 
+  /**
+   * Trimite un email
+   *
+   * @param {string} email - Adresa de email
+   * @param {string} subiect - Subiectul
+   * @param {string} mesajText - Varianta plaintext a mesajului
+   * @param {string} mesajHtml - Varianta HTML a mesajului
+   * @param {array} atasamente - (Optional) Atasamente
+   * @return {Promise} Promisiune care se rezolva la trimiterea mesajului
+   */
   static async trimiteMail(
     email,
     subiect,
