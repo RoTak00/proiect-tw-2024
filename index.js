@@ -7,6 +7,7 @@ const sass = require("sass");
 const path = require("path");
 const moment = require("moment");
 const session = require("express-session");
+const express_formidable = require("express-formidable");
 require("moment/locale/ro");
 moment.locale("ro");
 const app = express();
@@ -77,6 +78,8 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+app.use(express_formidable());
 
 app.use("/resurse", (req, res, next) => {
   const fullPath = path.join(__dirname, "resurse", req.path);
@@ -245,6 +248,99 @@ app.get("/api/random-products", async (req, res) => {
     console.error("Error fetching random products:", error);
     res.status(500).json({ error: "Error executing query" });
   }
+});
+
+app.get("/register", (req, res) => {
+  res.render("pagini/register", { errors: [], fields: {} });
+});
+
+app.post("/register", async (req, res) => {
+  const {
+    username,
+    nume,
+    prenume,
+    email,
+    parola,
+    rparola,
+    birthdate,
+    telephone,
+    culoare_chat,
+  } = req.fields;
+  let errors = [];
+
+  console.log("Form data:", req.fields);
+
+  // Validate required fields
+  const requiredFields = [
+    "username",
+    "nume",
+    "email",
+    "parola",
+    "rparola",
+    "birthdate",
+    "telephone",
+  ];
+  requiredFields.forEach((field) => {
+    if (!req.fields[field]) {
+      errors.push(`Campul ${field} este obligatoriu.`);
+    }
+  });
+
+  // Validate email format
+  const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  if (!emailPattern.test(email)) {
+    errors.push("Format-ul e-mail-ului nu este corect.");
+  }
+
+  // Validate telephone format
+  const phonePattern = /^\+?0[0-9]{9,}$/;
+  if (!phonePattern.test(telephone)) {
+    errors.push("Format-ul numarului de telefon nu este corect.");
+  }
+
+  try {
+    const existingUser = await Utilizator.getUtilizDupaUsernameAsync(username);
+    console.log("Existing user:", existingUser);
+    if (existingUser) {
+      errors.push("Username already exists.");
+    }
+  } catch (error) {
+    errors.push("Error fetching user: " + error);
+  }
+
+  if (errors.length > 0) {
+    // Reload the registration page with errors
+    console.log("Errors:", errors);
+    res
+      .status(400)
+      .render("pagini/register", { errors: errors, fields: req.fields });
+    return;
+  }
+
+  const newUser = new Utilizator({
+    username: username,
+    nume: nume,
+    prenume: prenume,
+    email: email,
+    parola: parola,
+    birth_date: birthdate,
+    phone: telephone,
+    chat_color: culoare_chat,
+    rol: "comun", // Default role
+  });
+
+  newUser.print();
+
+  try {
+    // Save the new user
+    await newUser.salvareUtilizator();
+  } catch (error) {
+    console.error("Error saving user:", error);
+    res.status(500).send("Error saving user");
+    return;
+  }
+
+  res.render("pagini/post-register", { username: username });
 });
 
 app.get("/*", (req, res) => {

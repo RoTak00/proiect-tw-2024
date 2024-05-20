@@ -1,72 +1,237 @@
-<form id="form_inreg" method="post" class="date" enctype="multipart/form-data">
-  <p>
-    <label>
-      Username:
+<form id="form_inreg" method="post" class="m-5" enctype="multipart/form-data">
+  <div class="row">
+    <div class="col-lg-6 col-sm-12">
+      <div class="form-group">
+        <label for="inp-username">Username:</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">
+              <i class="fas fa-user"></i>
+            </span>
+          </div>
+          <input
+            type="text"
+            class="form-control"
+            name="username"
+            id="inp-username"
+            placeholder="prof<%= Math.floor(Math.random()*100000) %>"
+            required
+            pattern="[A-Za-z0-9_]+"
+            aria-label="Username"
+            aria-describedby="basic-addon1"
+            value="<%=fields.username%>"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-sm-12">
+      <div class="form-group">
+        <label for="inp-email">Email:</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon6">
+              <i class="fas fa-envelope"></i>
+            </span>
+          </div>
+          <input
+            type="text"
+            class="form-control"
+            name="email"
+            id="inp-email"
+            required
+            placeholder="profprofprof007@gmail.com"
+            size="50"
+            aria-label="Email"
+            aria-describedby="basic-addon6"
+            value="<%=fields.email%>"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6 col-sm-12">
+      <div class="form-group">
+        <label for="inp-nume">Nume:</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon2">
+              <i class="fas fa-user-tag"></i>
+            </span>
+          </div>
+          <input
+            type="text"
+            class="form-control"
+            name="nume"
+            id="inp-nume"
+            placeholder="Gogulescu"
+            required
+            aria-label="Nume"
+            aria-describedby="basic-addon2"
+            value="<%=fields.nume%>"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-sm-12">
+      <div class="form-group">
+        <label for="inp-prenume">Prenume:</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon3">
+              <i class="fas fa-user-friends"></i>
+            </span>
+          </div>
+          <input
+            type="text"
+            class="form-control"
+            name="prenume"
+            id="inp-prenume"
+            placeholder="Gogu"
+            aria-label="Prenume"
+            aria-describedby="basic-addon3"
+            value="<%=fields.prenume%>"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="parl">Parola:</label>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon4">
+          <i class="fas fa-lock"></i>
+        </span>
+      </div>
       <input
-        type="text"
-        name="username"
-        id="inp-username"
-        value="prof<%= Math.floor(Math.random()*100000) %>"
+        id="parl"
+        type="password"
+        class="form-control"
         required
-        pattern="[A-Za-z0-9#_./]+"
+        name="parola"
+        value=""
+        aria-label="Parola"
+        aria-describedby="basic-addon4"
       />
-    </label>
-  </p>
-  <p>
-    <label>
-      Nume:
-      <input type="text" name="nume" id="inp-nume" value="Gogulescu" required />
-    </label>
-  </p>
-  <p>
-    <label>
-      Prenume:
-      <input type="text" name="prenume" id="inp-prenume" value="Gogu" />
-    </label>
-  </p>
-  <p>
-    <label>
-      Parola:
-      <input id="parl" type="password" required name="parola" value="" />
-    </label>
-  </p>
-  <p id="p-reintrod">
-    <label>
-      Reintroduceti parola:
-      <input id="rparl" required type="password" name="rparola" value="" />
-    </label>
-  </p>
-  <p>
-    <label>
-      Email:
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="rparl">Reintroduceti parola:</label>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon5">
+          <i class="fas fa-lock"></i>
+        </span>
+      </div>
       <input
-        type="text"
-        name="email"
-        id="inp-email"
+        id="rparl"
         required
-        value="profprofprof007@gmail.com"
-        size="50"
+        type="password"
+        class="form-control"
+        name="rparola"
+        value=""
+        aria-label="Reintroduceti parola"
+        aria-describedby="basic-addon5"
       />
-    </label>
-  </p>
-  <p>
-    <label>
-      Culoare text chat:
-      <select name="culoare_chat" id="sel-culoare">
-        <option value="red" selected>rosu</option>
-        <option value="green">verde</option>
-        <option value="blue">albastru</option>
-      </select>
-    </label>
-  </p>
-  <p>
-    <label>
-      Poza:
-      <input type="file" name="poza" />
-    </label>
-  </p>
-  <p>
-    <input type="submit" value="Trimite" />
-    <input type="reset" value="Reseteaza" />
-  </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6 col-sm-12">
+      <div class="form-group">
+        <label for="inp-birthdate">Data nașterii:</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon9">
+              <i class="fas fa-calendar-alt"></i>
+            </span>
+          </div>
+          <input
+            type="date"
+            class="form-control"
+            name="birthdate"
+            id="inp-birthdate"
+            required
+            aria-label="Data nașterii"
+            aria-describedby="basic-addon9"
+            value="<%=fields.birthdate%>"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-sm-12">
+      <div class="form-group">
+        <label for="inp-telephone">Telefon:</label>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon10">
+              <i class="fas fa-phone"></i>
+            </span>
+          </div>
+          <input
+            type="tel"
+            class="form-control"
+            name="telephone"
+            id="inp-telephone"
+            placeholder="+40 123 456 789"
+            pattern="^\+?0[0-9]{9,}$"
+            required
+            aria-label="Telefon"
+            aria-describedby="basic-addon10"
+            value="<%=fields.telephone%>"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="sel-culoare">Culoare text chat:</label>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon7">
+          <i class="fas fa-paint-brush"></i>
+        </span>
+      </div>
+      <input
+        type="hidden"
+        class="form-control"
+        name="culoare_chat"
+        id="sel-culoare"
+        aria-label="Culoare text chat"
+        aria-describedby="basic-addon7"
+      />
+      <div id="color-picker" class="color-picker"></div>
+      <span id="selected-color" class="d-flex align-items-center ms-3"></span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="poza">Poza:</label>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon8">
+          <i class="fas fa-image"></i>
+        </span>
+      </div>
+      <input
+        type="file"
+        class="form-control-file"
+        name="poza"
+        id="poza"
+        aria-label="Poza"
+        aria-describedby="basic-addon8"
+      />
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="input-group mb-3">
+      <button type="submit" class="btn btn-primary">Trimite</button>
+      <button type="reset" class="btn btn-secondary ml-2">Reseteaza</button>
+    </div>
+  </div>
 </form>
+
+<script src="/js/color-picker.js"></script>
+<script src="/js/register.js"></script>

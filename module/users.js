@@ -1,22 +1,35 @@
 const { dbInstance } = require("./database"); // Assuming DatabaseClient is in the same directory
 const nodemailer = require("nodemailer");
 const Rights = require("./drepturi");
+const bcrypt = require("bcrypt");
 
 class Utilizator {
   constructor({
     id = null,
     username = "",
     nume = "",
+    prenume = "",
     email = "",
     parola = "",
+    birth_date = "",
+    phone = "",
+    chat_color = "",
     rol = "",
   } = {}) {
     this.id = id;
     this.username = username;
     this.nume = nume;
+    this.prenume = prenume;
     this.email = email;
     this.parola = parola;
     this.rol = rol;
+    this.birth_date = birth_date;
+    this.phone = phone;
+    this.chat_color = chat_color;
+  }
+
+  print() {
+    console.log(this);
   }
 
   /**
@@ -25,16 +38,41 @@ class Utilizator {
    * @return {Promise} Promisiune care se rezolva dupa salvarea utilizatorului
    */
   async salvareUtilizator() {
-    const exists = this.getUtilizDupaUsernameAsync(this.username);
+    const exists = await Utilizator.getUtilizDupaUsernameAsync(this.username);
     if (exists !== null) {
       throw new Error("Username already exists.");
     }
 
+    const salt = await bcrypt.genSalt(10);
+    this.parola = await bcrypt.hash(this.parola, salt);
+
     await dbInstance.insert(
       {
-        tableName: "utilizatori",
-        fields: ["username", "nume", "email", "parola", "rol"],
-        values: [this.username, this.nume, this.email, this.parola, this.rol],
+        tableName: "users",
+        fields: [
+          "username",
+          "first_name",
+          "last_name",
+          "birth_date",
+          "chat_color",
+          "phone",
+          "email",
+          "password",
+          "salt",
+          "role",
+        ],
+        values: [
+          this.username,
+          this.prenume,
+          this.nume,
+          this.birth_date,
+          this.chat_color,
+          this.phone,
+          this.email,
+          this.parola,
+          salt,
+          this.rol,
+        ],
       },
       (err, res) => {
         if (err) {
@@ -58,7 +96,7 @@ class Utilizator {
 
     await dbInstance.update(
       {
-        tableName: "utilizatori",
+        tableName: "users",
         fields: Object.keys(updateParams),
         values: Object.values(updateParams),
         conditions: [`id = ${this.id}`],
@@ -84,7 +122,7 @@ class Utilizator {
 
     await dbInstance.deleteRecord(
       {
-        tableName: "utilizatori",
+        tableName: "users",
         conditions: [`id = ${this.id}`],
       },
       (err, res) => {
@@ -107,7 +145,7 @@ class Utilizator {
    */
   static async getUtilizDupaUsername(username, fields, callback) {
     const result = await dbInstance.selectAsync({
-      tableName: "utilizatori",
+      tableName: "users",
       fields: ["*"],
       conditions: [[`username = '${username}'`]],
     });
@@ -130,15 +168,20 @@ class Utilizator {
    * @return {Utilizator | null} Utilizatorul cu username-ul dat, sau null daca nu exista
    */
   static async getUtilizDupaUsernameAsync(username) {
-    const results = await dbInstance.selectAsync({
-      tableName: "utilizatori",
-      fields: ["*"],
-      conditions: [[`username = '${username}'`]],
-    });
-    if (results.length === 0) {
+    try {
+      const results = await dbInstance.selectAsync({
+        tableName: "users",
+        fields: ["*"],
+        conditions: [[`username = '${username}'`]],
+      });
+      if (results.length === 0) {
+        return null;
+      }
+      return new Utilizator(results[0]);
+    } catch (err) {
+      throw err;
       return null;
     }
-    return new Utilizator(results[0]);
   }
 
   /**
@@ -158,7 +201,7 @@ class Utilizator {
 
     dbInstance.select(
       {
-        tableName: "utilizatori",
+        tableName: "users",
         fields: ["*"],
         conditions: conditions,
       },
@@ -188,7 +231,7 @@ class Utilizator {
     ];
 
     const results = await dbInstance.selectAsync({
-      tableName: "utilizatori",
+      tableName: "users",
       fields: ["*"],
       conditions: conditions,
     });

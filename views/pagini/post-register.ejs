@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ÎnvățWeb - Inregistrare</title>
+    <title>ÎnvățWeb - Bine ai venit!</title>
     <meta
       name="description"
       content="ÎnvățWeb. Cursuri Programare Web.
@@ -15,18 +15,11 @@
 
     <div class="main-wrapper not-index">
       <main>
-        <h2>Inregistrare cont</h2>
-
-        <% if (errors && errors.length > 0) { %>
-        <div class="alert alert-danger">
-          <ul>
-            <% errors.forEach(error => { %>
-            <li><%= error %></li>
-            <% }); %>
-          </ul>
-        </div>
-        <% } %> <%-include('../fragmente/account/register.ejs', {fields:
-        fields})-%>
+        <h2>Bine ai venit!</h2>
+        <p>
+          Ne bucurăm că te-ai înregistrat, <%= username %>. Verifică-ți
+          e-mail-ul pentru a confirma contul și a te putea conecta!
+        </p>
       </main>
     </div>
 

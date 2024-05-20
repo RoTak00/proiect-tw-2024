@@ -11848,3 +11848,13 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+.input-group-text {
+  height: 100%;
+}
+
+.form-error {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
