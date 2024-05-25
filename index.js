@@ -8,10 +8,14 @@ const path = require("path");
 const moment = require("moment");
 const session = require("express-session");
 const express_formidable = require("express-formidable");
+const crypto = require("crypto");
+const bcrypt = require("bcrypt");
 require("moment/locale/ro");
 moment.locale("ro");
 const app = express();
 const port = process.env.PORT || 8080;
+
+const pgSession = require("connect-pg-simple")(session);
 
 const {
   filterImagesByTime,
@@ -48,7 +52,7 @@ fs.watch(obGlobal.folderScss, (eventType, filename) => {
   }
 });
 
-const folders_to_create = ["temp", "backup", "poze_uploadate"];
+const folders_to_create = ["temp", "backup", "resurse/poze_uploadate"];
 
 folders_to_create.forEach((folder) => {
   const folder_path = path.join(__dirname, folder);
@@ -66,6 +70,9 @@ folders_to_create.forEach((folder) => {
   });
 });
 
+const maxProfileUploadSize = 5 * 1024 * 1024;
+const profileAllowedExtensions = ["jpg", "jpeg", "png", "webp"];
+
 // ************************ MIDDLE WARES SI SETARI *****************************************
 
 app.set("view engine", "ejs");
@@ -76,10 +83,24 @@ app.use(
     secret: "secret",
     resave: false,
     saveUninitialized: true,
+    cookie: { secure: false },
   })
 );
 
-app.use(express_formidable());
+function loggedIn(req, res, next) {
+  if (req.session.loggedIn) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
+}
+
+app.use(
+  express_formidable({
+    uploadDir: path.join(__dirname, "resurse/poze_uploadate"),
+    keepExtensions: true,
+  })
+);
 
 app.use("/resurse", (req, res, next) => {
   const fullPath = path.join(__dirname, "resurse", req.path);
@@ -122,6 +143,8 @@ app.use(async (req, res, next) => {
   res.locals.convertToRoman = convertToRoman;
   res.locals.availableCourseCategories =
     await dbInstance.fetchCourseCategories();
+  res.locals.loggedIn = req.session.loggedIn;
+  res.locals.userData = req.session.userData;
   next();
 });
 
@@ -150,7 +173,7 @@ app.get("/resized-images/:size/*", async (req, res) => {
 });
 
 app.get(["/", "/index", "/home"], (req, res) => {
-  res.render("pagini/index");
+  res.render("pagini/index", { errors: [] });
 });
 
 app.get("/favicon.ico", (req, res) => {
@@ -317,6 +340,47 @@ app.post("/register", async (req, res) => {
     return;
   }
 
+  // salvare imagine
+  let poza = null;
+  let pozaPath = null;
+  if (req.files && req.files.poza) {
+    poza = req.files.poza;
+    const pozaSize = poza.size;
+    const pozaExt = path.extname(poza.name).slice(1).toLowerCase();
+
+    if (pozaSize > 5 * 1024 * 1024)
+      errors.push("Imaginea nu poate fi mai mare de 5MB.");
+
+    if (profileAllowedExtensions.indexOf(pozaExt) == -1)
+      errors.push("Extensie invalidă pentru imaginea de profil.");
+
+    if (errors.length > 0) {
+      fs.unlink(poza.path, () => {});
+      res
+        .status(400)
+        .render("pagini/register", { errors: errors, fields: req.fields });
+      return;
+    }
+
+    const pozaFullPath = path.join(__dirname, "poze_uploadate", poza.name);
+
+    const pozaPath = path.join("poze_uploadate", poza.name);
+
+    fs.rename(poza.path, pozaPath, (err) => {
+      if (err) {
+        errors.push("Salvarea fisierului a esuat.");
+      }
+    });
+
+    if (errors.length > 0) {
+      fs.unlink(pozaPath, () => {});
+      res
+        .status(500)
+        .render("pagini/register", { errors: errors, fields: req.fields });
+      return;
+    }
+  }
+
   const newUser = new Utilizator({
     username: username,
     nume: nume,
@@ -327,20 +391,153 @@ app.post("/register", async (req, res) => {
     phone: telephone,
     chat_color: culoare_chat,
     rol: "comun", // Default role
+    imagine: poza ? "poze_uploadate/" + poza.name : "",
   });
 
   newUser.print();
 
+  let newUserCheck;
+
   try {
     // Save the new user
     await newUser.salvareUtilizator();
+
+    newUserCheck = await Utilizator.getUtilizDupaUsernameAsync(username);
   } catch (error) {
-    console.error("Error saving user:", error);
-    res.status(500).send("Error saving user");
+    errors.push("Eroare la salvareaa utilizatorului.");
+    res
+      .status(500)
+      .render("pagini/register", { errors: errors, fields: req.fields });
+    return;
+  }
+
+  const token1 = crypto.randomBytes(50).toString("hex");
+  const token2 = Math.floor(Date.now() / 1000);
+  const confirmationLink = `localhost:8080/confirm/${token1}-${token2}/${username.toUpperCase()}`;
+
+  try {
+    await dbInstance.insertAsync({
+      tableName: "confirmation_tokens",
+      fields: ["user_id", "token1", "token2"],
+      values: [newUserCheck.id, token1, token2],
+    });
+  } catch (error) {
+    console.log(error);
+    errors.push("Eroare la salvarea tokenului de confirmare.");
+    newUserCheck.sterge();
+    res
+      .status(500)
+      .render("pagini/register", { errors: errors, fields: req.fields });
+    return;
+  }
+
+  try {
+    // Send confirmation email
+    await Utilizator.trimiteMail(
+      email,
+      `Salut, stimate ${nume} ${prenume}.`,
+      `Username-ul tău este ${username} pe site-ul <b><i><u>ÎnvățWeb</u></i></b>.
+            Apasă <a href="${confirmationLink}">${confirmationLink}</a> pentru a confirma.`,
+      `<p>Username-ul tău este <strong>${username}</strong> pe site-ul <b><i><u>Your Site</u></i></b>.</p>
+            <p>Apasă <a href="${confirmationLink}">${confirmationLink}</a> pentru a confirma.</p>`
+    );
+  } catch (error) {
+    errors.push(error);
+    console.log(error);
+    errors.push("Eroare la salvarea utilizatorului utilizatorului.");
+    newUserCheck.sterge();
+    res
+      .status(500)
+      .render("pagini/register", { errors: errors, fields: req.fields });
     return;
   }
 
   res.render("pagini/post-register", { username: username });
+});
+
+app.post("/login", async (req, res) => {
+  const { username, parola } = req.fields;
+  const user = await Utilizator.getUtilizDupaUsernameAsync(username);
+
+  if (!user) {
+    console.log("User not found:", username);
+    return res
+      .status(400)
+      .render("/", { errors: ["Invalid username or password"] });
+  }
+
+  console.log("user", user);
+  console.log("salt", user.salt);
+
+  const inputPassword = await bcrypt.hash(parola, user.salt);
+  const validPassword = inputPassword == user.parola;
+  if (!validPassword) {
+    console.log("Invalid password:", inputPassword);
+    console.log("Stored password:", user.parola);
+
+    return res
+      .status(400)
+      .render("pagini/index", { errors: ["Invalid username or password"] });
+  }
+
+  req.session.loggedIn = true;
+  req.session.userData = user;
+
+  console.log("ses", req.session);
+  res.redirect("/");
+});
+
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).send("Failed to log out.");
+    }
+    res.redirect("/");
+  });
+});
+
+app.get("/confirm/:token1-:token2/:username", async (req, res) => {
+  const { token1, token2, username } = req.params;
+
+  const storedTokens = await dbInstance.selectAsync({
+    tableName: "confirmation_tokens",
+    fields: ["token1", "token2", "user_id"],
+    conditions: [[`token1 = '${token1}'`, `token2 = '${token2}'`]],
+  });
+
+  if (storedTokens.length === 0) {
+    console.log("Token not found");
+    return res.status(400).redirect("/");
+  }
+
+  user_id = storedTokens[0].user_id;
+
+  const user_arr = await Utilizator.cautaAsync({ id: user_id });
+
+  if (!user_arr) {
+    console.log("User not found");
+    return res.status(400).redirect("/");
+  }
+  const user = user_arr[0];
+
+  if (user.username.toLowerCase() !== username.toLowerCase()) {
+    console.log("Username not valid");
+    return res.status(400).redirect("/");
+  }
+  // Validate tokens
+
+  user.rol = "confirmat";
+  try {
+    await user.modifica({
+      role: user.rol,
+    });
+    req.session.loggedIn = true;
+    req.session.user = user;
+    res.redirect("/");
+  } catch (error) {
+    console.log(error);
+    res.status(400).redirect("/");
+  }
 });
 
 app.get("/*", (req, res) => {
@@ -357,7 +554,7 @@ app.get("/*", (req, res) => {
     } else {
       res.render(
         `pagini/${page}`,
-        { page: page },
+        { page: page, errors: [] },
         function (error, renderResult) {
           if (error) {
             console.error("Error:", error);

@@ -10,6 +10,8 @@ const Rights = {
   EDIT_USER: Symbol("EDIT_USER"),
   DELETE_USER: Symbol("DELETE_USER"),
   ADD_USER: Symbol("ADD_USER"),
+  // LOGIN
+  LOGIN: Symbol("LOGIN"),
 };
 
 module.exports = { Rights };

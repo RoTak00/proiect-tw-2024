@@ -44,29 +44,46 @@
       </li>
 
       <li>
-        <a href="/contact">
-          <i class="fa-solid fa-phone"></i>
-          <span class="hide-500">Contact</span>
+        <a href="/register">
+          <i class="fa-solid fa-user"></i>
+          <span class="hide-500">Înregistrare</span>
         </a>
       </li>
-      <li>
-        <a href="/devino-profesor">
-          <i class="fa-solid fa-code"></i>
-          <span class="hide-500">Devino profesor</span>
-        </a>
-      </li>
+
       <li>
         <i class="fa-solid fa-gear"></i>
         <span class="hide-500">Utile</span>
         <ul class="open-left">
-          <li><a href="/despre-cursuri">Despre Cursuri</a></li>
           <li>
+            <i class="fa-solid fa-code"></i>
+            <a href="/despre-cursuri">Despre Cursuri</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-gear"></i>
             <a href="/politica-confidentialitate">
               Politica de Confidentialitate
             </a>
           </li>
-          <li><a href="/politica-cookies">Politica Cookies</a></li>
-          <li><a href="/termeni-conditii">Termeni si conditii</a></li>
+          <li>
+            <i class="fa-solid fa-gear"></i>
+            <a href="/politica-cookies">Politica Cookies</a>
+          </li>
+          <li>
+            <i class="fa-solid fa-gear"></i>
+            <a href="/termeni-conditii">Termeni si conditii</a>
+          </li>
+          <li>
+            <a href="/contact">
+              <i class="fa-solid fa-phone"></i>
+              <span class="hide-500">Contact</span>
+            </a>
+          </li>
+          <li>
+            <a href="/devino-profesor">
+              <i class="fa-solid fa-code"></i>
+              <span class="hide-500">Devino profesor</span>
+            </a>
+          </li>
           <li>
             <button id="theme-toggle">
               <i class="fas fa-sun"></i>
@@ -74,6 +91,28 @@
           </li>
         </ul>
       </li>
+
+      <% if (!loggedIn) { %>
+      <li>
+        <form action="/login" method="post">
+          <input type="text" name="username" placeholder="Username" required />
+          <input
+            type="password"
+            name="parola"
+            placeholder="Password"
+            required
+          />
+          <button type="submit">Login</button>
+        </form>
+      </li>
+      <% } else { %>
+      <li>
+        <a href="#">Logat: <%= userData.username %></a>
+        <ul class="open-left">
+          <li><a href="/logout">Delogare</a></li>
+        </ul>
+      </li>
+      <% } %>
     </ul>
   </nav>
 </header>

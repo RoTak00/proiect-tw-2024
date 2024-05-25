@@ -16,10 +16,22 @@ class Rol {
   }
 }
 
-class RolClient extends Rol {
+class RolComun extends Rol {
   constructor() {
     super("comun");
-    this.rights = [Rights.VIEW_PRODUCT, Rights.BUY_PRODUCT, Rights.VIEW_USER];
+    this.rights = [];
+  }
+}
+
+class RolConfirmat extends Rol {
+  constructor() {
+    super("confirmat");
+    this.rights = [
+      Rights.LOGIN,
+      Rights.VIEW_PRODUCT,
+      Rights.BUY_PRODUCT,
+      Rights.VIEW_USER,
+    ];
   }
 }
 
@@ -34,6 +46,7 @@ class RolModerator extends Rol {
   constructor() {
     super("moderator");
     this.drepturi = [
+      Rights.LOGIN,
       Rights.VIEW_USER,
       Rights.EDIT_USER,
       Rights.DELETE_USER,
@@ -46,7 +59,9 @@ class RolFactory {
   static creeazaRol(cod) {
     switch (cod) {
       case "comun":
-        return new RolClient();
+        return new RolComun();
+      case "confirmat":
+        return new RolConfirmat();
       case "admin":
         return new RolAdmin();
       case "moderator":
@@ -57,4 +72,11 @@ class RolFactory {
   }
 }
 
-module.exports = { Rol, RolClient, RolAdmin, RolModerator, RolFactory };
+module.exports = {
+  Rol,
+  RolComun,
+  RolConfirmat,
+  RolAdmin,
+  RolModerator,
+  RolFactory,
+};

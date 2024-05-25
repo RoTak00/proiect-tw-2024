@@ -11,8 +11,16 @@
     <%-include('../fragmente/head.ejs')-%>
   </head>
   <body>
-    <%-include('../fragmente/header.ejs')-%>
-
+    <%-include('../fragmente/header.ejs')-%> <% if (errors && errors.length > 0)
+    { %>
+    <div class="alert alert-danger">
+      <ul>
+        <% errors.forEach(error => { %>
+        <li><%= error %></li>
+        <% }); %>
+      </ul>
+    </div>
+    <% } %>
     <div class="main-wrapper">
       <main class="index-page">
         <section id="section-1" class="page-banner">

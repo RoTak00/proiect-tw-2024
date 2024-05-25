@@ -15,6 +15,8 @@ class Utilizator {
     phone = "",
     chat_color = "",
     rol = "",
+    imagine = "",
+    salt = "",
   } = {}) {
     this.id = id;
     this.username = username;
@@ -26,6 +28,8 @@ class Utilizator {
     this.birth_date = birth_date;
     this.phone = phone;
     this.chat_color = chat_color;
+    this.imagine = imagine;
+    this.salt = salt;
   }
 
   print() {
@@ -60,6 +64,7 @@ class Utilizator {
           "password",
           "salt",
           "role",
+          "profile_image",
         ],
         values: [
           this.username,
@@ -72,6 +77,7 @@ class Utilizator {
           this.parola,
           salt,
           this.rol,
+          this.imagine,
         ],
       },
       (err, res) => {
@@ -99,7 +105,7 @@ class Utilizator {
         tableName: "users",
         fields: Object.keys(updateParams),
         values: Object.values(updateParams),
-        conditions: [`id = ${this.id}`],
+        conditions: [[`id = ${this.id}`]],
       },
       (err, res) => {
         if (err) {
@@ -117,21 +123,33 @@ class Utilizator {
    */
   async sterge() {
     if (!this.id) {
-      throw new Error("Cannot delete a user without an ID.");
+      throw new Error("Lipseste ID-ul utilizatorului.");
     }
 
     await dbInstance.deleteRecord(
       {
         tableName: "users",
-        conditions: [`id = ${this.id}`],
+        conditions: [[`id = ${this.id}`]],
       },
       (err, res) => {
         if (err) {
           throw err;
         }
-        console.log("User deleted successfully:", res);
+        console.log("Utilizator sters cu succes:", res);
       }
     );
+
+    if (!this.imagine) return;
+
+    const filePath = path.join(__dirname, this.imagine);
+
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error("Eroare la stergerea imaginii:", err);
+        return;
+      }
+      console.log("Imagine stearsa cu succes:", filePath);
+    });
   }
 
   /**
@@ -153,7 +171,20 @@ class Utilizator {
       return null;
     }
 
-    const utilizator = new Utilizator(result[0]);
+    const utilizator = new Utilizator({
+      id: result[0].id,
+      prenume: result[0].first_name,
+      nume: result[0].last_name,
+      email: result[0].email,
+      username: result[0].username,
+      birth_date: result[0].birth_date,
+      phone: result[0].phone,
+      chat_color: result[0].chat_color,
+      rol: result[0].role,
+      imagine: result[0].profile_image,
+      salt: result[0].salt,
+      parola: result[0].password,
+    });
 
     if (fields) {
       callback(utilizator, fields);
@@ -177,7 +208,22 @@ class Utilizator {
       if (results.length === 0) {
         return null;
       }
-      return new Utilizator(results[0]);
+      const utilizator = new Utilizator({
+        id: results[0].id,
+        prenume: results[0].first_name,
+        nume: results[0].last_name,
+        email: results[0].email,
+        username: results[0].username,
+        birth_date: results[0].birth_date,
+        phone: results[0].phone,
+        chat_color: results[0].chat_color,
+        rol: results[0].role,
+        imagine: results[0].profile_image,
+        salt: results[0].salt,
+        parola: results[0].password,
+      });
+
+      return utilizator;
     } catch (err) {
       throw err;
       return null;
@@ -233,7 +279,7 @@ class Utilizator {
     const results = await dbInstance.selectAsync({
       tableName: "users",
       fields: ["*"],
-      conditions: conditions,
+      conditions: [conditions],
     });
     return results.map((user) => new Utilizator(user));
   }

@@ -110,6 +110,7 @@ class DatabaseClient {
       ", "
     )} FROM ${tableName} WHERE ${conditionsString}`;
 
+    console.log(query);
     try {
       const res = await this.client.query(query);
       return res.rows;
@@ -147,15 +148,27 @@ class DatabaseClient {
    * @param {array[tableName, fields, values]} params
    * @param {(err, res)} callback
    */
-  insert(params, callback) {
+  insert(params, callback = (err, res) => {}) {
     const { tableName, fields, values } = params;
     const query = `INSERT INTO ${tableName} (${fields.join(
       ", "
     )}) VALUES (${values.map((value) => `'${value}'`).join(", ")})`;
 
+    console.log("Query:", query);
+
     this.client.query(query, (err, res) => {
       callback(err, res);
     });
+  }
+
+  async insertAsync(params) {
+    const { tableName, fields, values } = params;
+    const query = `INSERT INTO ${tableName} (${fields.join(
+      ", "
+    )}) VALUES (${values.map((value) => `'${value}'`).join(", ")})`;
+
+    console.log("Query:", query);
+    return await this.client.query(query);
   }
 
   /**
