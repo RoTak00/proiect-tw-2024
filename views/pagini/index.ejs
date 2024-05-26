@@ -59,6 +59,15 @@
             <ins>59.99 RON</ins>
             pe zi.
           </p>
+
+          <% if(loggedIn) { %>
+          <p>Bine ai revenit, <%= userData.username %></p>
+          <img
+            src="<%= userData.imagine %>"
+            width="100"
+            style="width: 100px !important"
+          />
+          <% } %>
         </section>
 
         <section id="section-table">

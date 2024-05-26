@@ -281,7 +281,23 @@ class Utilizator {
       fields: ["*"],
       conditions: [conditions],
     });
-    return results.map((user) => new Utilizator(user));
+    return results.map(
+      (user) =>
+        new Utilizator({
+          id: user.id,
+          prenume: user.first_name,
+          nume: user.last_name,
+          email: user.email,
+          username: user.username,
+          birth_date: user.birth_date,
+          phone: user.phone,
+          chat_color: user.chat_color,
+          rol: user.role,
+          imagine: user.profile_image,
+          salt: user.salt,
+          parola: user.password,
+        })
+    );
   }
 
   /**

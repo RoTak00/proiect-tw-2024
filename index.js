@@ -362,9 +362,13 @@ app.post("/register", async (req, res) => {
       return;
     }
 
-    const pozaFullPath = path.join(__dirname, "poze_uploadate", poza.name);
+    const pozaFullPath = path.join(
+      __dirname,
+      "resurse/poze_uploadate",
+      poza.name
+    );
 
-    const pozaPath = path.join("poze_uploadate", poza.name);
+    const pozaPath = path.join("resurse/poze_uploadate", poza.name);
 
     fs.rename(poza.path, pozaPath, (err) => {
       if (err) {
@@ -526,6 +530,8 @@ app.get("/confirm/:token1-:token2/:username", async (req, res) => {
   }
   const user = user_arr[0];
 
+  console.log(user);
+
   if (user.username.toLowerCase() !== username.toLowerCase()) {
     console.log("Username not valid");
     return res.status(400).redirect("/");
@@ -538,7 +544,7 @@ app.get("/confirm/:token1-:token2/:username", async (req, res) => {
       role: user.rol,
     });
     req.session.loggedIn = true;
-    req.session.user = user;
+    req.session.userData = user;
     res.redirect("/");
   } catch (error) {
     console.log(error);
