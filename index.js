@@ -91,7 +91,7 @@ function loggedIn(req, res, next) {
   if (req.session.loggedIn) {
     next();
   } else {
-    res.redirect("/login");
+    res.redirect("/");
   }
 }
 
@@ -343,7 +343,7 @@ app.post("/register", async (req, res) => {
   // salvare imagine
   let poza = null;
   let pozaPath = null;
-  if (req.files && req.files.poza) {
+  if (req.files && req.files.poza && req.files.poza.size > 0) {
     poza = req.files.poza;
     const pozaSize = poza.size;
     const pozaExt = path.extname(poza.name).slice(1).toLowerCase();
@@ -390,7 +390,7 @@ app.post("/register", async (req, res) => {
     birth_date: birthdate,
     phone: telephone,
     chat_color: culoare_chat,
-    rol: "comun", // Default role
+    rol: "comun",
     imagine: poza ? "poze_uploadate/" + poza.name : "",
   });
 
@@ -478,6 +478,12 @@ app.post("/login", async (req, res) => {
     return res
       .status(400)
       .render("pagini/index", { errors: ["Invalid username or password"] });
+  }
+
+  if (user.rol == "comun") {
+    res.status(403).render("pagini/index", {
+      errors: ["Nu v-ati confirmat contul inca cu adresa de e-mail!"],
+    });
   }
 
   req.session.loggedIn = true;

@@ -7,16 +7,18 @@ $(document).ready(function () {
     let isValid = true;
 
     // Validate required fields
-    $("input[required], select[required]").each(function () {
-      if ($(this).val() === "") {
-        isValid = false;
-        $(this)
-          .parent(".input-group")
-          .after(
-            '<div class="form-error text-danger">Campul este obligatoriu!</div>'
-          );
+    $("#form_inreg input[required], #form_inreg select[required]").each(
+      function () {
+        if ($(this).val() === "") {
+          isValid = false;
+          $(this)
+            .parent(".input-group")
+            .after(
+              '<div class="form-error text-danger">Campul este obligatoriu!</div>'
+            );
+        }
       }
-    });
+    );
 
     // Validate email format
     const email = $("#inp-email").val();

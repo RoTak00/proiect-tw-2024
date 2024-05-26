@@ -43,12 +43,14 @@
         </ul>
       </li>
 
+      <% if (!loggedIn) { %>
       <li>
         <a href="/register">
           <i class="fa-solid fa-user"></i>
           <span class="hide-500">Înregistrare</span>
         </a>
       </li>
+      <% } %>
 
       <li>
         <i class="fa-solid fa-gear"></i>
@@ -93,16 +95,23 @@
       </li>
 
       <% if (!loggedIn) { %>
-      <li>
+      <li class="login-form">
         <form action="/login" method="post">
-          <input type="text" name="username" placeholder="Username" required />
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            class="form-control"
+            required
+          />
           <input
             type="password"
             name="parola"
             placeholder="Password"
+            class="form-control"
             required
           />
-          <button type="submit">Login</button>
+          <button type="submit" class="btn btn-outline-primary">Login</button>
         </form>
       </li>
       <% } else { %>

@@ -1,0 +1,23 @@
+nav {
+  z-index: 100;
+}
+nav .login-form {
+  display: flex;
+  align-items: center;
+}
+nav .login-form form {
+  display: flex;
+  gap: 0.5em;
+}
+
+nav .login-form input,
+nav .login-form button {
+  display: inline-block !important;
+  flex: 1;
+}
+
+@media screen and (max-width: 768px) {
+  nav .login-form form {
+    flex-direction: column;
+  }
+}
